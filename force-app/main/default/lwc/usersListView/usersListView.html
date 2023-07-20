@@ -1,0 +1,28 @@
+<template>
+    <div class={overrideCssClass}>
+        <template if:false={hasNoData}>
+            <template if:false={disableHeader}>
+                <div class="section-title">
+                    <c-tile-page-header title={overridePageHeaderTitle} disable-selection-menu={disableSelectionMenu} disable-filter={disableHeaderFilter} label={pageHeaderLabel} selectedfilter={selectedfilter} menu-items={menuItems} selected-menu-item-value={view} onheaderfilterchanged={applyFilter} onmenuchanged={handleMenuChanged}></c-tile-page-header>
+                </div>
+            </template>
+
+            <c-reporting-data-table
+                id="users-table"
+                key-field="id"
+                data={data}
+                columns={columns}
+                onsort={handleSorting}
+                hide-checkbox-column></c-reporting-data-table>
+            <div class="loading-more-container">
+                <div class="loading-more">
+                    <lightning-spinner variant="brand" if:true={tableLoadingState} alternative-text="Loading" size="large"></lightning-spinner>
+                </div>
+            </div>
+        
+        </template>
+        <template if:true={hasNoData}>
+            <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-panel__body slds-p-horizontal_large">
+        <div class="slds-filters ">
+            <fieldset class="slds-form-element">
+                <legend class="slds-form-element__legend slds-form-element__label">From</legend>
+                <div class="slds-form-element__control">
+                    <lightning-input type="date" name="input3" label="" value={fromDate} onchange={handleFromChanged} max={maxFromDate}></lightning-input>
+                </div>
+            </fieldset>
+            <fieldset class="slds-form-element">
+                <legend class="slds-form-element__legend slds-form-element__label">To</legend>
+                <div class="slds-form-element__control">
+                    <lightning-input type="date" name="input4" label="" value={toDate} onchange={handleToChanged} max={maxToDate}></lightning-input>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</template>

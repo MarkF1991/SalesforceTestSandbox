@@ -1,0 +1,32 @@
+<template>
+    <lightning-card
+        title="Account Search"
+        icon-name="standard:account"
+    >
+        <div class="slds-m-around_medium" >
+            <lightning-input
+                type="search"
+                onchange={handleKeyChange}
+                class="slds-m-bottom_small"
+                label="Search"
+            ></lightning-input>
+            <template if:true={showList}>
+                <template for:each={accounts} for:item="account">
+                    <div class="slds-col slds-m-bottom_small" key={account.id}>
+                        <c-account-tile account={account} onselect={handleSelect}></c-account-tile>
+                    </div>
+                    <!-- <c-account-tile 
+                        key={account.Id}
+                        account={account}
+                        onselect={handleSelect}
+                    ></c-account-tile> -->
+                </template>
+            </template>
+        </div>
+
+        
+        <template if:true={error}>
+            <c-error-panel errors={error}></c-error-panel>
+        </template>
+    </lightning-card>
+</template>

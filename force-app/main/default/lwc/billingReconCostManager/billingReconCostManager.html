@@ -1,0 +1,49 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="spinnerContainer">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <c-error-message errors={errors}></c-error-message>
+        <c-scoped-notification message="No costs to display." if:true={renderNoRecordsMessage}></c-scoped-notification>
+        <div class="slds-grid slds-gutters slds-m-bottom_medium">
+            <div class="slds-col">
+                <lightning-input 
+                    type="search" 
+                    label="Search"
+                    placeholder="Search across all columns..."
+                    onchange={handleSearchChange}
+                    if:true={renderTable}
+                >
+                </lightning-input>
+            </div>
+            <div class="slds-col">
+                <lightning-radio-group 
+                    name="chargeCategories"
+                    options={chargeCategoryOptions}
+                    value={selectedChargeCategoryFilter}
+                    onchange={handleChargeCategoryChange}
+                    label="Charge Category"
+                    type="button"
+                    if:true={renderTable}
+                >
+                </lightning-radio-group>
+            </div>
+            <div class="slds-col">
+                <div class="slds-clearfix">
+                    <div class="slds-float_right">
+                        <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={refreshRecords}></lightning-button-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <c-datatable-paginated
+            records={records}
+            columns={columns}
+            if:true={renderTable}
+            onsave={handleSave}
+        >
+        </c-datatable-paginated>
+    </template> 
+</template>

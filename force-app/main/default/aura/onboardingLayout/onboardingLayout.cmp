@@ -1,0 +1,23 @@
+<aura:component implements="forceCommunity:layout">
+    <aura:attribute name="onboardComponents" type="Aura.Component[]"/>
+    <aura:attribute name="onboardOuter" type="Aura.Component[]"/>
+    	<div class="slds-size_1-of-1 slds-align_absolute-center">
+        	<div class="cardWrapper">
+            <div class="slds-form_compound">
+            	<div class="slds-form_gradientHeader">
+                	<div class="gradientHeader_logo">
+                    	<img class="headerLogo" alt="" src="https://www.n4l.co.nz/wp-content/uploads/2016/06/N4L-rev.small_.png"/>
+                    </div>  
+                </div>      
+                <div class="onboardContent_container">
+                	{!v.onboardComponents}
+                </div>
+            </div>
+            </div>
+    	</div> 
+        <div class="slds-size_1-of-1 slds-align_absolute-center">
+    		<div class="onboardContent_container bottom">
+            	{!v.onboardOuter}
+            </div>
+    	</div>
+</aura:component>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+            <property name="title" type="String"/>
+            <!-- <property name="checkbox_toggle1_show" type="Boolean" label="Show checkbox toggle 1"/>
+            <property name="checkbox_toggle1_label" type="String" label="Label for checkbox toggle 1" default="Access to School Reporting"/>
+            <property name="checkbox_toggle1_message1" type="String" label="Message line 1 for checkbox toggle 1" default="Do you want to proceed with the changes?"/>
+            <property name="checkbox_toggle1_message2" type="String" label="Message line 2 for checkbox toggle 1" default=""/>
+            <property name="checkbox_toggle2_show" type="Boolean" label="Show checkbox toggle 2"/>
+            <property name="checkbox_toggle2_label" type="String" label="Label for checkbox toggle 2" default="Access to Filtering Portal"/>
+            <property name="checkbox_toggle2_message1" type="String" label="Message line 1 for checkbox toggle 2" default="Do you want to proceed with the changes?"/>
+            <property name="checkbox_toggle2_message2" type="String" label="Message line 2 for checkbox toggle 2" default=""/> --></targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

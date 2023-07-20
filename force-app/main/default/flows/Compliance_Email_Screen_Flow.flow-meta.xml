@@ -1,0 +1,1756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send email using apex</description>
+        <name>Send_email</name>
+        <label>Send email</label>
+        <locationX>754</locationX>
+        <locationY>5402</locationY>
+        <actionName>ComplianceSendingEmailController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_child_cases</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Update_error_message_email_send</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>ccAddress</name>
+            <value>
+                <elementReference>emailCCList</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>complianceCaseStatus</name>
+            <value>
+                <elementReference>emailType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>DynamicContents</name>
+            <value>
+                <elementReference>finalDynamicContent</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Ids</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ComplianceSendingEmailController</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Add the case alert type to the list of alert types, for filtering the dynamic content</description>
+        <name>Add_case_subject_to_list</name>
+        <label>Add case alert type to list</label>
+        <locationX>1238</locationX>
+        <locationY>2546</locationY>
+        <assignmentItems>
+            <assignToReference>caseAlertTypes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_child_cases.Type</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_case_to_updates_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the case to a list of cases that should be updated</description>
+        <name>Add_case_to_updates_list</name>
+        <label>Add case to updates list</label>
+        <locationX>1238</locationX>
+        <locationY>2666</locationY>
+        <assignmentItems>
+            <assignToReference>caseIDsForUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_child_cases.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_child_cases</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the content from this dynamic content record to the string to be included in the email.</description>
+        <name>Add_content_to_string</name>
+        <label>Add content to string</label>
+        <locationX>842</locationX>
+        <locationY>3122</locationY>
+        <assignmentItems>
+            <assignToReference>chosenContentList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_dynamic_content_to_build_string.Content__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_dynamic_content_to_build_string</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the name of the created network to a list of networks to display in the email</description>
+        <name>Add_Created_Network_Name_to_List_of_Created_Names</name>
+        <label>Add Created Network Name to List of Created Names</label>
+        <locationX>1370</locationX>
+        <locationY>2330</locationY>
+        <assignmentItems>
+            <assignToReference>createdNetworkNames</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>createdNetworkItem</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_case_subject_to_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the name of the deleted network to the list which displays in the email</description>
+        <name>Add_Deleted_Network_Name_to_List_of_Names</name>
+        <label>Add Deleted Network Name to List of Names</label>
+        <locationX>1106</locationX>
+        <locationY>2330</locationY>
+        <assignmentItems>
+            <assignToReference>deletedNetworkNames</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>deletedNetworkItem</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_case_subject_to_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>This flow is running on a single (non-cluster) alert case. Add the flow case as the only applicable case. Bypass applicable case selection in this scenario</description>
+        <name>Add_flow_case_as_applicable_Case</name>
+        <label>Add flow case as applicable Case</label>
+        <locationX>930</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>childCasesForEmail</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Triggering_Case_Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_child_cases</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the name to the list of changed host names to display in the email</description>
+        <name>Add_Host_name_to_list_of_Changed_Host_Names</name>
+        <label>Add Host name to list of Changed Host Names</label>
+        <locationX>842</locationX>
+        <locationY>2330</locationY>
+        <assignmentItems>
+            <assignToReference>changedHostNames</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>changedHostNameItem</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_case_subject_to_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add to list of Principal Ids for getting principal contact records</description>
+        <name>Add_principal_ID_to_list_of_IDs</name>
+        <label>Add principal ID to list of IDs</label>
+        <locationX>1018</locationX>
+        <locationY>4178</locationY>
+        <assignmentItems>
+            <assignToReference>PrincipalContactIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_all_school_contact_relationships.Contact.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_all_school_contact_relationships</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>add participant email to cc list to be passed into apex send action</description>
+        <name>Add_recipient_email_to_CC_list</name>
+        <label>Add recipient email to CC list</label>
+        <locationX>842</locationX>
+        <locationY>5186</locationY>
+        <assignmentItems>
+            <assignToReference>emailCCList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>ccEmailListItem</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_selected_cc_recipients</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the Id to all school contact IDs. Used to get list of all school contacts for user to choose correct contact to cc</description>
+        <name>Add_to_all_Contact_Ids</name>
+        <label>Add to all Contact Ids</label>
+        <locationX>1150</locationX>
+        <locationY>3938</locationY>
+        <assignmentItems>
+            <assignToReference>allSchoolContactIDs</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_all_school_contact_relationships.ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Role_type</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>All cases can be included in the email</description>
+        <name>Assign_all_child_cases_as_eligible_child_cases</name>
+        <label>Assign all child cases as eligible child cases</label>
+        <locationX>402</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>eligibleCases</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_all_child_cases_except_NCA_sent</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Select_applicable_cases_screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign case contact as recipient of email</description>
+        <name>Assign_Case_Contact_as_recipient</name>
+        <label>Assign Case Contact as recipient</label>
+        <locationX>754</locationX>
+        <locationY>3458</locationY>
+        <assignmentItems>
+            <assignToReference>recipient</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Contact</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_school_AccountContactRelationships</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Email_Type</name>
+        <label>Assign Email Type</label>
+        <locationX>754</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>emailType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Select_email_type</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_all_child_cases</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign all Non-Compliant Accepted cases as eligible cases to select from</description>
+        <name>Assign_NCA_cases_as_eligible_cases</name>
+        <label>Assign NCA cases as eligible cases</label>
+        <locationX>50</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>eligibleCases</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Child_cases_for_Non_Compliant_Accepted</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Select_applicable_cases_screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>This sets a variable numberOfSelected cases to be used to decision element to check if the user selected any cases. It&apos;s a workaround because the &apos;is null&apos; condition for the collection in decision element returns true even if there are no records in the collection.</description>
+        <name>assignNumberOfSelectedCases</name>
+        <label>Set number of selected cases</label>
+        <locationX>50</locationX>
+        <locationY>1478</locationY>
+        <assignmentItems>
+            <assignToReference>numberOfSelectedCases</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>childCasesForEmail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_if_there_are_selected_cases</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set the error message to notify the user that the NCA email has already been sent for this case.</description>
+        <name>Set_error_message_email_already_sent</name>
+        <label>Set error message - email already sent</label>
+        <locationX>4098</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>School already notified compliance issue accepted</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set the error message to inform the user that the flow will end because there are no cases selected</description>
+        <name>Set_error_message_for_no_cases</name>
+        <label>Set error message for no cases</label>
+        <locationX>138</locationX>
+        <locationY>1718</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>No cases selected or available. </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Lets the user know that for the single case scenario, the alert status must be Non-Compliant Accepted.</description>
+        <name>Set_error_message_not_NCA_case</name>
+        <label>Set error message - not NCA case</label>
+        <locationX>1194</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Alert Status must be &apos;Non-Compliant Accepted&apos; to send this email.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add error message to notify user that there is no case contact</description>
+        <name>Update_Error_Message</name>
+        <label>Update Error Message</label>
+        <locationX>3570</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Please add a contact to this case before sending email</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update the error message to notify the user that the email was not sent.</description>
+        <name>Update_error_message_email_send</name>
+        <label>Update error message - email send</label>
+        <locationX>1986</locationX>
+        <locationY>5522</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Unable to send email</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Choice resource for Non Compliance Accepted Scenario</description>
+        <name>choice_NCA</name>
+        <choiceText>Non Compliance Accepted</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Closed - Compliance issue Accepted</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Choice resource for School Not Contactable scenario</description>
+        <name>choice_SNC</name>
+        <choiceText>School Not Contactable</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Attempted - Not Reachable</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Check alert type</description>
+        <name>Alert_Type</name>
+        <label>Alert Type?</label>
+        <locationX>1238</locationX>
+        <locationY>2210</locationY>
+        <defaultConnector>
+            <targetReference>Add_case_subject_to_list</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other Type</defaultConnectorLabel>
+        <rules>
+            <name>Device_Hostname_Change</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_child_cases.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Device Hostname Change</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Host_name_to_list_of_Changed_Host_Names</targetReference>
+            </connector>
+            <label>Device Hostname Change</label>
+        </rules>
+        <rules>
+            <name>SA_WiFi_Network_Deleted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_child_cases.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SA WiFi Network Deleted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Deleted_Network_Name_to_List_of_Names</targetReference>
+            </connector>
+            <label>SA WiFi Network Deleted</label>
+        </rules>
+        <rules>
+            <name>WiFi_Network_Created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_child_cases.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>WiFi Network Created</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Created_Network_Name_to_List_of_Created_Names</targetReference>
+            </connector>
+            <label>WiFi Network Created</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks what is the case alert status, if non &apos;Non-Compliant Accepted&apos;, then route to error screen.</description>
+        <name>Case_alert_status</name>
+        <label>Case alert status?</label>
+        <locationX>1062</locationX>
+        <locationY>1118</locationY>
+        <defaultConnector>
+            <targetReference>Set_error_message_not_NCA_case</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other status</defaultConnectorLabel>
+        <rules>
+            <name>Alert_Status_is_NCA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Triggering_Case_Record.Alert_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Non-Compliant Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_flow_case_as_applicable_Case</targetReference>
+            </connector>
+            <label>Alert Status is NCA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks whether the date/time of the Non-Compliance Accepted notification has been populated for this school. This is used to prevent sending another email for this case after the NCA email has been sent.</description>
+        <name>Check_if_NCA_email_already_sent_for_this_alert</name>
+        <label>Check if NCA email already sent for this alert</label>
+        <locationX>3130</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Set_error_message_email_already_sent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NCA sent</defaultConnectorLabel>
+        <rules>
+            <name>NCA_Not_Sent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Triggering_Case_Record.Accept_Non_Compliance_Notification_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Case_Contact</targetReference>
+            </connector>
+            <label>NCA Not Sent</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if there are any selected cases by the user</description>
+        <name>Check_if_there_are_selected_cases</name>
+        <label>Check if there are selected cases</label>
+        <locationX>50</locationX>
+        <locationY>1598</locationY>
+        <defaultConnector>
+            <targetReference>Set_error_message_for_no_cases</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No cases selected</defaultConnectorLabel>
+        <rules>
+            <name>Cases_selected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>numberOfSelectedCases</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_through_child_cases</targetReference>
+            </connector>
+            <label>Cases selected</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks if the case is a parent case based on whether there are any child cases. and check if the email type chosen was &quot;School Not Contactable (SNC)&quot; or &quot;Non-Compliance Accepted (NCA)&quot;</description>
+        <name>Check_the_email_type_and_context</name>
+        <label>Check the email type and context</label>
+        <locationX>754</locationX>
+        <locationY>998</locationY>
+        <defaultConnectorLabel>No scenario</defaultConnectorLabel>
+        <rules>
+            <name>Yes_parent_case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_all_child_cases</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>emailType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_NCA</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Child_cases_for_Non_Compliant_Accepted</targetReference>
+            </connector>
+            <label>NCA - parent case</label>
+        </rules>
+        <rules>
+            <name>SNC_Parent_Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_all_child_cases</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>emailType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_SNC</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_all_child_cases_except_NCA_sent</targetReference>
+            </connector>
+            <label>SNC - Parent Case</label>
+        </rules>
+        <rules>
+            <name>SNC_Single_Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>emailType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_SNC</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Add_flow_case_as_applicable_Case</targetReference>
+            </connector>
+            <label>SNC - Single Case</label>
+        </rules>
+        <rules>
+            <name>NCA_Single_Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>emailType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_NCA</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Case_alert_status</targetReference>
+            </connector>
+            <label>NCA - Single Case</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check that there is a contact for this case</description>
+        <name>Is_there_a_case_contact</name>
+        <label>Is there a case contact</label>
+        <locationX>2162</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>Update_Error_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Case_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Contact</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Select_Scenario</targetReference>
+            </connector>
+            <label>Yes - Case contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the loop contact is the case contact - skip case contact as we don&apos;t want to add them to cc list.</description>
+        <name>Is_this_the_case_contact</name>
+        <label>Is this the case contact?</label>
+        <locationX>996</locationX>
+        <locationY>3818</locationY>
+        <defaultConnector>
+            <targetReference>Add_to_all_Contact_Ids</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not case contact</defaultConnectorLabel>
+        <rules>
+            <name>Case_Contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_all_school_contact_relationships.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Case_Contact.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_through_all_school_contact_relationships</targetReference>
+            </connector>
+            <label>Case Contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if role contains principal. Exclude the case contact so they don&apos;t get added twice</description>
+        <name>Role_type</name>
+        <label>Role type</label>
+        <locationX>1150</locationX>
+        <locationY>4058</locationY>
+        <defaultConnector>
+            <targetReference>Loop_through_all_school_contact_relationships</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Principal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_all_school_contact_relationships.Roles</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Principal</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_principal_ID_to_list_of_IDs</targetReference>
+            </connector>
+            <label>Principal</label>
+        </rules>
+    </decisions>
+    <description>Screen flow for sending compliance emails for multi event compliance cases when Non-Compliance is accepted, or when the school is not contactable. Sent via action button on the parent compliance case record.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>This formula is used to add a comma to separate the email addresses when building the cc list.</description>
+        <name>ccEmailListItem</name>
+        <dataType>String</dataType>
+        <expression>IF (ISBLANK({!emailCCList}), &apos;&apos; , &apos;,&apos;) +
+{!Loop_through_selected_cc_recipients.Email}</expression>
+    </formulas>
+    <formulas>
+        <description>To include commas and spaces in the list of host names</description>
+        <name>changedHostNameItem</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!changedHostNames}), &apos;&apos;, &apos;, &apos;) + {!Loop_through_child_cases.Network_Name__c}</expression>
+    </formulas>
+    <formulas>
+        <description>Used in loop to add the network name to the list of networks that have been created</description>
+        <name>createdNetworkItem</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!createdNetworkNames}), &apos;&apos;, &apos;, &apos;) + {!Loop_through_child_cases.Network_Name__c}</expression>
+    </formulas>
+    <formulas>
+        <description>To include commas and spaces in list of deleted networks</description>
+        <name>deletedNetworkItem</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!deletedNetworkNames}), &apos;&apos;, &apos;, &apos;) + {!Loop_through_child_cases.Network_Name__c}</expression>
+    </formulas>
+    <formulas>
+        <name>emailBody</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+ {!Get_Email_Template.Body}, 
+&apos;[dynamic_content]&apos;, {!finalDynamicContent}),
+&apos;[Contact.FirstName]&apos;, {!recipient.FirstName}),
+&apos;[Account.Name]&apos;, {!Get_Triggering_Case_Record.Account.Name}),
+&apos;[Insert.Name]&apos;, {!Get_Triggering_Case_Record.Contact.FirstName}),
+&apos;[User.Name]&apos;, {!$User.FirstName} + &apos; &apos;+ {!$User.LastName})</expression>
+    </formulas>
+    <formulas>
+        <description>API name of email template based on user selection</description>
+        <name>emailTemplateName</name>
+        <dataType>String</dataType>
+        <expression>CASE({!emailType}, &apos;Closed - Compliance issue Accepted&apos;, &apos;Compliance_Monitoring_Non_Compliant_Accepted&apos;, 
+&apos;Attempted - Not Reachable&apos;, &apos;Compliance_Monitoring_School_not_contactable&apos;,
+&apos;Non-Compliant Accepted&apos;, &apos;Compliance_Monitoring_Non_Compliant_Accepted&apos;, 
+&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Remove semicolons and replace merge fields in the dynamic content</description>
+        <name>finalDynamicContent</name>
+        <dataType>String</dataType>
+        <expression>&apos;&lt;ul&gt;&apos; + 
+SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+{!chosenContentList},
+ &apos;[Changed_Network_Names]&apos;, {!changedHostNames}), 
+ &apos;[Deleted_Network_Names]&apos;, {!deletedNetworkNames}), 
+ &apos;[New_Network_Names]&apos;, {!createdNetworkNames}), 
+&apos;;&apos;,&apos;&apos;) 
++ &apos;&lt;/ul&gt;&apos;</expression>
+    </formulas>
+    <formulas>
+        <description>Conditionally displays the criteria Alert Status = &apos;Non-compliant Accepted&apos; when the NCA scenario is chosen</description>
+        <name>NCA_filterCriteriaNote</name>
+        <dataType>String</dataType>
+        <expression>IF({!emailType} == &quot;Closed - Compliance issue Accepted&quot;, &quot;- Alert Status = &apos;Non-compliant Accepted&apos;&quot;, &quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>This is a formula that will show current date if the user has selected &apos;Non-Compliance Accepted&apos; email type. Otherwise it will show blank. Used to input the date / time of notification for all NCA emails</description>
+        <name>NCA_NotificationDate</name>
+        <dataType>DateTime</dataType>
+        <expression>IF({!emailType} = &apos;Closed - Compliance issue Accepted&apos;, {!$Flow.CurrentDateTime}, null)</expression>
+    </formulas>
+    <interviewLabel>Compliance Email Screen Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Compliance Email Screen Flow</label>
+    <loops>
+        <description>Loop through all of the Account-Contact relationships for the school. If they include &apos;principal&apos; in the roles, add them to a list of principal contact IDs. This is a workaround because we cannot use the &apos;contains&apos; method in the get element for multi-select picklists</description>
+        <name>Loop_through_all_school_contact_relationships</name>
+        <label>Loop through all school-contact relationships</label>
+        <locationX>754</locationX>
+        <locationY>3698</locationY>
+        <collectionReference>Get_school_AccountContactRelationships</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Is_this_the_case_contact</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Preview_Email</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through all child cases to add their subject to the list</description>
+        <name>Loop_through_child_cases</name>
+        <label>Loop through applicable child cases</label>
+        <locationX>754</locationX>
+        <locationY>2090</locationY>
+        <collectionReference>childCasesForEmail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Alert_Type</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Dynamic_Content_Metadata</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through each applicable dynamic content record to build a string of content to be included in the email</description>
+        <name>Loop_through_dynamic_content_to_build_string</name>
+        <label>Loop through dynamic content to build string</label>
+        <locationX>754</locationX>
+        <locationY>3002</locationY>
+        <collectionReference>Get_Dynamic_Content_Metadata</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_content_to_string</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Email_Template</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through all principals selected to cc and add their email to string to be passed into apex</description>
+        <name>Loop_through_selected_cc_recipients</name>
+        <label>Loop through selected cc recipients</label>
+        <locationX>754</locationX>
+        <locationY>5066</locationY>
+        <collectionReference>finalCCRecipients</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_recipient_email_to_CC_list</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Send_email</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Get all child cases for this case excluding those where NCA email has already been sent</description>
+        <name>Get_all_child_cases</name>
+        <label>Get all child cases</label>
+        <locationX>754</locationX>
+        <locationY>878</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_the_email_type_and_context</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <sortField>Type</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all child cases for this case excluding those where NCA email has already been sent</description>
+        <name>Get_all_child_cases_except_NCA_sent</name>
+        <label>Get all child cases except NCA sent</label>
+        <locationX>402</locationX>
+        <locationY>1118</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_all_child_cases_as_eligible_child_cases</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Accept_Non_Compliance_Notification_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <sortField>Type</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Use this list of contact Ids built from the account-contact relationships to get all the principal contact records</description>
+        <name>Get_all_principal_contacts</name>
+        <label>Get all principal contacts</label>
+        <locationX>754</locationX>
+        <locationY>4826</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Review_recipients</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>PrincipalContactIds</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all school contacts so user can choose who to cc</description>
+        <name>Get_all_school_contacts</name>
+        <label>Get all school contacts</label>
+        <locationX>754</locationX>
+        <locationY>4706</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_all_principal_contacts</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>allSchoolContactIDs</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the case contact for the flow case to set as recipient contact</description>
+        <name>Get_Case_Contact</name>
+        <label>Get Case Contact</label>
+        <locationX>2162</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_there_a_case_contact</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Error_Message</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Triggering_Case_Record.ContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get only Child cases with Alert Status &apos;Non-Compliant Accepted&apos;</description>
+        <name>Get_Child_cases_for_Non_Compliant_Accepted</name>
+        <label>Get Child cases for Non-Compliant Accepted</label>
+        <locationX>50</locationX>
+        <locationY>1118</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_NCA_cases_as_eligible_cases</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Accept_Non_Compliance_Notification_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Alert_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Non-Compliant Accepted</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <sortField>Type</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the metadata records for the Dynamic Email Content related to each alert type</description>
+        <name>Get_Dynamic_Content_Metadata</name>
+        <label>Get Dynamic Content Metadata</label>
+        <locationX>754</locationX>
+        <locationY>2882</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_dynamic_content_to_build_string</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>emailType</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Label</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>caseAlertTypes</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Dynamic_Email_Content__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the email template</description>
+        <name>Get_Email_Template</name>
+        <label>Get Email Template</label>
+        <locationX>754</locationX>
+        <locationY>3338</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Case_Contact_as_recipient</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>emailTemplateName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Account-Contact Relationship record for all contacts at the school.</description>
+        <name>Get_school_AccountContactRelationships</name>
+        <label>Get school AccountContactRelationships</label>
+        <locationX>754</locationX>
+        <locationY>3578</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_all_school_contact_relationships</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Triggering_Case_Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Roles</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the case record which triggered this flow (the case related to this screen flow) to populate the merge fields in the email</description>
+        <name>Get_Triggering_Case_Record</name>
+        <label>Get Triggering Case Record</label>
+        <locationX>3130</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_NCA_email_already_sent_for_this_alert</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the updated version of the cases with new case status</description>
+        <name>Get_updated_Cases</name>
+        <label>Get updated Cases</label>
+        <locationX>754</locationX>
+        <locationY>5642</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Case_Status_Updated</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>caseIDsForUpdate</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update all the cases that were included in the email. This will update the status based on the email type chosen. If the email type is &apos;Non-compliance accepted&apos;, then it will also stamp the date/time onto the case so that this case cannot be included in any further &apos;non-compliance accepted&apos; emails.</description>
+        <name>Update_child_cases</name>
+        <label>Update cases</label>
+        <locationX>754</locationX>
+        <locationY>5522</locationY>
+        <connector>
+            <targetReference>Get_updated_Cases</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>caseIDsForUpdate</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Accept_Non_Compliance_Notification_Date__c</field>
+            <value>
+                <elementReference>NCA_NotificationDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>emailType</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <screens>
+        <name>Case_Status_Updated</name>
+        <label>Case Status Updated</label>
+        <locationX>754</locationX>
+        <locationY>5762</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>messageCaseStatusUpdated</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(17, 121, 60);&quot;&gt;Email sent successfully&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Status has been updated to {!emailType} for the following cases:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>updatedCasesTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Case</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Updated Cases</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_updated_Cases</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;CaseNumber&quot;,&quot;guid&quot;:&quot;column-91e2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Case Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Type&quot;,&quot;guid&quot;:&quot;column-6eba&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Case Type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Network_Name__c&quot;,&quot;guid&quot;:&quot;column-3702&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Network Name (Compliance)&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Alert_Status__c&quot;,&quot;guid&quot;:&quot;column-5956&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Alert Status&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Status&quot;,&quot;guid&quot;:&quot;column-2910&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Displays error message to user</description>
+        <name>Error_Screen</name>
+        <label>Error Screen</label>
+        <locationX>1722</locationX>
+        <locationY>5642</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>errorMessageDisplay</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Error: &lt;/strong&gt;{!errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>NCAemaiDate</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Non-compliance email notification send date: &lt;/strong&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!Get_Triggering_Case_Record.Accept_Non_Compliance_Notification_Date__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>NCA_Not_Sent</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Preview_Email</name>
+        <label>Preview Email</label>
+        <locationX>754</locationX>
+        <locationY>4586</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_all_school_contacts</targetReference>
+        </connector>
+        <fields>
+            <name>emailPreview</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Preview email body:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;﻿&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!emailBody}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Review_recipients</name>
+        <label>Review recipients</label>
+        <locationX>754</locationX>
+        <locationY>4946</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Loop_through_selected_cc_recipients</targetReference>
+        </connector>
+        <fields>
+            <name>EmailRecipientTitle</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Email Recipient:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Review_recipients_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Review_recipients_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>RecipientName</name>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 12px;&quot;&gt;Name: &lt;/strong&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!recipient.Name}&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Review_recipients_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>RecipientEmail</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; {!recipient.Email}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>RecipientsTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Contact</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Select School Contact(s) to CC</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>MULTI_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_all_school_contacts</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-26e6&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Full Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Email&quot;,&quot;guid&quot;:&quot;column-0873&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Email&quot;,&quot;type&quot;:&quot;email&quot;},{&quot;apiName&quot;:&quot;Title&quot;,&quot;guid&quot;:&quot;column-9581&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Job Title&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>finalCCRecipients</assignToReference>
+                <name>selectedRows</name>
+            </outputParameters>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>allSchoolContactIDs</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <nextOrFinishButtonLabel>Send</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>User will choose which alert cases to include in the email bullet point list</description>
+        <name>Select_applicable_cases_screen</name>
+        <label>Select applicable child cases</label>
+        <locationX>50</locationX>
+        <locationY>1358</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>assignNumberOfSelectedCases</targetReference>
+        </connector>
+        <fields>
+            <name>chooseChildCases</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Case</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Alerts in this cluster</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>MULTI_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>eligibleCases</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;CaseNumber&quot;,&quot;guid&quot;:&quot;column-224d&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Case Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Type&quot;,&quot;guid&quot;:&quot;column-96a7&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Case Type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Network_Name__c&quot;,&quot;guid&quot;:&quot;column-a4bc&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Network Name (Compliance)&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Alert_Status__c&quot;,&quot;guid&quot;:&quot;column-751f&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Alert Status&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Status&quot;,&quot;guid&quot;:&quot;column-d9e3&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedRows</name>
+                <value>
+                    <elementReference>eligibleCases</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>childCasesForEmail</assignToReference>
+                <name>selectedRows</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>criteriaForCasesNote</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;﻿Note: &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;List only includes cases that meet the following condition(s):&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- &apos;Non-Compliance Accepted&apos; email has not been sent&lt;/p&gt;&lt;p&gt;{!NCA_filterCriteriaNote}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>User chooses which scenario, which will drive the email template used</description>
+        <name>Select_Scenario</name>
+        <label>Select Scenario</label>
+        <locationX>754</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Email_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Select_email_type</name>
+            <choiceReferences>choice_SNC</choiceReferences>
+            <choiceReferences>choice_NCA</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select which type of email you would like to send</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>3004</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Triggering_Case_Record</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>Text Template to insert into HTML body of email sent</description>
+        <name>finalEmaiHtmlBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;{!emailBody}&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <description>List of all IDs for the school contact. Used to query all contact displayed to user when reviewing recipients, the user can choose which to cc.</description>
+        <name>allSchoolContactIDs</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>List of case alert types for child cases - used to filter dynamic content records so only applicable content is available for user to select.</description>
+        <name>caseAlertTypes</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Cases to be updated with notification date/time</description>
+        <name>caseIDsForUpdate</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>A list of changed host names to display in the email</description>
+        <name>changedHostNames</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>A collection of all the child case records that are eligible to be included in the email</description>
+        <name>childCasesForEmail</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>The content that the user has selected</description>
+        <name>chosenContentList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>A list of created networks to display in the email</description>
+        <name>createdNetworkNames</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>currentItem_Exclude_cases_where_Alert_Status_is_not_Non_compliant_Accepted</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_out_resolved_compliance_issues_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_relationships_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AccountContactRelation</objectType>
+    </variables>
+    <variables>
+        <description>A list of the deleted network names</description>
+        <name>deletedNetworkNames</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>All cases eligible which can be selected to be included in the email based on the email type chosen by the user</description>
+        <name>eligibleCases</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>A comma separated list of emails to be passed into apex send action for sending email with cc.</description>
+        <name>emailCCList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The type of email to be sent. This will match the &apos;Type&apos; field in the Dynamic Email Content metadata records. It should also match the case status for this scenario, and will drive the case status update at the end of this flow.</description>
+        <name>emailType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Error message to display for fault path</description>
+        <name>errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.FaultMessage</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>A list of contacts that the user has chosen to be CC&apos;d into this email. This is the output of the data table on the review recipients screen</description>
+        <name>finalCCRecipients</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <description>Can be &apos;PREVIEW&apos; or &apos;SEND&apos;. Determines whether the emailBody has the plain text or html.</description>
+        <name>flowStage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>PREVIEW</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Number of cases selected by the user.</description>
+        <name>numberOfSelectedCases</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>All ids of the principal contacts for building a list of recipients</description>
+        <name>PrincipalContactIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Store the contact record for the recipient of the email</description>
+        <name>recipient</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>recipientEmailAddress</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>List of principal contacts that the user can choose from to CC into the email.</description>
+        <name>recipients</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <description>The record Id of the Parent Case record</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

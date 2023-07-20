@@ -1,0 +1,31 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global"  >
+    
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="Case" type="Case" />
+    <aura:attribute name="simpleCase" type="Case" />
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+   
+    <force:recordData aura:id="caseRecord"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.simpleCase}"
+                      targetFields="{!v.Case}"
+                      fields="Id,Status,IsActive__c,IsClosed"
+                      mode="EDIT"
+                       recordUpdated="{!c.handleRecordUpdated}"
+                      />
+    <lightning:card title="Clock" iconName="custom:custom25">
+        <aura:if isTrue="{! v.showSpinner }">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+       
+    <div class="scaledUp">
+        <lightning:input type="toggle" label="{!v.Case.Status}" 
+                         name="togglevalue" checked="{!v.Case.IsActive__c}" 
+                         messageToggleActive="STARTED" messageToggleInactive="STOPPED"
+                         onchange="{!c.saveUsingLDS}" aura:id="actionToggle" 
+                         disabled="{!v.Case.IsClosed}" class="slds-float_right"  />
+        
+    </div>
+    </lightning:card>
+
+</aura:component>

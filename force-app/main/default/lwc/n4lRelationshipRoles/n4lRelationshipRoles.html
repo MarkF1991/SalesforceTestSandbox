@@ -1,0 +1,38 @@
+<template>
+    <template if:true={missingMessage}>
+        <article class="slds-card slds-card_boundary">
+            <div class="white-background slds-page-header slds-page-header--object-home slds-page-header_joined slds-page-header_bleed slds-shrink-none test-headerRegion slds-is-relative">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate firstHeaderRow">
+                        <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <div class="slds-media__body slds-align-middle">
+                                    <h2 class="slds-text-color_destructive slds-card__header-title slds-truncate slds-m-right--xx-small slds-card__header-link">
+                                        {missingMessage}</h2>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </template>
+    <template if:true={missingOutageNotif}>
+        <article class="slds-card slds-card_boundary">
+            <div class="white-background slds-page-header slds-page-header--object-home slds-page-header_joined slds-page-header_bleed slds-shrink-none test-headerRegion slds-is-relative">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate firstHeaderRow">
+                        <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                            <div class="slds-media__body">
+                                <div class="slds-media__body slds-align-middle">
+                                    <h2 class="slds-text-color_destructive slds-card__header-title slds-truncate slds-m-right--xx-small slds-card__header-link">
+                                        {missingOutageNotif}</h2>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </template>
+</template>

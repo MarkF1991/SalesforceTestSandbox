@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-p-horizontal_medium">
+        <div class="slds-grid slds-wrap"> <!-- do not add 'slds-gutters' in div class. This will cause the tileChip's slds-grid to add more space to it's col. -->
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                <div class="slds-m-top_medium">
+                    <c-tile-list2 footer={safetyInsightsFooter} is-loading={safetyInsightsDataIsLoading} object={safetyInsightsResponseData} param={queryParams} header="Safety Insights" context="safety" is-narrow=true></c-tile-list2>
+                </div>
+                <div class="slds-m-top_medium">
+                    <c-app-insights-tile-list footer={appInsightsFooter} is-loading={appInsightsDataIsLoading} object={appInsightsResponseData} param={queryParams} header="Category Insights"></c-app-insights-tile-list>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-website-insights-tile-list footer={websiteInsightsFooter} is-loading={websiteInsightsDataIsLoading} object={websiteInsightsResponseData} param={queryParams} header="Website Insights"></c-website-insights-tile-list>
+                </div>
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-category-insights-tile-list footer={categoryInsightsFooter} is-loading={categoryInsightsDataIsLoading} object={categoryInsightsResponseData} param={queryParams} header="Category Insights"></c-category-insights-tile-list>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

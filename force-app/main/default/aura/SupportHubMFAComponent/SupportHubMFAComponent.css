@@ -1,0 +1,291 @@
+.THIS {
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+
+.THIS .slds-radio .slds-form-element__label {
+    font-size: 14px;
+    line-height: 2.5;
+}
+
+.THIS .slds-m-bottom_x-small:first-child {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.THIS p,
+.THIS .slds-rich-text-editor__output,
+.THIS .slds-button
+.THIS p span{
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 14px;
+    color: #646568;
+}
+
+.THIS .slds-required {
+    display: none;
+}
+
+.THIS .slds-scope.signUp {
+    padding: 16px 16px 0px;
+}
+
+.THIS a {
+    color: #980d76;
+    text-decoration: none;
+    transition: color .1s linear;
+}
+
+.THIS a:hover {
+    color: #980d76;
+    text-decoration: underline;
+    transition: color .1s linear;
+}
+
+.THIS .slds-align_absolute-center {
+    position: relative;
+}
+
+.THIS .slds-theme--default {
+    background-color: white;
+    color: #646568 !important;
+    font-family: Open Sans !important;
+}
+
+.THIS .slds-form_compound {
+    background: white;
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 0px 16px 0px rgb(0 0 0 / 24%);
+    border-radius: 4px;
+    overflow: visible;
+    max-width: 410px;
+    width: 410px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%);
+    min-height: 220px;
+}
+
+.THIS .content {
+    padding: 16px;
+}
+
+.THIS .slds-form_gradientHeader {
+    height: 80px;
+    width: 100%;
+    background: rgb(152,13,118);
+    background: linear-gradient(90deg, rgba(152,13,118,1) 0%, rgba(247,148,30,1) 100%);
+}
+
+.THIS .gradientHeader_logo {
+    width: 94px;
+    margin: auto;
+}
+
+.THIS .headerLogo {
+    height: 80px;
+}
+
+.THIS .slds-box {
+    border: none !important;
+    margin-top: 24px;
+    padding: 0 24px 24px 24px;
+}
+
+.THIS .slds-box_m-small {
+    border: none !important;
+    margin-top: 12px;
+    padding: 0 24px 24px 24px;
+}
+
+.THIS .slds-rich-text-editor__output{
+    
+}
+.THIS .slds-input {
+    height: 48px !important;
+    border-radius: 4px !important;
+    padding: 0 12px !important;
+    font-size: 15px !important;
+    color: #646568 !important;
+}
+
+.THIS .slds-input:focus {
+    border-color: #980d76;
+    background-color: rgb(255, 255, 255);
+    color: var(--sds-c-input-text-color-focus);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+}
+
+.THIS .slds-input[disabled]{
+    border-color: #e4e5e5;
+    background-color: #e4e5e5;
+    cursor: auto;
+}
+
+.THIS .slds-input::-webkit-input-placeholder {
+    font-size: 15px;
+    opacity: 0.72;
+}
+
+.THIS .input-80 {
+    width: 80% !important;
+}
+
+.THIS .slds-select {
+    height: 48px !important;
+    font-size: 15px;
+    border-radius: 0;
+}
+
+.THIS .slds-form-element__row {
+    margin-bottom: 16px;
+}
+
+.THIS .slds-form-element__label {
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: none !important;
+    color: #646568;
+    margin-bottom: 12px;
+}
+
+.THIS .slds-form-element__label-heavy {
+    font-size: 15px;
+    font-weight: 600;
+    color: #646568;
+    margin-bottom: 12px;
+}
+
+.THIS .slds-m-vertical_medium {
+    margin-top: 0px !important;
+}
+        
+.THIS .slds-m-vertical_medium, .THIS .slds-m-top_medium {
+    margin-top: 0px !important;
+}
+
+.THIS .slds-checkbox {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.THIS .slds-button_brand {
+    float: right;
+    background-color: rgb(247, 148, 30) ;
+    border-color: rgb(247, 148, 30) ;
+    color: #FFFFFF;
+    width: 100px;
+    border-radius: 4;
+    font-size: 15px ;
+    font-weight: bold ;
+    height: 48px;
+    cursor: pointer;
+    margin-left: none !important;
+}
+
+.THIS .slds-button_neutral {
+    border: 0px;
+    font-size: 15px ;
+    font-weight: bold ;
+    color: rgb(247, 148, 30);
+}
+        
+.THIS .slds-button_brand:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.THIS .slds-button_brand.nudgeRight {
+    float: right;
+    margin-right: -24px;
+    background-color: rgb(247, 148, 30) ;
+    border-color: rgb(247, 148, 30) ;
+    width: 100px;
+    border-radius: 4;
+    font-size: 15px ;
+    font-weight: bold ;
+    height: 48px;
+    cursor: pointer;
+}
+
+.THIS .slds-button_brand:hover, .THIS .slds-button_brand:focus, .THIS .slds-button_brand:active  {
+    background-color: #DF7E0A;
+    border-color: #DF7E0A;
+    box-shadow: none;
+}
+        
+.THIS .emailDomain {
+    position: absolute;
+    top: 48px;
+    left: 9px;
+    color: #646568;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    direction: ltr;
+    font-size: 15px;
+}
+
+.THIS .slds-input .typeahead{
+    margin-top:16px;
+}
+
+.THIS .twitter-typeahead {
+    width: 100%;
+}
+
+.THIS .tt-menu {
+    width: 100%;
+}
+
+.THIS .tt-selectable {
+    padding: 16px 12px;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    cursor: pointer;
+    width: 100%;
+    background-color: white;
+}
+
+.THIS .tt-selectable:hover {
+    background-color: #F8F8F8;
+}
+
+
+.THIS .slds-size_1-of-1 .slds-m-top_large {
+    padding: 0 24px;
+}
+
+.THIS #accountCreate {
+    min-height: 404px;
+}
+
+.THIS #dummyCreate {
+    position: absolute;
+    width: 100%;
+    opacity: 0.4;
+}
+
+.THIS .slds-input.mobilePhone {
+    margin-bottom: 16px !important;
+}
+
+.THIS .button.noneEvent{
+    pointer-events: none;
+    cursor: auto;
+}
+        
+.THIS .slds-card__footer {
+    display: flex;
+    flex-direction: column-reverse;
+        }
+                
+.THIS .flow-button__NEXT{
+	width: 100%;
+}

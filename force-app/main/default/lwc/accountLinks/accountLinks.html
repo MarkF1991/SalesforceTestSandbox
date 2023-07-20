@@ -1,0 +1,16 @@
+<template>
+    <template if:true={account.data}>
+        <lightning-card title={title} icon-name="standard:link">
+            <div class="slds-m-horizontal_medium slds-grid slds-grid_align-end">
+                <div class="slds-col">
+                    <a href={schoolreportingURL} target="_blank" class="slds-m-left_x-small"><lightning-icon icon-name="standard:report" alternative-text="school reporting" title="School Reporting"></lightning-icon></a>
+                </div>
+                <div class="slds-col">
+                        <a href={educountURL} target="_blank" class="slds-m-left_x-small"><lightning-icon icon-name="standard:address" alternative-text="Educount" title="Educount"></lightning-icon></a>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+    
+
+</template>

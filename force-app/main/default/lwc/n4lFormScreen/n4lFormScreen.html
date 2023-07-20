@@ -1,0 +1,813 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner variant="brand" size="medium" alternative-text="loading"></lightning-spinner>
+    </template>
+    <template if:false={isLoading}>
+        <template if:true={popupForm}>
+            <div class="DESKTOP uiModal--medium uiModal--recordActionWrapper uiModal forceModal open activ" data-id="main-form">
+                <div class="modal-glass slds-backdrop fadein slds-backdrop--open" tabindex="-1" style="opacity: 0.8;"></div>
+                <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="panel slds-modal slds-fade-in-open">
+                    <div class="modal-container slds-modal__container">
+                        <header class="modal-header slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title={closeButtonLabel} onclick={handleCloseForm}>
+                                <lightning-icon icon-name="utility:close" title={closeButtonLabel} size="small" variant="inverse"></lightning-icon>
+                            </button>
+                            <h2 class="slds-text-heading_medium slds-hyphenate">{headerTitle}</h2>
+                        </header>
+                        <div class="modal-body scrollable slds-modal__content slds-p-around--medium">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <template if:true={isShowReplaceMenu}>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-text-align_center slds-col slds-size_1-of-1 slds-m-bottom_small slds-m-top_small">
+                                                <lightning-radio-group name="radioGroup" label="" 
+                                                    options={replaceCategories} value={replaceValue} type="button"
+                                                    onchange={handleReplaceSelection}>
+                                                </lightning-radio-group>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={isHideAccordion}>
+                                        <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                                            <template if:true={isContactEditable}>
+                                                <lightning-accordion-section name="PersonalDetailsSection" label="Personal Details">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <template if:true={searchMenu}>
+                                                            <div class="slds-col slds-size_1-of-1 slds-m-bottom_medium">
+                                                                <c-n4l-search-screen label={label.Screen_SearchContact} 
+                                                                    object-name="Contact" onsearchform={handleSearchForm} onaddcontact={handleAddContact}
+                                                                    search-place-holder-text={searchPlaceHolderText} account-id={accountId} is-show-add={isShowAdd}
+                                                                    replace-value={replaceValue} is-replace={isReplace}>
+                                                                </c-n4l-search-screen>
+                                                            </div>
+                                                        </template>
+                                                        <template if:true={isGenerateRandomEmail}>
+                                                            <div class="slds-col slds-size_1-of-1">
+                                                                <lightning-input type="checkbox" label={label.Screen_Generate_Random_Email} data-id="generateRandomEmailCheckboxId" onclick={handleGenerateRandomEmail}></lightning-input>
+                                                            </div>                                                            
+                                                        </template>
+                                                        <template if:true={isInherit}>
+                                                            <div class="slds-col slds-size_1-of-1">
+                                                                <lightning-input type="checkbox" label={label.Screen_InheritCheckboxLabel} data-id="inheritEmailCheckboxId" onclick={handleInheritOldEmail}></lightning-input>
+                                                            </div>
+                                                        </template>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <template if:true={showEmailChangeView}>
+                                                                <template if:false={emailEditable}>
+                                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                    disabled={emailEditable} value={currentContactField.Email.fieldValue} 
+                                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange} 
+                                                                    field-level-help={currentContactField.Email.fieldHelpText} required></lightning-input>   
+                                                                </template>
+                                                                <template if:true={emailEditable}>
+                                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                    value={currentContactField.Email.fieldValue} disabled={emailEditable}
+                                                                    field-level-help={currentContactField.Email.fieldHelpText}></lightning-input>                                                        
+                                                                </template>
+                                                            </template>
+                                                            <template if:false={showEmailChangeView}>
+                                                                <template if:true={editableContactFields}>
+                                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                    disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                                    field-level-help={currentContactField.Email.fieldHelpText}></lightning-input>   
+                                                                </template>
+                                                                <template if:false={editableContactFields}>
+                                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                    disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                                    field-level-help={currentContactField.Email.fieldHelpText} required></lightning-input>                                                        
+                                                                </template>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                                field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                                field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                        </div>                  
+                                                        <template if:true={showEmailDomainWarning}>
+                                                            <div class="slds-col slds-size_1-of-1">
+                                                                <p style="color:#ff8c00">{label.Screen_EmailDomain}</p>
+                                                            </div>
+                                                        </template>               
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                                field-level-help={currentContactField.FirstName.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.FirstName.fieldValue} 
+                                                                field-level-help={currentContactField.FirstName.fieldHelpText} required></lightning-input>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.LastName.fieldValue}
+                                                                field-level-help={currentContactField.LastName.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.LastName.fieldValue} 
+                                                                field-level-help={currentContactField.LastName.fieldHelpText} required></lightning-input>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="text" data-id={currentContactField.Title.fieldName} label={currentContactField.Title.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Title.fieldValue}
+                                                                field-level-help={currentContactField.Title.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="text" data-id={currentContactField.MobilePhone.fieldName} label={currentContactField.MobilePhone.label} 
+                                                                disabled={editableContactFields} value={currentContactField.MobilePhone.fieldValue}
+                                                                field-level-help={currentContactField.MobilePhone.fieldHelpText}></lightning-input>
+                                                        </div>
+                                                    </div>
+                                                </lightning-accordion-section>
+                                                <lightning-accordion-section name="RelationshipDetailsSection" label={label.Screen_RoleDetails}>
+                                                    <template if:true={isRelationshipLoad}>
+                                                        <lightning-spinner variant="brand" size="medium" alternative-text="loading"></lightning-spinner>
+                                                    </template>                                            
+                                                    <template if:false={isRelationshipLoad}>                        
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                                <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Roles.fieldName} 
+                                                                field-label={currentAccountContactField.Roles.label} onroles={handlePicklistRoles} 
+                                                                field-value={currentAccountContactField.Roles.fieldValue} is-required="true"
+                                                                is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                                field-help-text={currentAccountContactField.Roles.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                            </div>
+                                                            <template if:true={showAuthority}>
+                                                                <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                                    <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Authority__c.fieldName} 
+                                                                    field-label={currentAccountContactField.Authority__c.label} onroles={handlePicklistAuthorities}  
+                                                                    field-value={currentAccountContactField.Authority__c.fieldValue}
+                                                                    is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                                    field-help-text={currentAccountContactField.Authority__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                                </div>                                  
+                                                            </template>
+                                                            <template if:true={showSystemAccessible}>
+                                                                <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                                    <c-n4-l-multipicklist-screen object-name='Contact' field-name={currentContactField.System_Accessible__c.fieldName} 
+                                                                    field-label={currentContactField.System_Accessible__c.label} onroles={handlePicklistSystemAccessible}  
+                                                                    field-value={currentContactField.System_Accessible__c.fieldValue}
+                                                                    is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                                    field-help-text={currentContactField.System_Accessible__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                                </div>                                 
+                                                            </template>
+                                                            <div class="slds-col slds-size_1-of-6 slds-m-top_x-large slds-m-left_medium">
+                                                                <label class="slds-form-element__label">{label.Screen_ActiveLabel}</label>
+                                                                <lightning-helptext content={currentAccountContactField.IsActive.fieldHelpText}></lightning-helptext>
+                                                            </div> 
+                                                            <div class="slds-col slds-size_1-of-5 slds-m-top_x-large slds-m-left_medium">
+                                                                <lightning-input disabled={isRelationshipEditable} type="toggle" checked={currentAccountContactField.IsActive.fieldValue} variant="label-hidden" 
+                                                                    data-id={currentAccountContactField.IsActive.fieldName}></lightning-input>
+                                                            </div>
+                                                        </div>
+                                                    </template>    
+                                                </lightning-accordion-section>
+                                                <lightning-accordion-section name="CommunicationPreferencesSection" label="Communication Preferences">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Outage_notifications__c.label} data-id={currentContactField.Outage_notifications__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Outage_notifications__c.fieldValue} 
+                                                                field-level-help={currentContactField.Outage_notifications__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Periodic_Survey_Emails__c.label} data-id={currentContactField.Periodic_Survey_Emails__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Periodic_Survey_Emails__c.fieldValue} 
+                                                                field-level-help={currentContactField.Periodic_Survey_Emails__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Current_N4L_product_and_service_updates__c.label} data-id={currentContactField.Current_N4L_product_and_service_updates__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Current_N4L_product_and_service_updates__c.fieldValue} 
+                                                                field-level-help={currentContactField.Current_N4L_product_and_service_updates__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <!-- <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.HasOptedOutOfEmail.label} data-id={currentContactField.HasOptedOutOfEmail.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.HasOptedOutOfEmail.fieldValue}></lightning-input>
+                                                        </div>                                  -->
+                                                    </div>
+                                                </lightning-accordion-section>
+                                                <lightning-accordion-section name="OtherDetailsSection" label="Other Details">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <lightning-input type="checkbox" disabled={isRelationshipEditable} checked={currentAccountContactField.Can_Provide_Site_Access__c.fieldValue} label={currentAccountContactField.Can_Provide_Site_Access__c.label} 
+                                                            data-id={currentAccountContactField.Can_Provide_Site_Access__c.fieldName}
+                                                            field-level-help={currentAccountContactField.Can_Provide_Site_Access__c.fieldHelpText}></lightning-input>  
+                                                        </div>
+                                                        <template if:false={isSupportHubUser}>
+                                                            <template if:true={showCreateSupportHubUser}>
+                                                                <div class="slds-col slds-size_1-of-1">
+                                                                    <lightning-input type="checkbox" label="Create Support Hub User" data-id="Create_Support_Hub_User__c"></lightning-input>
+                                                                </div>                                     
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                            </lightning-accordion-section>                                            
+                                            </template>
+                                            <template if:false={isContactEditable}>
+                                                <lightning-accordion-section name="RelationshipDetailsSection" label={label.Screen_RoleDetails}>
+                                                    <template if:false={isLoaded}>                        
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                                <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Roles.fieldName} 
+                                                                field-label={currentAccountContactField.Roles.label} onroles={handlePicklistRoles} 
+                                                                field-value={currentAccountContactField.Roles.fieldValue} is-required="true"
+                                                                is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                                field-help-text={currentAccountContactField.Roles.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                            </div>
+                                                            <template if:true={showAuthority}>
+                                                                <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                                    <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Authority__c.fieldName} 
+                                                                    field-label={currentAccountContactField.Authority__c.label} onroles={handlePicklistAuthorities}  
+                                                                    field-value={currentAccountContactField.Authority__c.fieldValue}
+                                                                    is-relationship-editable={isRelationshipEditable}
+                                                                    field-help-text={currentAccountContactField.Authority__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                                </div>                                 
+                                                            </template>
+                                                            <template if:true={showSystemAccessible}>
+                                                                <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                                    <c-n4-l-multipicklist-screen object-name='Contact' field-name={currentContactField.System_Accessible__c.fieldName} 
+                                                                    field-label={currentContactField.System_Accessible__c.label} onroles={handlePicklistSystemAccessible}  
+                                                                    field-value={currentContactField.System_Accessible__c.fieldValue}
+                                                                    is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                                    field-help-text={currentContactField.System_Accessible__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                                </div>                                 
+                                                            </template>
+                                                            <div class="slds-col slds-size_1-of-6 slds-m-top_x-large slds-m-left_medium">
+                                                                <label class="slds-form-element__label">{label.Screen_ActiveLabel}</label>
+                                                                <lightning-helptext content={currentAccountContactField.IsActive.fieldHelpText}></lightning-helptext>
+                                                            </div> 
+                                                            <div class="slds-col slds-size_1-of-5 slds-m-top_x-large slds-m-left_medium">
+                                                                <lightning-input disabled={isRelationshipEditable} type="toggle" checked={currentAccountContactField.IsActive.fieldValue} variant="label-hidden" 
+                                                                    data-id={currentAccountContactField.IsActive.fieldName}></lightning-input>
+                                                            </div>
+                                                        </div>
+                                                    </template>    
+                                                </lightning-accordion-section>
+                                                <lightning-accordion-section name="OtherDetailsSection" label="Other Details">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <lightning-input type="checkbox" disabled={isRelationshipEditable} checked={currentAccountContactField.Can_Provide_Site_Access__c.fieldValue} label={currentAccountContactField.Can_Provide_Site_Access__c.label} 
+                                                            data-id={currentAccountContactField.Can_Provide_Site_Access__c.fieldName}
+                                                            field-level-help={currentAccountContactField.Can_Provide_Site_Access__c.fieldHelpText}></lightning-input>  
+                                                        </div>
+                                                        <template if:false={isSupportHubUser}>
+                                                            <template if:true={showCreateSupportHubUser}>
+                                                                <div class="slds-col slds-size_1-of-1">
+                                                                    <lightning-input type="checkbox" label="Create Support Hub User" data-id="Create_Support_Hub_User__c"></lightning-input>
+                                                                </div>                                     
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                                </lightning-accordion-section>                                            
+                                                <template if:false={searchMenu}>
+                                                    <template if:false={isReplace}>
+                                                        <h2 class="slds-text-color_destructive slds-card__header-title slds-truncate slds-m-left--small slds-card__header-link">To update this information, please contact {primaryAccountName}&#39;s administrator.</h2>
+                                                    </template>
+                                                </template>
+                                                <lightning-accordion-section name="PersonalDetailsSection" label="Personal Details">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <template if:true={searchMenu}>
+                                                            <div class="slds-col slds-size_1-of-1 slds-m-bottom_medium">
+                                                                <c-n4l-search-screen label={label.Screen_SearchContact} 
+                                                                    object-name="Contact" onsearchform={handleSearchForm} onaddcontact={handleAddContact}
+                                                                    search-place-holder-text={searchPlaceHolderText} account-id={accountId} is-show-add={isShowAdd}
+                                                                    replace-value={replaceValue} is-replace={isReplace}>
+                                                                </c-n4l-search-screen>
+                                                            </div>
+                                                        </template>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                                field-level-help={currentContactField.Email.fieldHelpText}></lightning-input>                                                        </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange} 
+                                                                field-level-help={currentContactField.Email.fieldHelpText} required></lightning-input>                                                        </template>
+    
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                                field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                                message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                                field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                        </div>                                 
+                                                        <template if:true={showEmailDomainWarning}>
+                                                            <div class="slds-col slds-size_1-of-1">
+                                                                <p style="color:#ff8c00">{label.Screen_EmailDomain}</p>
+                                                            </div>
+                                                        </template>               
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                                field-level-help={currentContactField.FirstName.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.FirstName.fieldValue} 
+                                                                field-level-help={currentContactField.FirstName.fieldHelpText} required></lightning-input>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <template if:true={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.LastName.fieldValue}
+                                                                field-level-help={currentContactField.LastName.fieldHelpText}></lightning-input>
+                                                            </template>
+                                                            <template if:false={editableContactFields}>
+                                                                <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                                disabled={editableContactFields} value={currentContactField.LastName.fieldValue} 
+                                                                field-level-help={currentContactField.LastName.fieldHelpText} required></lightning-input>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="text" data-id={currentContactField.Title.fieldName} label={currentContactField.Title.label} 
+                                                                disabled={editableContactFields} value={currentContactField.Title.fieldValue}
+                                                                field-level-help={currentContactField.Title.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="text" data-id={currentContactField.MobilePhone.fieldName} label={currentContactField.MobilePhone.label} 
+                                                                disabled={editableContactFields} value={currentContactField.MobilePhone.fieldValue}
+                                                                field-level-help={currentContactField.MobilePhone.fieldHelpText}></lightning-input>
+                                                        </div>
+                                                    </div>
+                                                </lightning-accordion-section>
+                                                <lightning-accordion-section name="CommunicationPreferencesSection" label="Communication Preferences">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Outage_notifications__c.label} data-id={currentContactField.Outage_notifications__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Outage_notifications__c.fieldValue} 
+                                                                field-level-help={currentContactField.Outage_notifications__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Periodic_Survey_Emails__c.label} data-id={currentContactField.Periodic_Survey_Emails__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Periodic_Survey_Emails__c.fieldValue}
+                                                                field-level-help={currentContactField.Periodic_Survey_Emails__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.Current_N4L_product_and_service_updates__c.label} data-id={currentContactField.Current_N4L_product_and_service_updates__c.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.Current_N4L_product_and_service_updates__c.fieldValue}
+                                                                field-level-help={currentContactField.Current_N4L_product_and_service_updates__c.fieldHelpText}></lightning-input>
+                                                        </div>                                 
+                                                        <!-- <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                            <lightning-input type="checkbox" label={currentContactField.HasOptedOutOfEmail.label} data-id={currentContactField.HasOptedOutOfEmail.fieldName} 
+                                                                disabled={editableContactFields} checked={currentContactField.HasOptedOutOfEmail.fieldValue}></lightning-input>
+                                                        </div>                                  -->
+                                                    </div>
+                                                </lightning-accordion-section>
+                                            </template>
+                                        </lightning-accordion>
+                                    </template>
+                                </div>                            
+                            </div>
+                        </div>
+                        <footer class="modal-footer slds-modal__footer">
+                            <template if:false={isHideAccordion}>
+                                <template if:true={showSaveButton}>
+                                    <lightning-button title={headerTitle} label={saveRelButton} variant="brand" onclick={openWarningMessage}></lightning-button> 
+                                </template>
+                            </template>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={popupForm}>
+            <header class="slds-header slds-text-align_center">
+                <h2 class="slds-text-heading_medium slds-hyphenate">{headerTitle}</h2>
+            </header>
+            <div data-id="flow-form">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <template if:true={isShowReplaceMenu}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-text-align_center slds-col slds-size_1-of-1 slds-m-bottom_small slds-m-top_small">
+                                    <lightning-radio-group name="radioGroup" label="" 
+                                        options={replaceCategories} value={replaceValue} type="button"
+                                        onchange={handleReplaceSelection}>
+                                    </lightning-radio-group>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:false={isHideAccordion}>
+                            <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                                <template if:true={isContactEditable}>
+                                    <lightning-accordion-section name="PersonalDetailsSection" label="Personal Details">
+                                        <div class="slds-grid slds-wrap">
+                                            <template if:true={searchMenu}>
+                                                <div class="slds-col slds-size_1-of-1 slds-m-bottom_medium">
+                                                    <c-n4l-search-screen label={label.Screen_SearchContact} 
+                                                        object-name="Contact" onsearchform={handleSearchForm} onaddcontact={handleAddContact}
+                                                        search-place-holder-text={searchPlaceHolderText} account-id={accountId} is-show-add={isShowAdd}
+                                                        replace-value={replaceValue} is-replace={isReplace}>
+                                                    </c-n4l-search-screen>
+                                                </div>
+                                            </template>
+                                            <template if:true={isGenerateRandomEmail}>
+                                                <div class="slds-col slds-size_1-of-1">
+                                                    <lightning-input type="checkbox" label={label.Screen_Generate_Random_Email} data-id="generateRandomEmailCheckboxId" onclick={handleGenerateRandomEmail}></lightning-input>
+                                                </div>                                                            
+                                            </template>
+                                            <template if:true={isInherit}>
+                                                <div class="slds-col slds-size_1-of-1">
+                                                    <lightning-input type="checkbox" label={label.Screen_InheritCheckboxLabel} data-id="inheritEmailCheckboxId" onclick={handleInheritOldEmail}></lightning-input>
+                                                </div>
+                                            </template>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <template if:true={showEmailChangeView}>
+                                                    <template if:false={emailEditable}>
+                                                        <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                        disabled={emailEditable} value={currentContactField.Email.fieldValue} 
+                                                        message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                        field-level-help={currentContactField.Email.fieldHelpText} required></lightning-input>   
+                                                    </template>
+                                                    <template if:true={emailEditable}>
+                                                        <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                        value={currentContactField.Email.fieldValue} disabled={emailEditable}
+                                                        field-level-help={currentContactField.Email.fieldHelpText}></lightning-input>                                                        
+                                                    </template>
+                                                </template>
+                                                <template if:false={showEmailChangeView}>
+                                                    <template if:true={editableContactFields}>
+                                                        <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                        disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                        message-when-type-mismatch={label.Screen_InvalidEmail} 
+                                                        field-level-help={currentContactField.Email.fieldHelpText} onchange={handleEmailChange}></lightning-input>   
+                                                    </template>
+                                                    <template if:false={editableContactFields}>
+                                                        <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                        disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                        message-when-type-mismatch={label.Screen_InvalidEmail}
+                                                        field-level-help={currentContactField.Email.fieldHelpText} onchange={handleEmailChange} required></lightning-input>                                                        
+                                                    </template>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                    field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                    field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                </template>
+                                            </div>                                 
+                                            <template if:true={showEmailDomainWarning}>
+                                                <div class="slds-col slds-size_1-of-1">
+                                                    <p style="color:#ff8c00">{label.Screen_EmailDomain}</p>
+                                                </div>
+                                            </template>               
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                    field-level-help={currentContactField.FirstName.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                    field-level-help={currentContactField.FirstName.fieldHelpText} required></lightning-input>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.LastName.fieldValue}
+                                                    field-level-help={currentContactField.LastName.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.LastName.fieldValue}
+                                                    field-level-help={currentContactField.LastName.fieldHelpText} required></lightning-input>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="text" data-id={currentContactField.Title.fieldName} label={currentContactField.Title.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Title.fieldValue}
+                                                    field-level-help={currentContactField.Title.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="text" data-id={currentContactField.MobilePhone.fieldName} label={currentContactField.MobilePhone.label} 
+                                                    disabled={editableContactFields} value={currentContactField.MobilePhone.fieldValue}
+                                                    field-level-help={currentContactField.MobilePhone.fieldHelpText}></lightning-input>
+                                            </div>
+                                        </div>
+                                    </lightning-accordion-section>
+                                    <lightning-accordion-section name="RelationshipDetailsSection" label={label.Screen_RoleDetails}>
+                                        <template if:true={isRelationshipLoad}>
+                                            <lightning-spinner variant="brand" size="medium" alternative-text="loading"></lightning-spinner>
+                                        </template>                                            
+                                        <template if:false={isRelationshipLoad}>                        
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                    <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Roles.fieldName} 
+                                                    field-label={currentAccountContactField.Roles.label} onroles={handlePicklistRoles} 
+                                                    field-value={currentAccountContactField.Roles.fieldValue} is-required="true"
+                                                    is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                    field-help-text={currentAccountContactField.Roles.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                </div>
+                                                <template if:true={showAuthority}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                        <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Authority__c.fieldName} 
+                                                        field-label={currentAccountContactField.Authority__c.label} onroles={handlePicklistAuthorities}  
+                                                        field-value={currentAccountContactField.Authority__c.fieldValue}
+                                                        is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                        field-help-text={currentAccountContactField.Authority__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                    </div>                                 
+                                                </template>
+                                                <template if:true={showSystemAccessible}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                        <c-n4-l-multipicklist-screen object-name='Contact' field-name={currentContactField.System_Accessible__c.fieldName} 
+                                                        field-label={currentContactField.System_Accessible__c.label} onroles={handlePicklistSystemAccessible}  
+                                                        field-value={currentContactField.System_Accessible__c.fieldValue}
+                                                        is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                        field-help-text={currentContactField.System_Accessible__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                    </div>                                 
+                                                </template>
+                                                <div class="slds-col slds-size_1-of-6 slds-m-top_x-large slds-m-left_medium">
+                                                    <label class="slds-form-element__label">{label.Screen_ActiveLabel}</label>
+                                                    <lightning-helptext content={currentAccountContactField.IsActive.fieldHelpText}></lightning-helptext>
+                                                </div> 
+                                                <div class="slds-col slds-size_1-of-5 slds-m-top_x-large slds-m-left_medium">
+                                                    <lightning-input disabled={isRelationshipEditable} type="toggle" checked={currentAccountContactField.IsActive.fieldValue} variant="label-hidden" 
+                                                        data-id={currentAccountContactField.IsActive.fieldName}></lightning-input>
+                                                </div>
+                                            </div>
+                                        </template>    
+                                    </lightning-accordion-section>
+                                    <lightning-accordion-section name="CommunicationPreferencesSection" label="Communication Preferences">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Outage_notifications__c.label} data-id={currentContactField.Outage_notifications__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Outage_notifications__c.fieldValue} field-level-help={currentContactField.Outage_notifications__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Periodic_Survey_Emails__c.label} data-id={currentContactField.Periodic_Survey_Emails__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Periodic_Survey_Emails__c.fieldValue}
+                                                    field-level-help={currentContactField.Periodic_Survey_Emails__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Current_N4L_product_and_service_updates__c.label} data-id={currentContactField.Current_N4L_product_and_service_updates__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Current_N4L_product_and_service_updates__c.fieldValue}
+                                                    field-level-help={currentContactField.Current_N4L_product_and_service_updates__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <!-- <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.HasOptedOutOfEmail.label} data-id={currentContactField.HasOptedOutOfEmail.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.HasOptedOutOfEmail.fieldValue}></lightning-input>
+                                            </div>                                  -->
+                                        </div>
+                                    </lightning-accordion-section>
+                                    <lightning-accordion-section name="OtherDetailsSection" label="Other Details">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1">
+                                                <lightning-input type="checkbox" disabled={isRelationshipEditable} checked={currentAccountContactField.Can_Provide_Site_Access__c.fieldValue} label={currentAccountContactField.Can_Provide_Site_Access__c.label} 
+                                                data-id={currentAccountContactField.Can_Provide_Site_Access__c.fieldName}
+                                                field-level-help={currentAccountContactField.Can_Provide_Site_Access__c.fieldHelpText}></lightning-input>  
+                                            </div>
+                                            <template if:false={isSupportHubUser}>
+                                                <template if:true={showCreateSupportHubUser}>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <lightning-input type="checkbox" label="Create Support Hub User" data-id="Create_Support_Hub_User__c"></lightning-input>
+                                                    </div>                                     
+                                                </template>
+                                            </template>
+                                        </div>
+                                </lightning-accordion-section>                                            
+                                </template>
+                                <template if:false={isContactEditable}>
+                                    <lightning-accordion-section name="RelationshipDetailsSection" label={label.Screen_RoleDetails}>
+                                        <template if:false={isLoaded}>                        
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                    <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Roles.fieldName} 
+                                                    field-label={currentAccountContactField.Roles.label} onroles={handlePicklistRoles} 
+                                                    field-value={currentAccountContactField.Roles.fieldValue} is-required="true"
+                                                    is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                    field-help-text={currentAccountContactField.Roles.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                </div>
+                                                <template if:true={showAuthority}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                        <c-n4-l-multipicklist-screen object-name='AccountContactRelation' field-name={currentAccountContactField.Authority__c.fieldName} 
+                                                        field-label={currentAccountContactField.Authority__c.label} onroles={handlePicklistAuthorities}  
+                                                        field-value={currentAccountContactField.Authority__c.fieldValue}
+                                                        is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                        field-help-text={currentAccountContactField.Authority__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                    </div>                                 
+                                                </template>
+                                                <template if:true={showSystemAccessible}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                        <c-n4-l-multipicklist-screen object-name='Contact' field-name={currentContactField.System_Accessible__c.fieldName} 
+                                                        field-label={currentContactField.System_Accessible__c.label} onroles={handlePicklistSystemAccessible}  
+                                                        field-value={currentContactField.System_Accessible__c.fieldValue}
+                                                        is-relationship-editable={isRelationshipEditable} account-id={accountId}
+                                                        field-help-text={currentContactField.System_Accessible__c.fieldHelpText}></c-n4-l-multipicklist-screen>
+                                                    </div>                                 
+                                                </template>
+                                                <div class="slds-col slds-size_1-of-6 slds-m-top_x-large slds-m-left_medium">
+                                                    <label class="slds-form-element__label">{label.Screen_ActiveLabel}</label>
+                                                    <lightning-helptext content={currentAccountContactField.IsActive.fieldHelpText}></lightning-helptext>
+                                                </div> 
+                                                <div class="slds-col slds-size_1-of-5 slds-m-top_x-large slds-m-left_medium">
+                                                    <lightning-input disabled={isRelationshipEditable} type="toggle" checked={currentAccountContactField.IsActive.fieldValue} variant="label-hidden" 
+                                                        data-id={currentAccountContactField.IsActive.fieldName}></lightning-input>
+                                                </div>
+                                            </div>
+                                        </template>    
+                                    </lightning-accordion-section>
+                                    <lightning-accordion-section name="OtherDetailsSection" label="Other Details">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1">
+                                                <lightning-input type="checkbox" disabled={isRelationshipEditable} checked={currentAccountContactField.Can_Provide_Site_Access__c.fieldValue} label={currentAccountContactField.Can_Provide_Site_Access__c.label} 
+                                                data-id={currentAccountContactField.Can_Provide_Site_Access__c.fieldName}
+                                                field-level-help={currentAccountContactField.Can_Provide_Site_Access__c.fieldHelpText}></lightning-input>  
+                                            </div>
+                                            <template if:false={isSupportHubUser}>
+                                                <template if:true={showCreateSupportHubUser}>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <lightning-input type="checkbox" label="Create Support Hub User" data-id="Create_Support_Hub_User__c"></lightning-input>
+                                                    </div>                                     
+                                                </template>
+                                            </template>
+                                        </div>
+                                    </lightning-accordion-section>                                            
+                                    <template if:false={searchMenu}>
+                                        <template if:false={isReplace}>
+                                            <h2 class="slds-text-color_destructive slds-card__header-title slds-truncate slds-m-left--small slds-card__header-link">To update this information, please contact {primaryAccountName}&#39;s administrator.</h2>
+                                        </template>
+                                    </template>
+                                    <lightning-accordion-section name="PersonalDetailsSection" label="Personal Details">
+                                        <div class="slds-grid slds-wrap">
+                                            <template if:true={searchMenu}>
+                                                <div class="slds-col slds-size_1-of-1 slds-m-bottom_medium">
+                                                    <c-n4l-search-screen label={label.Screen_SearchContact} 
+                                                        object-name="Contact" onsearchform={handleSearchForm} onaddcontact={handleAddContact}
+                                                        search-place-holder-text={searchPlaceHolderText} account-id={accountId} is-show-add={isShowAdd}
+                                                        replace-value={replaceValue} is-replace={isReplace}>
+                                                    </c-n4l-search-screen>
+                                                </div>
+                                            </template>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                    field-level-help={currentContactField.Email.fieldHelpText}></lightning-input>                                                        
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Email.fieldName} label={currentContactField.Email.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Email.fieldValue} 
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleEmailChange}
+                                                    field-level-help={currentContactField.Email.fieldHelpText} required></lightning-input>                                                        
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                    field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="email" data-id={currentContactField.Secondary_Email__c.fieldName} label={currentContactField.Secondary_Email__c.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Secondary_Email__c.fieldValue}
+                                                    message-when-type-mismatch={label.Screen_InvalidEmail} onchange={handleSecondaryEmailChange}
+                                                    field-level-help={currentContactField.Secondary_Email__c.fieldHelpText}></lightning-input>
+                                                </template>
+                                            </div>                        
+                                            <template if:true={showEmailDomainWarning}>
+                                                <div class="slds-col slds-size_1-of-1">
+                                                    <p style="color:#ff8c00">{label.Screen_EmailDomain}</p>
+                                                </div>
+                                            </template>               
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                    field-level-help={currentContactField.FirstName.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.FirstName.fieldName} label={currentContactField.FirstName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.FirstName.fieldValue}
+                                                    field-level-help={currentContactField.FirstName.fieldHelpText} required></lightning-input>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <template if:true={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.LastName.fieldValue}
+                                                    field-level-help={currentContactField.LastName.fieldHelpText}></lightning-input>
+                                                </template>
+                                                <template if:false={editableContactFields}>
+                                                    <lightning-input type="text" data-id={currentContactField.LastName.fieldName} label={currentContactField.LastName.label} 
+                                                    disabled={editableContactFields} value={currentContactField.LastName.fieldValue} 
+                                                    field-level-help={currentContactField.LastName.fieldHelpText} required></lightning-input>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="text" data-id={currentContactField.Title.fieldName} label={currentContactField.Title.label} 
+                                                    disabled={editableContactFields} value={currentContactField.Title.fieldValue}
+                                                    field-level-help={currentContactField.Title.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="text" data-id={currentContactField.MobilePhone.fieldName} label={currentContactField.MobilePhone.label} 
+                                                    disabled={editableContactFields} value={currentContactField.MobilePhone.fieldValue}
+                                                    field-level-help={currentContactField.MobilePhone.fieldHelpText}></lightning-input>
+                                            </div>
+                                        </div>
+                                    </lightning-accordion-section>
+                                    <lightning-accordion-section name="CommunicationPreferencesSection" label="Communication Preferences">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Outage_notifications__c.label} data-id={currentContactField.Outage_notifications__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Outage_notifications__c.fieldValue} 
+                                                    field-level-help={currentContactField.Outage_notifications__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Periodic_Survey_Emails__c.label} data-id={currentContactField.Periodic_Survey_Emails__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Periodic_Survey_Emails__c.fieldValue}
+                                                    field-level-help={currentContactField.Periodic_Survey_Emails__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <div class="slds-col slds-size_1-of-2 slds-p-right_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.Current_N4L_product_and_service_updates__c.label} data-id={currentContactField.Current_N4L_product_and_service_updates__c.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.Current_N4L_product_and_service_updates__c.fieldValue}
+                                                    field-level-help={currentContactField.Current_N4L_product_and_service_updates__c.fieldHelpText}></lightning-input>
+                                            </div>                                 
+                                            <!-- <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
+                                                <lightning-input type="checkbox" label={currentContactField.HasOptedOutOfEmail.label} data-id={currentContactField.HasOptedOutOfEmail.fieldName} 
+                                                    disabled={editableContactFields} checked={currentContactField.HasOptedOutOfEmail.fieldValue}></lightning-input>
+                                            </div>                                  -->
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+                    </div>                            
+                </div>
+            </div>
+            <footer class="slds-float_right slds-p-top_small slds-p-bottom_large">
+                <template if:false={isHideAccordion}>
+                    <lightning-button title={headerTitle} label={saveRelButton} variant="brand" onclick={openWarningMessage}></lightning-button> 
+                </template>
+            </footer>
+        </template>
+    </template>
+
+    <template if:true={isLoaded}>
+        <lightning-spinner variant="brand" size="medium" alternative-text="loading"></lightning-spinner>
+    </template>    
+    <template if:true={showWarning}>
+        <div class="DESKTOP uiModal--medium uiModal--recordActionWrapper uiModal forceModal open active">
+            <div class="modal-glass slds-backdrop fadein slds-backdrop--open" tabindex="-1" style="opacity: 1.8;"></div>
+            <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="panel slds-modal slds-fade-in-open">
+                <div class="modal-container slds-modal__container">
+                    <header class="modal-header slds-modal__header">
+                        <h2 class="slds-form-warning slds-text-heading_medium slds-hyphenate">WARNING!</h2>
+                    </header>
+                    <div class="modal-body scrollable slds-modal__content slds-p-around--large">
+                        <div class="slds-m-top_small slds-m-left_small slds-m-bottom_small">
+                            <lightning-formatted-rich-text value={label.Screen_WarningMessage}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                    <footer class="modal-footer slds-modal__footer">
+                        <lightning-button-group slot="actions">
+                            <lightning-button label="Cancel" variant="neutral" onclick={cancelWarningMessage}></lightning-button> 
+                        </lightning-button-group>
+                        <lightning-button-group slot="actions">
+                            <lightning-button label="Proceed" variant="brand" onclick={saveContact}></lightning-button> 
+                        </lightning-button-group>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </template>       
+</template>

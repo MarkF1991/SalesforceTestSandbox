@@ -1,0 +1,100 @@
+<template>
+    <lightning-card title={title} icon-name="standard:contact" onmodalconfirmtoproceed={handleAddUser} >
+        <template if:false={isLoading}>
+            <div class="slds-p-horizontal_large slds-p-vertical_x-small lgc-bg slds-grid slds-grid_vertical-align-center">
+                <div class="slds-col overflow-hidden">
+                        <template if:true={currentContactElement}>
+                                <c-contact-tile contactstring={currentContactElement.contactstring} userstring={currentContactElement.userstring}></c-contact-tile>
+                        </template>
+                </div>
+                <!-- <template if:true={allowAddUser}>
+                    <div class="slds-col_bump-right">
+                        <lightning-button-icon icon-name="utility:adduser" variant="bare" alternative-text="Create a Customer User" size="large" onclick={handleAddUserModal}></lightning-button-icon>
+                    </div>
+                </template> -->
+
+                <div class="slds-col_bump-right ">
+                    <template if:true={currentContactElement}>
+                        <template if:true={noUserYet}>
+                            <template if:true={allowAddUser}>
+                                <lightning-button-icon icon-name="utility:adduser" variant="bare" alternative-text="Create a Customer User" size="large" onclick={handleAddUserModal}></lightning-button-icon>
+                                <div if:true={invitebtnIsClicked.data}><textColor>{textValue}</textColor></div>
+                                <textColor>{inviteBtnClickedTime.data}</textColor>
+                            </template>
+                            <template if:false={allowAddUser}>
+                                <div class="slds-checkbox">
+                                    <div class="slds-grid ">
+                                        <div class="col slds-size_1-of-13 "> <!-- for some strange reason 1-of-13 allows check box and text to stay close together. 1-of-12 will seperate them apart -->
+                                            
+                                            <input type="checkbox" name="options" id="checkbox1" value="checkbox1"  checked={checkbox1_checked} onchange={handleCheckbox1Change} />
+                        
+                                            <label class="slds-checkbox__label"  for="checkbox1">
+                                                <span class="slds-checkbox_faux"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col slds-m-left_x-small "> <!-- allow small gap between check box and text -->
+                                            <span class="text-block-2">{checkboxLabel}</span>
+                                        </div>
+                                        <!-- adding button here for display only no action require -->
+                                        <lightning-button-icon icon-name="utility:adduser" variant="bare" alternative-text="Contact's email does not match School Email Domain" size="large" disabled></lightning-button-icon>    
+                                    </div>
+                                </div>
+                            </template>    
+                        </template>
+                    </template>
+                </div>
+
+            </div>
+        </template>
+        
+        <c-modal 
+            header={modal.header} 
+            id={modal.id} 
+            elements={modal.elements} 
+            mode={modal.mode} 
+            cancel-button-name={modal.cancelButtonName} 
+            submit-button-name={modal.submitButtonName} 
+            confirmation-message={modal.confirmationMessage1}
+            confirmation-message2={modal.confirmationMessage2} >
+        </c-modal>
+    </lightning-card>
+
+    <template if:true={showUserAccess}>
+        <div class="slds-p-top_small">
+            <lightning-card title={title2} icon-name="standard:user_role">
+                <template if:true={checkbox_toggle1_show}>
+                    <div class="slds-p-horizontal_large slds-p-bottom_x-small" onupdateuserpermissionschoolreporting={handleUpdateUserPermissionSchoolReporting}>
+                        <!-- <c-checkbox-toggle  checkbox-label={checkbox_toggle1_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle1_disabled} checkbox-checked={checkbox_toggle1_checked} required-show-modal=true response-action-name="updateuserpermissionschoolreporting"></c-checkbox-toggle> -->
+                        <c-checkbox-toggle  checkbox-label={checkbox_toggle1_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle1_disabled} checkbox-checked={checkbox_toggle1_checked} required-show-modal=true response-action-name="updateuserpermissionschoolreporting" confirmation-message-1={checkbox_toggle1_message1} confirmation-message-2={checkbox_toggle1_message2}></c-checkbox-toggle>
+                    </div>
+                </template>
+                <template if:true={checkbox_toggle2_show}>
+                    <div class="slds-p-horizontal_large slds-p-bottom_x-small" onupdateuserpermissionfilteringportal={handleUpdateUserPermissionFilteringPortal}>
+                        <!-- <c-checkbox-toggle  checkbox-label={checkbox_toggle2_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle2_disabled} checkbox-checked={checkbox_toggle2_checked} required-show-modal=true response-action-name="updateuserpermissionfilteringportal"></c-checkbox-toggle> -->
+                        <c-checkbox-toggle  checkbox-label={checkbox_toggle2_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle2_disabled} checkbox-checked={checkbox_toggle2_checked} required-show-modal=true response-action-name="updateuserpermissionfilteringportal" confirmation-message-1={checkbox_toggle2_message1} confirmation-message-2={checkbox_toggle2_message2}></c-checkbox-toggle>
+                    </div>
+                </template>
+                <template if:true={checkbox_toggle3_show}>
+                    <div class="slds-p-horizontal_large slds-p-bottom_x-small" onupdateuserpermissionnms={handleUpdateuserpermissionnms}>
+                        <!-- <c-checkbox-toggle  checkbox-label={checkbox_toggle2_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle2_disabled} checkbox-checked={checkbox_toggle2_checked} required-show-modal=true response-action-name="updateuserpermissionfilteringportal"></c-checkbox-toggle> -->
+                        <c-checkbox-toggle  checkbox-label={checkbox_toggle3_label} checkbox-on-label="Enabled" checkbox-off-label="Disabled" checkbox-disabled={checkbox_toggle3_disabled} checkbox-checked={checkbox_toggle3_checked} required-show-modal=true response-action-name="updateuserpermissionnms" confirmation-message-1={checkbox_toggle3_message1} confirmation-message-2={checkbox_toggle3_message2}></c-checkbox-toggle>
+                    </div>
+                </template>
+            </lightning-card>
+        </div>
+    </template>
+    <template if:true={isLoading}>
+        <div class="slds-align_absolute-center slds-p-vertical_large">
+            <div class="loading-spinner-container">
+                <div class="loading-spinner">
+                    <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    
+    <!-- <div class="slds-box">
+        <p>output: {displayOutput}</p>
+    </div> -->
+</template>

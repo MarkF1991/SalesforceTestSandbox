@@ -1,0 +1,11 @@
+<design:component label="SH Refresh - Card Header">
+
+    <design:attribute name="cardTitle" label="Heading"/>
+    <design:attribute name="isSubheadingVisible" label="Show Sub-heading"/>
+    <design:attribute name="cardSubHeading" label="Sub-heading"/>
+	<design:attribute name="isButtonVisible" label="Show CTA Button"/>
+    <design:attribute name="cardButtonLabel" label="CTA Button Label"/>
+    <design:attribute name="cardButtonLink" label="CTA Button Link"/> 
+    <design:attribute name="isBorderVisible" label="Show Bottom Border"/> 
+   
+</design:component>

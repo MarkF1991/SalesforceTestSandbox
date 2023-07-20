@@ -1,0 +1,42 @@
+<template>
+    <div class="search-wrapper">
+        <lightning-input
+            name="enter-search"
+            type="search"
+            onchange={handleOnChange}
+        ></lightning-input>
+
+        <div class={dropdownCss}>
+            <p class="search-result-header">Users</p>
+            <template for:each={users} for:item="ur">
+                <div class="result-item" key={ur.id}>
+                    <c-tile-chip-object onnavigate={handleNavigate} href={ur.href} object={ur} identifier={ur.id} key={ur.id} entity-type="user"></c-tile-chip-object>
+                </div>
+            </template>
+            <p class="search-result-header">Devices</p>
+            <template for:each={devices} for:item="dev">
+                <div class="result-item" key={dev.id}>
+                    <c-tile-chip-object onnavigate={handleNavigate} href={dev.href} object={dev} identifier={dev.id} key={dev.id} entity-type="device"></c-tile-chip-object>
+                </div>
+            </template>
+            <p class="search-result-header">Websites</p>
+            <template for:each={websites} for:item="website">
+                <div class="result-item" key={website.id}>
+                    <c-tile-chip-object onnavigate={handleNavigate} href={website.href} object={website} identifier={website.id} key={website.id} entity-type="website"></c-tile-chip-object>
+                </div>
+            </template>
+            <p class="search-result-header">Categories</p>
+            <template for:each={categories} for:item="category">
+                <div class="result-item" key={category.id}>
+                    <c-tile-chip-object onnavigate={handleNavigate} href={category.href} object={category} identifier={category.id} key={category.id} entity-type="category"></c-tile-chip-object>
+                </div>
+            </template>
+            <p class="search-result-header">Applications</p>
+            <template for:each={applications} for:item="app">
+                <div class="result-item" key={app.id}>
+                    <c-tile-chip-object onnavigate={handleNavigate} href={app.href} object={app} identifier={app.id} key={app.id} entity-type="app"></c-tile-chip-object>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

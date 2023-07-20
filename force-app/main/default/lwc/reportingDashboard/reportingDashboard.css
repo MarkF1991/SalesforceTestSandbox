@@ -1,0 +1,25 @@
+.feedback-box {
+    color: white;
+    background-color: #980d76;
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1); /* copied from other tileLists' css .slds-card  */
+}
+
+.THIS{
+    background-color:rgb(211, 210, 210);
+}
+
+a {
+    text-decoration:none;
+ }
+
+ .list-container {
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+    background: #fff;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+}
+
+.r-dash {
+    padding: 0.75rem;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Created to allow embeding Wistia video in Knowledge Article Rich Text Editor.
+Use this html code in article:
+&lt;iframe frameborder=&quot;0&quot; height=&quot;315&quot;
+    src=&quot;https://&lt;salesforce_instance&gt;/apex/Video?videoID=12345&quot;
+    width=&quot;560&quot;&gt;
+&lt;/iframe&gt;</description>
+    <label>Embedded Wistia Video IFrame</label>
+</ApexPage>

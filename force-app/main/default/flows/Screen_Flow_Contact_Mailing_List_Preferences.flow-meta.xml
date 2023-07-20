@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <choices>
+        <description>N4L&apos;s Blog subscription preference checkbox</description>
+        <name>blog</name>
+        <choiceText>N4L&apos;s Blog</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>isMember_Blog</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>Data and Insights Reports subscription preference checkbox</description>
+        <name>DataInsights</name>
+        <choiceText>Data and Insights Reports</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>IsMember_DataInsights</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>Existing Products and Services subscription preference checkbox</description>
+        <name>existingProducts</name>
+        <choiceText>Existing Products and Services</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>isMember_ExistingProducts</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>IN BRIEF for Schools subscription preference checkbox</description>
+        <name>InBrief</name>
+        <choiceText>IN BRIEF for Schools</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>isMember_InBrief</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>New Products and Services subscription preference checkbox</description>
+        <name>newProducts</name>
+        <choiceText>New Products and Services</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>isMember_NewProducts</elementReference>
+        </value>
+    </choices>
+    <decisions>
+        <description>Has the contact opted out of receiving all marketing emails?</description>
+        <name>Contact_Mailability_Status</name>
+        <label>Contact Mailability Status</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Subscription_Preferences</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Mailable</defaultConnectorLabel>
+        <rules>
+            <name>Opt_Out</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Contact.HasOptedOutOfEmail</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Opted_Out_screen</targetReference>
+            </connector>
+            <label>Opt Out</label>
+        </rules>
+    </decisions>
+    <description>Displayed on the contact record page to allow helpdesk users to opt contacts in / out of mailing lists in pardot. Fields updated in this flow sync to pardot a trigger automation rules which add/remove prospects from the mailing lists.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>TRUE if the contact is signed up to the N4L&apos;s Blog mailing list</description>
+        <name>isMember_Blog</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!Get_Contact.N4L_s_Blog__c},&quot;Subscribe&quot;) || ISPICKVAL({!Get_Contact.N4L_s_Blog__c},&quot;List Member&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>TRUE if the contact is a member of the Data and Insights mailing list</description>
+        <name>IsMember_DataInsights</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!Get_Contact.Data_and_Insights_Report__c}, &quot;List Member&quot;) || ISPICKVAL({!Get_Contact.Data_and_Insights_Report__c}, &quot;Subscribe&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>TRUE if the contact is subscribed to the Existing Products and Services mailing List</description>
+        <name>isMember_ExistingProducts</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!Get_Contact.Existing_Products_and_Services__c}, &quot;List Member&quot;) || ISPICKVAL({!Get_Contact.Existing_Products_and_Services__c}, &quot;Subscribe&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>TRUE if the contact is a member of the IN BRIEF for Schools mailing list</description>
+        <name>isMember_InBrief</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!Get_Contact.IN_BRIEF_for_Schools__c},&quot;Subscribe&quot;) || ISPICKVAL({!Get_Contact.IN_BRIEF_for_Schools__c},&quot;List Member&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>TRUE if the contact is subscribed to the New Products and Services mailing list</description>
+        <name>isMember_NewProducts</name>
+        <dataType>Boolean</dataType>
+        <expression>ISPICKVAL({!Get_Contact.New_Products_and_Services__c}, &quot;List Member&quot;) || ISPICKVAL({!Get_Contact.New_Products_and_Services__c}, &quot;Subscribe&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>Formula that calculates what the N4L&apos;s Blog list membership should be in salesforce.</description>
+        <name>status_Blog</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT({!isMember_Blog}) &amp;&amp; CONTAINS({!Subscribe_Preferences}, &quot;Blog&quot;), &quot;Subscribe&quot;, 
+IF({!isMember_Blog} &amp;&amp; (NOT(CONTAINS({!Subscribe_Preferences}, &quot;Blog&quot;)) || {!Subscribe_Preferences} == &quot;&quot;), &quot;Remove&quot;, TEXT({!Get_Contact.N4L_s_Blog__c})))</expression>
+    </formulas>
+    <formulas>
+        <description>Formula that calculates what the Data and Insights report list membership should be in salesforce.</description>
+        <name>status_DataInsights</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT({!IsMember_DataInsights}) &amp;&amp; CONTAINS({!Subscribe_Preferences}, &quot;Data and Insights Reports&quot;), &quot;Subscribe&quot;, 
+IF({!IsMember_DataInsights} &amp;&amp; (NOT(CONTAINS({!Subscribe_Preferences}, &quot;Data and Insights Reports&quot;)) || {!Subscribe_Preferences} == &quot;&quot;), &quot;Remove&quot;, TEXT({!Get_Contact.Data_and_Insights_Report__c})))</expression>
+    </formulas>
+    <formulas>
+        <description>A formula the calculates the Existing Products and Services list membership in Salesforce</description>
+        <name>status_ExistingProducts</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT({!isMember_ExistingProducts}) &amp;&amp; CONTAINS({!Subscribe_Preferences}, &quot;Existing Products and Services&quot;), &quot;Subscribe&quot;, 
+IF({!isMember_ExistingProducts} &amp;&amp; (NOT(CONTAINS({!Subscribe_Preferences}, &quot;Existing Products and Services&quot;)) || {!Subscribe_Preferences} == &quot;&quot;), &quot;Remove&quot;, TEXT({!Get_Contact.Existing_Products_and_Services__c})))</expression>
+    </formulas>
+    <formulas>
+        <description>Formula that calculates what the IN BRIEF for Schools list membership should be in salesforce.</description>
+        <name>status_InBrief</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT({!isMember_InBrief}) &amp;&amp; CONTAINS({!Subscribe_Preferences}, &quot;IN BRIEF for Schools&quot;), &quot;Subscribe&quot;, 
+IF({!isMember_InBrief} &amp;&amp; (NOT(CONTAINS({!Subscribe_Preferences}, &quot;IN BRIEF for Schools&quot;)) || {!Subscribe_Preferences} == &quot;&quot;), &quot;Remove&quot;, TEXT({!Get_Contact.IN_BRIEF_for_Schools__c})))</expression>
+    </formulas>
+    <formulas>
+        <description>A formula that determines the New Products and Services list membership in Salesforce</description>
+        <name>status_NewProducts</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT({!isMember_NewProducts}) &amp;&amp; CONTAINS({!Subscribe_Preferences}, &quot;New Products and Services&quot;), &quot;Subscribe&quot;, 
+IF({!isMember_NewProducts} &amp;&amp; (NOT(CONTAINS({!Subscribe_Preferences}, &quot;New Products and Services&quot;)) || {!Subscribe_Preferences} == &quot;&quot;), &quot;Remove&quot;, TEXT({!Get_Contact.New_Products_and_Services__c})))</expression>
+    </formulas>
+    <formulas>
+        <description>Sets the default checked boxes on the Subscribe Preferences screen</description>
+        <name>subscribedLists</name>
+        <dataType>String</dataType>
+        <expression>IF({!IsMember_DataInsights}, {!DataInsights} + &quot;;&quot;,&quot;&quot;) +
+IF({!isMember_Blog}, {!blog} + &quot;;&quot;,&quot;&quot;) +
+IF({!isMember_InBrief}, {!InBrief} + &quot;;&quot;,&quot;&quot;) +
+IF({!isMember_NewProducts}, {!newProducts} + &quot;;&quot;,&quot;&quot;) +
+IF({!isMember_ExistingProducts}, {!existingProducts} + &quot;;&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <interviewLabel>Screen Flow: Contact {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Screen Flow: Contact Mailing List Preferences</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Get the contact record</description>
+        <name>Get_Contact</name>
+        <label>Get Contact</label>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Contact_Mailability_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the contact fields in salesforce that sync to pardot to control list membership</description>
+        <name>Update_subscription_preferences</name>
+        <label>Update subscription preferences</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Data_and_Insights_Report__c</field>
+            <value>
+                <elementReference>status_DataInsights</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Existing_Products_and_Services__c</field>
+            <value>
+                <elementReference>status_ExistingProducts</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IN_BRIEF_for_Schools__c</field>
+            <value>
+                <elementReference>status_InBrief</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>N4L_s_Blog__c</field>
+            <value>
+                <elementReference>status_Blog</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>New_Products_and_Services__c</field>
+            <value>
+                <elementReference>status_NewProducts</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Contact</object>
+    </recordUpdates>
+    <screens>
+        <description>The screen that is displayed when the contact has opted out of all email communications</description>
+        <name>Opted_Out_screen</name>
+        <label>Opted Out screen</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>OptedOutMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(53, 53, 53);&quot;&gt;Subscribe Preferences&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(53, 53, 53); background-color: rgb(255, 255, 255);&quot;&gt;{!Get_Contact.Name} has opted out of all email communications for N4L. &lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Displays checkboxes for the users to manage the contacts subscription preferences for mailing lists.</description>
+        <name>Subscription_Preferences</name>
+        <label>Subscription Preferences</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_subscription_preferences</targetReference>
+        </connector>
+        <fields>
+            <name>Subscribe_Preferences</name>
+            <choiceReferences>DataInsights</choiceReferences>
+            <choiceReferences>blog</choiceReferences>
+            <choiceReferences>InBrief</choiceReferences>
+            <choiceReferences>newProducts</choiceReferences>
+            <choiceReferences>existingProducts</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>subscribedLists</elementReference>
+            </defaultValue>
+            <fieldText>Subscribe Preferences</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Sync Preferences to Pardot</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Contact</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>The Id of the contact record page that the flow is running on. Input from record page</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

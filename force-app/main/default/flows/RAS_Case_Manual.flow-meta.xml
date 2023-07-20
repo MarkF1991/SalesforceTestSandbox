@@ -1,0 +1,1668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Email_RAS_Tech_Form_link_send</name>
+        <label>Email RAS Tech Form link send</label>
+        <locationX>870</locationX>
+        <locationY>350</locationY>
+        <actionName>Case.Email_RAS_Tech_Form_link_send</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>TechForm_Sent_Chttr</targetReference>
+        </connector>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.Email_RAS_Tech_Form_link_send</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Email_Verification_Form_Link_send</name>
+        <label>Email Verification Form Link send</label>
+        <locationX>550</locationX>
+        <locationY>374</locationY>
+        <actionName>Case.Email_RAS_Verification_Form_link_send</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>VerFormSent_Chttr</targetReference>
+        </connector>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.Email_RAS_Verification_Form_link_send</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>TechForm_Sent_Chttr</name>
+        <label>TechForm_Sent_Chttr</label>
+        <locationX>998</locationX>
+        <locationY>349</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Case_Verification_Form_Sent_0</targetReference>
+        </connector>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>Chttr_TechFormSent</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visibility</name>
+            <value>
+                <stringValue>internalUsers</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>VerFormSent_Chttr</name>
+        <label>VerFormSent_Chttr</label>
+        <locationX>552</locationX>
+        <locationY>463</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Case_Verification_Form_Sent</targetReference>
+        </connector>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>Chttr_VerFormSent</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visibility</name>
+            <value>
+                <stringValue>internalUsers</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>EVAL_Case_Status_AND_Type</name>
+        <label>EVAL Case Status AND Type</label>
+        <locationX>65</locationX>
+        <locationY>256</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Status_Type</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Status_AND_Type</targetReference>
+            </connector>
+            <label>Status_Type</label>
+        </rules>
+        <rules>
+            <name>Type</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Type</targetReference>
+            </connector>
+            <label>Type</label>
+        </rules>
+        <rules>
+            <name>Status</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Status</targetReference>
+            </connector>
+            <label>Status</label>
+        </rules>
+        <rules>
+            <name>Status_Type_Prod</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Product_Category__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Status_AND_Type_AND_Prod</targetReference>
+            </connector>
+            <label>Status_Type_Prod</label>
+        </rules>
+        <rules>
+            <name>Prod</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Product_Category__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Prod</targetReference>
+            </connector>
+            <label>Prod</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>EVAL_Default_Case_Parameters</name>
+        <label>EVAL Default Case Parameters</label>
+        <locationX>545</locationX>
+        <locationY>119</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>CaseClosed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Case_Closed_SCRN</targetReference>
+            </connector>
+            <label>CaseClosed</label>
+        </rules>
+        <rules>
+            <name>Remote_Access_Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RAS_Active_SCRN</targetReference>
+            </connector>
+            <label>RAS Active</label>
+        </rules>
+        <rules>
+            <name>No_Case_Contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>No_Case_Contact_SCRN</targetReference>
+            </connector>
+            <label>No Case Contact</label>
+        </rules>
+        <rules>
+            <name>Update_Case_Default_parameters_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Amend_Case_Parameters_Prompt</targetReference>
+            </connector>
+            <label>Err Status AND Type</label>
+        </rules>
+        <rules>
+            <name>Update_Case_Default_parameters_Type</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4 AND 5 AND (6 OR 7)</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Amend_Case_Parameters_Prompt</targetReference>
+            </connector>
+            <label>Err Type OR Status</label>
+        </rules>
+        <rules>
+            <name>Verification_Form</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EVAL_Default_Case_Parameters_0</targetReference>
+            </connector>
+            <label>Verification Form</label>
+        </rules>
+        <rules>
+            <name>Verification_Form_Already_Sent0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Sent</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Verification_Form_Already_Sent_SCRN</targetReference>
+            </connector>
+            <label>VerForm Sent</label>
+        </rules>
+        <rules>
+            <name>Send_Tech_Form0</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4 AND 5 AND 6 AND (7 OR 8)</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ICT_Implementation_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Opt In</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response NotTech</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response IsTech</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_RAS_Tech_Form_link_send</targetReference>
+            </connector>
+            <label>Send Tech Form</label>
+        </rules>
+        <rules>
+            <name>Unable_to_Send_Tech_Form0</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6 OR 7)</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ICT_Implementation_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response NotTech</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response IsTech</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Opt In</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Unable_to_Send_Tech_Form_SCRN</targetReference>
+            </connector>
+            <label>No ICT Specified</label>
+        </rules>
+        <rules>
+            <name>Tech_Form_Already_Sent0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Tech Form Sent</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Tech_Form_Already_Sent_SCRN</targetReference>
+            </connector>
+            <label>Tech Form Sent</label>
+        </rules>
+        <rules>
+            <name>Tech_Complete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Tech Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Tech_Form_Already_Sent_SCRN_0_0</targetReference>
+            </connector>
+            <label>Tech Complete</label>
+        </rules>
+        <rules>
+            <name>SR_Sent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SE Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Tech_Form_Already_Sent_SCRN_0</targetReference>
+            </connector>
+            <label>SR Sent</label>
+        </rules>
+        <rules>
+            <name>Unable_To_Send_Tech_Form_No_Opt_IN</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4 AND 7 AND (5 OR 6)</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ICT_Implementation_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response NotTech</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verification Form Response IsTech</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Opt In</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Unable_to_Send_Tech_Form_No_Opt_IN_SCRN</targetReference>
+            </connector>
+            <label>No Opt Response</label>
+        </rules>
+        <rules>
+            <name>Err_Prod</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjAccount.Remote_Access__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Err Prod</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>EVAL_Default_Case_Parameters_0</name>
+        <label>EVAL Default Case Parameters</label>
+        <locationX>548</locationX>
+        <locationY>264</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Send_Verification_Form0_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted By N4L</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Form_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_Verification_Form_Link_send</targetReference>
+            </connector>
+            <label>Send Verification Form</label>
+        </rules>
+    </decisions>
+    <description>Manual flow that only initiates if either the Automated Flow via Process builder or Manually triggered via &apos;Send Form&apos; button and associated validation flow</description>
+    <formulas>
+        <name>IncorrectCaseStatus</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!sObjCase.Status})&lt;&gt;&quot;Accepted By N4L&quot;,&quot;*Accepted By N4L&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>IncorrectCaseType</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!sObjCase.Type})&lt;&gt;&quot;Add Service (Existing Customer)&quot;,&quot;*Add Service (Existing Customer)&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>IncorrectProduct</name>
+        <dataType>String</dataType>
+        <expression>IF(OR(TEXT({!sObjCase.Product__c})&lt;&gt;&quot;Remote Access&quot;,TEXT({!sObjCase.Product_Category__c})&lt;&gt;&quot;Remote Access&quot;),&quot;Remote Access&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>ProductSelected</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!sObjCase.Product__c})&lt;&gt;&quot;&quot;,TEXT({!sObjCase.Product__c}),IF(TEXT({!sObjCase.Product_Category__c})&lt;&gt;&quot;&quot;,TEXT({!sObjCase.Product_Category__c}),&quot;&quot;))</expression>
+    </formulas>
+    <formulas>
+        <name>ProductType</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!sObjCase.Product__c})=&quot;Remote Access&quot;,&quot;Remote Access&quot;,IF(TEXT({!sObjCase.Product_Category__c})=&quot;Remote Access&quot;,&quot;Remote Access&quot;,&quot;&quot;))</expression>
+    </formulas>
+    <formulas>
+        <name>UpdateCoord_Notes</name>
+        <dataType>String</dataType>
+        <expression>TEXT({!sObjCase.Form_Status__c})&amp;&quot; ;&quot;&amp;{!sObjCase.Coordination_Notes__c}</expression>
+    </formulas>
+    <interviewLabel>RAS Case Manual {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>RAS Case Manual</label>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Account</name>
+        <label>Account</label>
+        <locationX>413</locationX>
+        <locationY>13</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.AccountId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>sObjAccount</outputReference>
+        <queriedFields>Remote_Access__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Case</name>
+        <label>Case</label>
+        <locationX>281</locationX>
+        <locationY>15</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>sObjCase</outputReference>
+        <queriedFields>AccountId</queriedFields>
+        <queriedFields>ContactId</queriedFields>
+        <queriedFields>Form_Status__c</queriedFields>
+        <queriedFields>ICT_Implementation_Contact__c</queriedFields>
+        <queriedFields>CaseNumber</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+        <queriedFields>Product_Category__c</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>Trigger_Submit_Spark__c</queriedFields>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>IsClosed</queriedFields>
+        <queriedFields>Coordination_Notes__c</queriedFields>
+        <queriedFields>Product__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Case_Post_Update</name>
+        <label>Case Post Update</label>
+        <locationX>420</locationX>
+        <locationY>265</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>EVAL_Default_Case_Parameters_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>sObjCase</outputReference>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
+        <queriedFields>Product_Category__c</queriedFields>
+        <queriedFields>Form_Status__c</queriedFields>
+        <queriedFields>ContactId</queriedFields>
+        <queriedFields>Product__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Contact</name>
+        <label>Contact</label>
+        <locationX>544</locationX>
+        <locationY>12</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>EVAL_Default_Case_Parameters</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.ContactId</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputReference>sObjContact</outputReference>
+        <queriedFields>AccountId</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>Case_Verification_Form_Sent</name>
+        <label>Case Verification Form Sent</label>
+        <locationX>553</locationX>
+        <locationY>551</locationY>
+        <connector>
+            <targetReference>VerificationFormSentSCRN_0_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Awaiting_Customer_Reminder_Turned_Off__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Form_Status__c</field>
+            <value>
+                <stringValue>Verification Form Sent</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Awaiting Customer Response</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Case_Verification_Form_Sent_0</name>
+        <label>Case Verification Form Sent</label>
+        <locationX>1129</locationX>
+        <locationY>348</locationY>
+        <connector>
+            <targetReference>TechFormSent_SCRN</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Awaiting_Customer_Reminder_Turned_Off__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Form_Status__c</field>
+            <value>
+                <stringValue>Tech Form Sent</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Awaiting Customer Response</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Prod</name>
+        <label>Update Prod</label>
+        <locationX>265</locationX>
+        <locationY>512</locationY>
+        <connector>
+            <targetReference>Case_Post_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Product_Category__c</field>
+            <value>
+                <stringValue>Remote Access</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Product__c</field>
+            <value>
+                <stringValue>Remote Access</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Status</name>
+        <label>Update Status</label>
+        <locationX>268</locationX>
+        <locationY>262</locationY>
+        <connector>
+            <targetReference>Case_Post_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Accepted By N4L</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Status_AND_Type</name>
+        <label>Update Status AND Type</label>
+        <locationX>270</locationX>
+        <locationY>180</locationY>
+        <connector>
+            <targetReference>Case_Post_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Accepted By N4L</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Add Service (Existing Customer)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Status_AND_Type_AND_Prod</name>
+        <label>Update Status AND Type AND Prod</label>
+        <locationX>264</locationX>
+        <locationY>426</locationY>
+        <connector>
+            <targetReference>Case_Post_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Product_Category__c</field>
+            <value>
+                <stringValue>Remote Access</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Product__c</field>
+            <value>
+                <stringValue>Remote Access</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Accepted By N4L</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Add Service (Existing Customer)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Type</name>
+        <label>Update Type</label>
+        <locationX>267</locationX>
+        <locationY>344</locationY>
+        <connector>
+            <targetReference>Case_Post_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Add Service (Existing Customer)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <screens>
+        <name>Amend_Case_Parameters_Prompt</name>
+        <label>Amend Case Parameters Prompt</label>
+        <locationX>65</locationX>
+        <locationY>128</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>EVAL_Case_Status_AND_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Amend_Case_Parameters_MSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Either of these case fields do not meet the &lt;FONT COLOR=&quot;#FF0000&quot;&gt;*Required&lt;/FONT&gt; criteria for sending the form.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CaseType_MSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Type&lt;/B&gt;: &lt;FONT KERNING=&quot;1&quot;&gt;&lt;U&gt;{!sObjCase.Type}&lt;/U&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#FF0000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!IncorrectCaseType}&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CaseStatus_MSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Status&lt;/B&gt;: &lt;FONT KERNING=&quot;1&quot;&gt;&lt;U&gt;{!sObjCase.Status}&lt;/U&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#FF0000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!IncorrectCaseStatus}&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CaseProd_MSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Product Category&lt;/B&gt;: &lt;U&gt;{!sObjCase.Product_Category__c}&lt;/U&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#FF0000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!IncorrectProduct}&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Amend_Case_Parameters_Outcome</name>
+            <fieldText>By clicking on &apos;Next&apos; these fields will be automatically amended without having to access the case outside of this pop-up window. If you do not want to update them now, simply exit this window
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit1</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Case_Closed_SCRN</name>
+        <label>Case Closed SCRN</label>
+        <locationX>676</locationX>
+        <locationY>13</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>UnabletoSendVerificationForm_MSG_0_0</name>
+            <fieldText>This case is closed, please create a new case
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit_0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>No_Case_Contact_SCRN</name>
+        <label>No Case Contact SCRN</label>
+        <locationX>69</locationX>
+        <locationY>45</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Amend_Case_Parameters_MSG_1</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;The form cannot be sent at this time as the Case Contact is not specified. Please amend case details and reattempt to send form&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>RAS_Active_SCRN</name>
+        <label>RAS Active SCRN</label>
+        <locationX>868</locationX>
+        <locationY>14</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>UnabletoSendVerificationForm_MSG_0</name>
+            <fieldText>The form cannot be sent as this school records reflect that Remote Access is already active
+.
+School Account &gt; Managed Network Add-on Services
+Remote Access: {!sObjAccount.Remote_Access__c}
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Tech_Form_Already_Sent_SCRN</name>
+        <label>Tech Form Already Sent SCRN</label>
+        <locationX>869</locationX>
+        <locationY>267</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>TechFormAlreadySent_MSG</name>
+            <fieldText>The Tech form has been sent and cannot be sent again.
+.
+If you need to send the form link again and their has been no response (i.e. original email was misplaced or contact has changed) please compose and send an email using template &quot;RAS 3 ICT Intro Email&apos;, provided in Template folder &quot;N4L Auto Emails (External Facing)&quot;.
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>TechFromURL_MSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Below is the link to the sheet that hosts the form responses&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;A HREF=&quot;https://docs.google.com/spreadsheets/d/1mx0ikpWsX5J_Jb_AX7oSiBYB_4UhFSmKaFNklNNPeXk/edit#gid=1992054027&quot; TARGET=&quot;_blank&quot;&gt;Tech Responses Google Sheet&lt;/A&gt;&lt;FONT STYLE=&quot;font-size:12px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit2</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Tech_Form_Already_Sent_SCRN_0</name>
+        <label>SR Sent SCRN</label>
+        <locationX>869</locationX>
+        <locationY>102</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>TechFormAlreadySent_MSG_0</name>
+            <fieldText>The Service Request has been submitted.
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit2_0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Tech_Form_Already_Sent_SCRN_0_0</name>
+        <label>Tech Complete SCRN</label>
+        <locationX>869</locationX>
+        <locationY>183</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>TechFormAlreadySent_MSG_0_0</name>
+            <fieldText>The Tech form has been completed and response received.
+.
+If the response is to be amended, please provide them to the assigned Support Engineer.
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit2_0_0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>TechFormSent_SCRN</name>
+        <label>TechFormSent_SCRN</label>
+        <locationX>1260</locationX>
+        <locationY>349</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>TechFormSentMSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Verification form has been sent.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;The case has been updated to reflect:&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Status: &lt;U&gt;Awaiting Customer Response&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Form Status: &lt;U&gt;Tech Form Sent&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Awaiting Customer Response Reminder: &lt;U&gt;Off&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Google Doc info captured for the associated Form response sheet&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>RefreshMSG0</name>
+            <fieldText>{!RefreshCase}
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ExitMSG</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Unable_to_Send_Tech_Form_No_Opt_IN_SCRN</name>
+        <label>No Opt IN SCRN</label>
+        <locationX>872</locationX>
+        <locationY>514</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Unable_to_Send_Tech_Form_No_Opt_IN_SCRN_MSG</name>
+            <fieldText>The Tech form cannot be sent at this time as records currently do not reflect the school Opting In for the service. 
+.
+Please check account and email records and amend if necessary and re-attempt
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit3</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Unable_to_Send_Tech_Form_SCRN</name>
+        <label>No - ICT SCRN</label>
+        <locationX>873</locationX>
+        <locationY>431</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>UnabletoSendTechForm_MSG</name>
+            <fieldText>The Tech form cannot be sent as the ICT Implementation Contact is not specified.
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit4</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Verification_Form_Already_Sent_SCRN</name>
+        <label>Ver Form Already Sent SCRN</label>
+        <locationX>870</locationX>
+        <locationY>599</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>VerificationFormAlreadySent_MSG</name>
+            <fieldText>The Verification form has been sent and no response has been received.
+.
+The Technical Form can only be sent once a response has been received on the initial form.
+.
+If you need to send the form link again and their has been no response (i.e. original email was misplaced or contact has changed) please compose and send an email using template &quot;RAS 1 School Intro Email&apos;, provided in Template folder &quot;N4L Auto Emails (External Facing)&quot;.
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>GSheet_VerificationURL</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Below is the link to the sheet that hosts the form responses&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;A HREF=&quot;https://docs.google.com/spreadsheets/d/1fA_Tupci0isoYkt5AmPJn0qmOHPn_836DqKJenpPY-8/edit#gid=1712651713&quot; TARGET=&quot;_blank&quot;&gt;Verification Responses Google Sheet&lt;/A&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:11px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Exit5</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;FONT STYLE=&quot;font-size:9px&quot;&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>VerificationFormSentSCRN_0_0</name>
+        <label>VerificationFormSentSCRN</label>
+        <locationX>555</locationX>
+        <locationY>641</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>VerFormSentMSG_0_0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Verification form has been sent.&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;The case has been updated to reflect:&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Status: &lt;U&gt;Awaiting Customer Response&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Form Status: &lt;U&gt;Verification Form Sent&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Awaiting Customer Response Reminder: &lt;U&gt;Off&lt;/U&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt; Google Doc info captured for the associated Form response sheet&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;.&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>refreshMSG</name>
+            <fieldText>{!RefreshCase}
+.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ExitMSG_0</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:10px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;{!ExitWin_MSG}&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Case</startElementReference>
+    <status>Active</status>
+    <textTemplates>
+        <name>Chttr_TechFormSent</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Form pre-fill link has been sent via email to case contact and following updated - case Status: &apos;Awaiting Customer&apos;, Form Status: &apos;Tech Form Sent&apos;, Account &gt; Remote Access: &apos;Opt In&apos;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Chttr_VerFormSent</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Form pre-fill link has been sent via email to case contact and following updated - case Status: &apos;Awaiting Customer&apos;, Form Status: &apos;Verification Form Sent&apos;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ExitWin_MSG</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>To exit pop-up window, simply close window</text>
+    </textTemplates>
+    <textTemplates>
+        <name>RefreshCase</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please Note: to see the changes reflected on the case, you need to refresh the case window</text>
+    </textTemplates>
+    <variables>
+        <name>CaseId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>sObjAccount</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>sObjCase</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>sObjContact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+</Flow>

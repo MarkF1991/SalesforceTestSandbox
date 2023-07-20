@@ -1,0 +1,24 @@
+<template>
+        <a href="#" onclick={selectHandler}>
+    <div class="slds-p-vertical_small slds-border_bottom slds-grid slds-wrap slds-p-horizontal_small">
+        <div class="slds-col slds-size_4-of-12 slds-text-align_left slds-truncate">
+                
+                    <c-tile-chip initial={initial} line1={line1} line2={line2}></c-tile-chip>
+                
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-text-align_centre slds-truncate">
+        <span>{count}</span>
+        </div>
+        <div class="slds-col slds-size_5-of-12">
+        <div class="slds-progress-bar slds-progress-bar_large slds-align_center slds-m-top_xx-small" aria-valuemin="0" aria-valuemax="100" role="progressbar" style={barWidth}>
+            <span class="slds-progress-bar__value" style={barFill}>
+        </span>
+        </div>
+    
+        </div>
+        <div class="slds-col slds-size_2-of-12 slds-text-align_right slds-truncate">
+        <span>{value}</span>
+        </div>
+    </div>
+    </a>
+</template>

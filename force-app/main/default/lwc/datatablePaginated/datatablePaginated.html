@@ -1,0 +1,53 @@
+<template>
+    <c-datatable-custom
+        key-field="Id"
+        data={pageRecordList}
+        columns={columns}
+        onsave={handleSave}
+        oncellchange={handleCellChange}
+        onpicklistchange={handlePicklistChange}
+        draft-values={draftValues}
+        hide-checkbox-column="true"
+    > 
+    </c-datatable-custom>
+    <div class="slds-clearfix slds-m-top_small">
+        <div class="slds-float--right" if:true={showPagination}>
+            <lightning-button-group class="slds-float--right">
+                <lightning-button-icon
+                    alternative-text="First Page"
+                    icon-name="utility:back"
+                    disabled={canGoPrevPage}
+                    onclick={goToFirstPage}
+                >
+                </lightning-button-icon>
+                <lightning-button-icon
+                    alternative-text="Prev Page"
+                    icon-name="utility:chevronleft"
+                    disabled={canGoPrevPage}
+                    onclick={goToPrevPage}
+                >
+                </lightning-button-icon>
+                <lightning-button
+                    label={currentPageLabel}
+                    disabled={currentPageLabel}
+                    onclick={goToFirstPage}
+                >
+                </lightning-button>
+                <lightning-button-icon
+                    alternative-text="Next Page"
+                    icon-name="utility:chevronright"
+                    disabled={canGoNextPage}
+                    onclick={goToNextPage}
+                >
+                </lightning-button-icon>
+                <lightning-button-icon
+                    alternative-text="Last Page"
+                    icon-name="utility:forward"
+                    disabled={canGoNextPage}
+                    onclick={goToLastPage}
+                >
+                </lightning-button-icon>
+            </lightning-button-group>
+        </div>
+    </div>
+</template>

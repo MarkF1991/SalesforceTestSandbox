@@ -1,0 +1,1033 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <choices>
+        <name>Any</name>
+        <choiceText>Any *</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>For_a_router_that_is_not_running_NAT</name>
+        <choiceText>For a router that is not running NAT</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Incoming_Firewall_Port_Forward</name>
+        <choiceText>Incoming Firewall &amp; Port Forward</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Inside</name>
+        <choiceText>Inside</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Internet</name>
+        <choiceText>Internet</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>IP_Range</name>
+        <choiceText>IP Range</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Outgoing_Firewall_Change</name>
+        <choiceText>Outgoing Firewall Change</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Single_IP</name>
+        <choiceText>Single IP</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Evaluate_Destination_IP_Type</name>
+        <label>Evaluate Destination IP Type</label>
+        <locationX>420</locationX>
+        <locationY>348</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Destination_IP_Type_Is_Any</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Destination_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>3</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enter_the_rest_of_the_fields</targetReference>
+            </connector>
+            <label>Is Any</label>
+        </rules>
+        <rules>
+            <name>Destination_IP_Type_Is_Single</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Destination_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enter_Destination_IP</targetReference>
+            </connector>
+            <label>Is Single</label>
+        </rules>
+        <rules>
+            <name>Destination_IP_Type_Is_IP_Range</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Destination_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>2</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enter_Destination_IP_Range</targetReference>
+            </connector>
+            <label>Is IP Range</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Evaluate_Source_IP_Type</name>
+        <label>Evaluate Source IP Type</label>
+        <locationX>404</locationX>
+        <locationY>23</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Is_Any</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Source_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>3</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Select_Destination_IP_Type</targetReference>
+            </connector>
+            <label>Is Any</label>
+        </rules>
+        <rules>
+            <name>Is_Single_IP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Source_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enter_Source_IP</targetReference>
+            </connector>
+            <label>Is Single IP</label>
+        </rules>
+        <rules>
+            <name>Is_IP_Range</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Source_IP_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>2</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enter_Source_IP_Range</targetReference>
+            </connector>
+            <label>Is IP Range</label>
+        </rules>
+    </decisions>
+    <description>This template is for any port where the connection is initialised by the internal device accessing the site or application (i.e downloading from an FTP server, application ports, certain online tools.)</description>
+    <dynamicChoiceSets>
+        <name>ConnectedSchoolSitesList</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Billing_LFC_Access_Relinquished_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>School_Migration_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>7-In Use</stringValue>
+            </value>
+        </filters>
+        <object>Account</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>DestinationIPRangeIPSubnetList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IP Subnet Mask</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_DestinationIPSubnet</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>DestinationIPTypeList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IP Type</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_DestinationIPType</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>IPSubnetMaskList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IP Subnet Mask</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_SourceIPSubnet</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>ProtocolList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Network Protocol</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_Protocol</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>RuleList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Firewall Rule</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_Rule</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>SourceIPTypeList</name>
+        <dataType>String</dataType>
+        <displayField>Lookup_Lable__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lookup_Item__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IP Type</stringValue>
+            </value>
+        </filters>
+        <object>N4L_Lookup__c</object>
+        <outputAssignments>
+            <assignToReference>varT_SourceIPType</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <formulas>
+        <name>varF_CaseDescription</name>
+        <dataType>String</dataType>
+        <expression>&quot;Please sanity check and add the following rule to (School MOE ID: &quot; &amp; {!varT_SchoolMOEId} &amp; &quot;)&quot;
+&amp; &quot; | &quot; &amp;
+{!varF_VLANs_Description}
+&amp; &quot; | &quot; &amp;
+&quot;Source Zone = Internal&quot;
+&amp; &quot; | &quot; &amp; 
+&quot;Source IP =  &quot; &amp; {!varF_SourceIPDisplay}
+&amp; &quot; | &quot; &amp;
+&quot;Destination Zone = Internet&quot;
+&amp; &quot; | &quot; &amp;
+&quot;Destination IP = &quot; &amp;{!varF_DestinationIPDisplay}
+&amp; &quot; | &quot; &amp;
+&quot;Protocol = &quot;&amp;{!Protocol}
+&amp; &quot; | &quot; &amp;
+&quot;Port = &quot;&amp;{!Port}
+&amp; &quot; | &quot; &amp;
+&quot;Rule= &quot;&amp;{!Rule}
+&amp; &quot; | &quot; &amp;
+&quot;Further Information/Description = &quot;&amp;{!Description}
+&amp; &quot; | &quot; &amp;
+&quot;Sample Command String = &quot; &amp; {!varT_Rule}&amp;&quot; &quot;&amp;{!varT_Protocol}&amp;&quot; &quot;&amp;{!varF_SourceIP}&amp;&quot; &quot;&amp;{!varF_DestinationIP}&amp;&quot; eq &quot;&amp;{!Port}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_CaseSubject</name>
+        <dataType>String</dataType>
+        <expression>&quot;Firewall: &quot; &amp; IF({!varT_Rule}=&quot;permit&quot;,&quot;Open&quot;,&quot;Block&quot;)&amp;&quot; port (&quot; &amp; {!Port} &amp;&quot;)&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>varF_currentuseraccountid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Account_ID_Formula__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_currentusercontactid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.ContactId}</expression>
+    </formulas>
+    <formulas>
+        <description>Get the current user id.</description>
+        <name>varF_currentuserid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_currentusername</name>
+        <dataType>String</dataType>
+        <expression>{!$User.FirstName} &amp; &quot; &quot; &amp;{!$User.LastName}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_currentuserprofileid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.ProfileId}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_currentuserprofilename</name>
+        <dataType>String</dataType>
+        <expression>{!$Profile.Name} &amp; &quot; - &quot; &amp; TEXT({!$Profile.LicenseType})</expression>
+    </formulas>
+    <formulas>
+        <name>varF_DestinationIP</name>
+        <dataType>String</dataType>
+        <expression>CASE({!varT_DestinationIPType},&quot;3&quot;,&quot;any&quot;,&quot;1&quot;,&quot;host &quot; &amp; {!Destination_IP_Address},&quot;2&quot;,{!Destination_IP_Range_IP}&amp;&quot; &quot;&amp;{!varT_DestinationIPSubnet},&quot;[Unknown Destination IP]&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>varF_DestinationIPDisplay</name>
+        <dataType>String</dataType>
+        <expression>CASE({!varT_DestinationIPType},&quot;3&quot;,{!Destination_IP_Type},&quot;1&quot;,{!Destination_IP_Address},&quot;2&quot;,{!Destination_IP_Range_IP}&amp;{!Destination_IP_Range_Subnet},&quot;[Unknown Destination IP]&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>varF_SourceIP</name>
+        <dataType>String</dataType>
+        <expression>CASE({!varT_SourceIPType},&quot;3&quot;,&quot;object-group Internal_Networks&quot;,&quot;1&quot;,&quot;host &quot; &amp; {!Source_IP_Address},&quot;2&quot;,{!Source_IP_Range_IP}&amp;&quot; &quot; &amp;{!varT_SourceIPSubnet},&quot;[Unknown Source IP]&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>varF_SourceIPDisplay</name>
+        <dataType>String</dataType>
+        <expression>CASE({!varT_SourceIPType},&quot;3&quot;,{!Source_IP_Type},&quot;1&quot;,{!Source_IP_Address},&quot;2&quot;,{!Source_IP_Range_IP}&amp;{!Source_IP_Range_Subnet},&quot;[Unknown Source IP]&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>varF_VLAN_Description_Case</name>
+        <dataType>String</dataType>
+        <expression>IF({!VLANs_Description}=&quot;&quot;,&quot;&quot;,&quot;This rule is to be applied to VLAN (&quot; &amp;{!VLANs_Description}&amp;&quot;) please amend the rule listed below to suit the request i.e check object group names and IPs.&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>varF_VLANs_Description</name>
+        <dataType>String</dataType>
+        <expression>IF({!VLANs_Description}=&quot;&quot;,&quot;&quot;,&quot;Please be advised this rule will be applied to VLAN(&quot; &amp;{!VLANs_Description}&amp;&quot;)&quot;)</expression>
+    </formulas>
+    <interviewLabel>Submit a new Outgoing Firewall Change Request {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Submit a new Outgoing Firewall Change Request</label>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Case</name>
+        <label>Create Case</label>
+        <locationX>422</locationX>
+        <locationY>713</locationY>
+        <assignRecordIdToReference>varT_CaseId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Confirmation_Screen</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>varT_accountid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Call_Driver__c</field>
+            <value>
+                <stringValue>I need to make a change</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>varF_currentusercontactid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>varF_CaseDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Origin</field>
+            <value>
+                <stringValue>Support Hub Submission</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Product__c</field>
+            <value>
+                <stringValue>Firewall</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <stringValue>01290000000TNWZAA4</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>varF_CaseSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>MAC (Existing Service)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordCreates>
+    <screens>
+        <name>Confirmation_Screen</name>
+        <label>Confirmation Screen</label>
+        <locationX>611</locationX>
+        <locationY>714</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Thankyoumsg</name>
+            <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;_sans&quot; STYLE=&quot;font-size:16px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Your request has been submitted. A confirmation email will be sent to you shortly. Thank you!&lt;/FONT&gt;&lt;/DIV&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Enter_Destination_IP</name>
+        <label>Enter Destination IP</label>
+        <locationX>231</locationX>
+        <locationY>425</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Enter_the_rest_of_the_fields</targetReference>
+        </connector>
+        <fields>
+            <name>Destination_IP_Address</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>xxx.xxx.xxx.xxx</stringValue>
+            </defaultValue>
+            <fieldText>Destination IP Address</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Enter_Destination_IP_Range</name>
+        <label>Enter Destination IP Range</label>
+        <locationX>603</locationX>
+        <locationY>421</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Enter_the_rest_of_the_fields</targetReference>
+        </connector>
+        <fields>
+            <name>Destination_IP_Range_IP</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>xxx.xxx.xxx.xxx</stringValue>
+            </defaultValue>
+            <fieldText>Destination IP Range IP</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Destination_IP_Range_Subnet</name>
+            <choiceReferences>DestinationIPRangeIPSubnetList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Destination IP Range Subnet</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Enter_Source_IP</name>
+        <label>Enter Source IP</label>
+        <locationX>296</locationX>
+        <locationY>138</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Select_Destination_IP_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Source_IP_Address</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>xxx.xxx.xxx.xxx</stringValue>
+            </defaultValue>
+            <fieldText>Source IP Address</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>Please enter a single IP address in the format of xxx.xxx.xxx.xxx</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Enter_Source_IP_Range</name>
+        <label>Enter Source IP Range</label>
+        <locationX>516</locationX>
+        <locationY>137</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Select_Destination_IP_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Source_IP_Range_IP</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>192.168.1.0</stringValue>
+            </defaultValue>
+            <fieldText>Source IP Range IP</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Source_IP_Range_Subnet</name>
+            <choiceReferences>IPSubnetMaskList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Source IP Range Subnet</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Enter_the_rest_of_the_fields</name>
+        <label>Enter the rest of the fields</label>
+        <locationX>419</locationX>
+        <locationY>496</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Final_Display</targetReference>
+        </connector>
+        <fields>
+            <name>IPsDisplay</name>
+            <fieldText>{!EnterTheRestOfDestinationFieldsHtml}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Protocol</name>
+            <choiceReferences>ProtocolList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Protocol</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>Please provide the protocol of the port you wish to use, TCP, UDP, or Both</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Port</name>
+            <dataType>String</dataType>
+            <fieldText>Port</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>Please provide the port number you wish to open i.e 3389 (RDP), 1935 (RTP), 5938 (TeamViewer)</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Rule</name>
+            <choiceReferences>RuleList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Rule</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>Please provide the action to take when this port is accessed, either to block or allow</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Description</name>
+            <dataType>String</dataType>
+            <fieldText>Further Information/Description</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>Please describe what the port is for, or add any further information you would like to add to the request</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <helpText>Please specify the following? for the rule you would like to add, if you wish to open multiple ports please separate them with a space.</helpText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Final_Display</name>
+        <label>Final Display</label>
+        <locationX>421</locationX>
+        <locationY>607</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_Case</targetReference>
+        </connector>
+        <fields>
+            <name>FinalDisplay</name>
+            <fieldText>{!FinalDisplayHtml}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Select_Destination_IP_Type</name>
+        <label>Select Destination IP Type</label>
+        <locationX>415</locationX>
+        <locationY>246</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Evaluate_Destination_IP_Type</targetReference>
+        </connector>
+        <fields>
+            <name>DestinationZone</name>
+            <fieldText>{!SelectDestinationIPTypeHtml}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Destination_IP_Type</name>
+            <choiceReferences>DestinationIPTypeList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Destination IP Type</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <helpText>This screen is about the destination of the outbound traffic, can be to any location, a specific IP range or a singular IP.</helpText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Select_Source_IP_Type</name>
+        <label>Select Source IP Type</label>
+        <locationX>241</locationX>
+        <locationY>25</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Evaluate_Source_IP_Type</targetReference>
+        </connector>
+        <fields>
+            <name>SourrceZone</name>
+            <fieldText>{!SelectSourceIPTypeHtml}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>VLANs_Description</name>
+            <dataType>String</dataType>
+            <fieldText>VLANs Description</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>If the Rule is for a specific VLAN, please insert the VLAN ID Below</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Source_IP_Type</name>
+            <choiceReferences>SourceIPTypeList</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Source IP Type</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <helpText>The origin of the outbound traffic, can be the whole LAN, a VLAN or multiple VLANs</helpText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Call_Select_Account_Flow</startElementReference>
+    <status>Active</status>
+    <subflows>
+        <name>Call_Select_Account_Flow</name>
+        <label>Call Select Account Flow</label>
+        <locationX>56</locationX>
+        <locationY>25</locationY>
+        <connector>
+            <targetReference>Select_Source_IP_Type</targetReference>
+        </connector>
+        <flowName>Support_Hub_Select_Account</flowName>
+        <inputAssignments>
+            <name>varT_userid</name>
+            <value>
+                <elementReference>varT_userid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varT_accountid</name>
+            <value>
+                <elementReference>varT_accountid</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>varT_accountid</assignToReference>
+            <name>varT_accountid</name>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varT_AccountName</assignToReference>
+            <name>varT_accountname</name>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varT_SchoolMOEId</assignToReference>
+            <name>varT_SchoolMOEID</name>
+        </outputAssignments>
+    </subflows>
+    <textTemplates>
+        <name>EnterTheRestOfDestinationFieldsHtml</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;This screen is about the destination of the outbound traffic, can be to any location, a specific IP range or a singular IP.&lt;/p&gt;
+&lt;table style=&quot;background-color: #efefef; border-color: #cccccc; width: 100%; height: 100%;&quot; border=&quot;1&quot; cellspacing=&quot;1&quot; cellpadding=&quot;20&quot;&gt;
+    &lt;tbody style=&quot;font-size: 12px; color: #666666;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;School Name:&lt;/b&gt; {!varT_AccountName} (Moe Id: {!varT_SchoolMOEId})&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;VLAN Description:&lt;/b&gt; {!varF_VLANs_Description}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source Zone:&lt;/b&gt; Internal&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Destination Zone:&lt;/b&gt; Internet&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source IP Entered:&lt;/b&gt; {!varF_SourceIPDisplay}&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Destination IP:&lt;/b&gt; {!varF_DestinationIPDisplay}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div style=&quot;font-size: 10px; color: #999999;&quot;&gt;Please specify the following? for the rule you would like to add, if you wish to open multiple ports please separate them with a space.&lt;/div&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>FinalDisplayHtml</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Please check your request below:&lt;/p&gt;
+&lt;table style=&quot;background-color: #efefef; border-color: #cccccc; width: 100%; height: 100%;&quot; border=&quot;1&quot; cellspacing=&quot;1&quot; cellpadding=&quot;20&quot;&gt;
+    &lt;tbody style=&quot;font-size: 12px; color: #666666;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;School Name:&lt;/b&gt; {!varT_AccountName} (Moe Id: {!varT_SchoolMOEId})&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;VLAN Description:&lt;/b&gt; {!varF_VLANs_Description}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source Zone:&lt;/b&gt; Internal&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Destination Zone:&lt;/b&gt; Internet&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source IP Entered:&lt;/b&gt; {!varF_SourceIPDisplay}&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Destination IP:&lt;/b&gt; {!varF_DestinationIPDisplay}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Protocol:&lt;/b&gt; {!Protocol}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Port:&lt;/b&gt; {!Port}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Rule:&lt;/b&gt; {!Rule}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Further Information/Description:&lt;/b&gt; {!Description}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div style=&quot;font-size: 10px; color: #999999;&quot;&gt;If this is correct please click on Next to submit your request.&lt;/div&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SelectDestinationIPTypeHtml</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;This screen is about the destination of the outbound traffic, can be to any location, a specific IP range or a singular IP.&lt;/p&gt;
+&lt;table style=&quot;background-color: #efefef; border-color: #cccccc; width: 100%; height: 100%;&quot; border=&quot;1&quot; cellspacing=&quot;1&quot; cellpadding=&quot;20&quot;&gt;
+    &lt;tbody style=&quot;font-size: 12px; color: #666666;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;School Name:&lt;/b&gt; {!varT_AccountName} (Moe Id: {!varT_SchoolMOEId})&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;VLAN Description:&lt;/b&gt; {!varF_VLANs_Description}&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source Zone:&lt;/b&gt; Internal&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Destination Zone:&lt;/b&gt; Internet&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;Source IP Entered:&lt;/b&gt; {!varF_SourceIPDisplay}&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div style=&quot;font-size: 10px; color: #999999;&quot;&gt;Please select the Destination IP Type below.&lt;/div&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <description>To display the html section for the screen.</description>
+        <name>SelectSourceIPTypeHtml</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;This screen is about the origin of the outbound traffic, can be the whole LAN, a specific IP range or a singular IP.&lt;/p&gt;
+&lt;table style=&quot;background-color: #efefef; border-color: #cccccc; width: 100%; height: 100%;&quot; border=&quot;1&quot; cellspacing=&quot;1&quot; cellpadding=&quot;20&quot;&gt;
+    &lt;tbody style=&quot;font-size: 12px; color: #666666;&quot;&gt;
+        &lt;tr&gt;
+            &lt;td colspan=&quot;2&quot;&gt;
+                &lt;p&gt;&lt;b&gt;&amp;nbsp;School Name:&lt;/b&gt; {!varT_AccountName} (Moe Id: {!varT_SchoolMOEId})&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div style=&quot;font-size: 10px; color: #999999;&quot;&gt;If the Rule is for a specific VLAN, please insert the VLAN ID Below.&lt;/div&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>varO_User</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <description>Holds the account id of the request.</description>
+        <name>varT_accountid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Passed in from select account sub flow.</description>
+        <name>varT_AccountName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>The id of the case that was created.</description>
+        <name>varT_CaseId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_DestinationIPSubnet</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_DestinationIPType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_Protocol</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_Rule</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Passed in from the select account sub flow.</description>
+        <name>varT_SchoolMOEId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_SourceIPSubnet</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varT_SourceIPType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>Source_IP_Type</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>The Support Hub user id.</description>
+        <name>varT_userid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,17 @@
+h1 {
+    color: rgb(0, 112, 210);
+}
+p {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+}
+
+
+.serviceDisabled{
+    color: white;
+    background-color: #c23934;
+}
+.serviceEnabled{
+    color: rgb(62, 62, 60);
+    background-color: #4bca81;
+}

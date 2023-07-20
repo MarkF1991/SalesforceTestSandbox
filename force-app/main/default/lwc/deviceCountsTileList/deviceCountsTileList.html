@@ -1,0 +1,59 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container custom-icon" title="Device Insights">
+                        <span><i class="material-icons md-18">{cardIconName}</i></span>
+                        <span class="slds-assistive-text">Device Insights</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>Device Insights</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="card slds-card__body">
+            <template if:true={isLoading}>
+                <div class="loading-spinner-container">
+                    <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <div class="slds-grid slds-grid_vertical">
+                    <template if:true={hasDeviceData}>
+                        <div class="slds-col slds-border_top">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-large-size_1-of-2 slds-p-vertical_medium slds-p-horizontal_large">
+                                    <c-tile-item-ticker object={totalDevices}></c-tile-item-ticker>
+                                </div>
+                                <div class="slds-col slds-large-size_1-of-2 slds-p-vertical_medium slds-p-horizontal_large highlight" onclick={handleNavigationToInfected}>
+                                    <c-tile-item-ticker hide-trend=true object={infectedDevices}></c-tile-item-ticker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-border_top slds-theme_shade ">
+                            <template for:each={devicesByType} for:item="data">
+                                <div key={data.id} class="highlight slds-border_bottom slds-p-horizontal_large">
+                                    <c-tile-row-ticker id={data.id} onclick={notifyClick} object={data}></c-tile-row-ticker>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={hasDeviceData}>
+                        <c-no-user-or-device-data-warn class="slds-border_bottom"></c-no-user-or-device-data-warn>
+                    </template>
+                </div>
+            </template>                
+        </div>
+        <template if:true={footer}>
+            <footer class="slds-card__footer">
+                <a class="slds-card__footer-action" onclick={handleViewAllClick} href="javascript:void(0);">
+                    {footer.title}
+                </a>
+            </footer>
+        </template>
+    </article>
+</template>

@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title={title} icon-name="custom:custom64">  
+        <template if:true={displayMode}>
+            <div class="slds-m-around_medium" onproductselect={handleEventSelect}>
+                <template if:true={hasRecords}>
+                    <template for:each={products} for:item="product">
+                            <div class="slds-m-bottom_small" key={product.Id} >
+                                <c-product-tile product={product}></c-product-tile>    
+                            </div>
+                        </template>
+                </template>
+                <template if:false={hasRecords}>
+                        <p>{emptyListMessage}</p>
+                </template>
+                <template if:true={error}>
+                    <c-error-panel errors={error}></c-error-panel>
+                </template>
+            </div>
+        </template>
+        
+</lightning-card>
+</template>

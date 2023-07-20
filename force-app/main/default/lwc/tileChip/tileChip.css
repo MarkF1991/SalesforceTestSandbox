@@ -1,0 +1,24 @@
+.slds-avatar__initials {
+    background-color: #3ABFCE;
+    font-weight: bolder;
+}
+
+.security {
+    background-color: #f5675b !important; /*$color-background-error*/
+}
+
+.content {
+    background-color: #54698d !important; /* $brand-header-icon */
+}
+
+.user {
+    background-color: #31bfce!important; /* custom */
+}
+
+.connection {
+    background-color: #a525e0 !important; /* $brand-header-icon */
+}
+
+.device, .devices {
+    background-color: #6489e4 !important; /* $brand-header-icon */
+}

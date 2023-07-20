@@ -1,0 +1,5 @@
+<apex:page standardController="Account">
+    <script language="javascript">
+        parent.location.href = "/s/manage-contacts?recId="+'{!Account.Id}';            
+    </script>
+</apex:page>

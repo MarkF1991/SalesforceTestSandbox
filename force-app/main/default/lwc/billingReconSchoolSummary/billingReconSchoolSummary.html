@@ -1,0 +1,56 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="spinnerContainer">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <c-error-message errors={errors}></c-error-message>
+        <lightning-card icon-name="utility:moneybag" title="Reconciliation Summary">
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">SF Total</th>
+                        <th scope="col">CM Total</th>
+                        <th scope="col">Variance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={summaryRows} for:item="row">
+                        <tr key={row.name}>
+                            <th scope="row">
+                                <div class="slds-truncate" title={row.name}>{row.name}</div>
+                            </th>
+                            <td align="right">
+                                <div class="slds-truncate" title={row.calculatedCharge}>
+                                    <lightning-formatted-number 
+                                        value={row.calculatedCharge} 
+                                        format-style="currency" 
+                                        currency-code="NZD"
+                                    >
+                                    </lightning-formatted-number>
+                                </div>
+                            </td>
+                            <td align="right">
+                                <div class="slds-truncate" title={row.charge}>
+                                    <lightning-formatted-number 
+                                        value={row.charge} 
+                                        format-style="currency" 
+                                        currency-code="NZD"
+                                    >
+                                    </lightning-formatted-number>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={row.variance}>
+                                    <c-datatable-currency value={row.variance}></c-datatable-currency>
+                                </div>
+                            </td>
+                        </tr> 
+                    </template>
+                </tbody>
+            </table>
+        </lightning-card>
+    </template>
+</template>

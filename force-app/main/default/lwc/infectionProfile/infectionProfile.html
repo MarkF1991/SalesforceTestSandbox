@@ -1,0 +1,27 @@
+<template>
+    <div class="list-container" >
+        <div class="section-title">
+            <c-tile-page-header title={title} label={pageHeaderLabel} selectedfilter={selectedfilter} onheaderfilterchanged={applyFilter}></c-tile-page-header>
+        </div>
+        <lightning-tabset active-tab-value={currentTab}>
+            <lightning-tab label="Overview" value="overview" onactive={handleActive}>
+                <div class="wrapper">
+                    <div class="info-panel">
+                        <c-entity-information-panel items={infectionInformationItems}></c-entity-information-panel>
+                    </div>
+                    <div class="main-panel">
+                        
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Devices" value="devices" onactive={handleActive}>
+                <template if:false={noDeviceData}>
+                    <c-devices-list-view hide-averages=true override-css-class="no-border" override-view={devicesListViewOverride} disable-infite-scroll={devicesTabInActive} disable-header-filter=true></c-devices-list-view>
+                </template>
+                <template if:true={noDeviceData}>
+                    <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+                </template>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>

@@ -1,0 +1,7 @@
+<apex:page standardController="Account" showheader="false" sidebar="false">
+<div style="width:600px;">
+  <!-- This will launch the flow, Latest Visit Date -->
+<flow:interview name="Latest_Visit_Date" finishLocation="/{!Account.Id}">
+<apex:param name="varAccountId" value="{!Account.Id}"/>
+</flow:interview></div>
+</apex:page>

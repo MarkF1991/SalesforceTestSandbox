@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-grid">
+        <div class="slds-col slds-align-middle slds-size_3-of-4">
+            <div class="slds-grid">
+                <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium">
+                    <span class={iconClass}>
+                        <i class="material-icons">{object.icon}</i>
+                    </span>
+                </div>
+                <div class="slds-col slds-align-middle slds-has-flexi-truncate slds-m-left_small slds-text-align_left">
+                    <p class="slds-col slds-truncate">{object.label}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slds-col slds-align-middle slds-size_1-of-4">
+            <div class="slds-col slds-align-middle slds-has-flexi-truncate slds-m-right_small slds-text-align_right">
+                <p class="slds-col slds-truncate valueText">{object.value}</p>
+            </div>
+        </div>
+    </div>
+</template>

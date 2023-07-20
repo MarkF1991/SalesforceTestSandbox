@@ -1,0 +1,318 @@
+body {
+    margin: 0;
+    font-family: Open Sans !important;
+    background: #f9f9f9;
+}
+
+.slds-scope.signUp {
+    padding: 16px 16px 0px;
+}
+
+.slds-scope a {
+    color: #980d76;
+    text-decoration: none;
+    transition: color .1s linear;
+}
+
+.slds-scope a:hover {
+    color: #980d76;
+    text-decoration: underline;
+    transition: color .1s linear;
+}
+
+.slds-scope .slds-align_absolute-center {
+    position: relative;
+}
+
+.slds-scope .slds-theme--default {
+    background-color: white;
+    color: #646568;
+}
+
+.slds-form_compound {
+    background: white;
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 0px 16px 0px rgb(0 0 0 / 24%);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 528px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+}
+
+.slds-form_gradientHeader {
+    height: 80px;
+    width: 100%;
+    background: rgb(152,13,118);
+    background: linear-gradient(90deg, rgba(152,13,118,1) 0%, rgba(247,148,30,1) 100%);
+}
+
+.gradientHeader_logo {
+    width: 94px;
+    margin: auto;
+}
+
+.headerLogo {
+    height: 80px;
+}
+
+.slds-scope .slds-box {
+    border: none !important;
+    margin-top: 24px;
+    padding: 0 24px 24px 24px;
+}
+
+.slds-scope .slds-box_m-small {
+    border: none !important;
+    margin-top: 12px;
+    padding: 0 24px 24px 24px;
+}
+
+.slds-scope .slds-input {
+    height: 48px;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 15px;
+    color: #646568;
+}
+
+.slds-scope .slds-input:focus {
+    border-color: #980d76;
+    background-color: rgb(255, 255, 255);
+    color: var(--sds-c-input-text-color-focus);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+}
+
+.slds-scope .slds-input[disabled]{
+    border-color: #e4e5e5;
+    background-color: #e4e5e5;
+    cursor: auto;
+}
+
+.slds-scope .slds-input::-webkit-input-placeholder {
+    font-size: 15px;
+    opacity: 0.72;
+}
+
+.slds-scope .input-80 {
+    width: 80% !important;
+}
+
+.slds-scope .slds-select {
+    height: 48px !important;
+    font-size: 15px;
+    border-radius: 0;
+}
+
+.slds-form-element__row {
+    margin-bottom: 16px;
+}
+
+.slds-scope .slds-form-element__label {
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: none !important;
+    color: #646568;
+    margin-bottom: 12px;
+}
+
+.slds-scope .slds-form-element__label-heavy {
+    font-size: 15px;
+    font-weight: 600;
+    color: #646568;
+    margin-bottom: 12px;
+}
+
+.slds-scope .slds-m-vertical_medium, .slds-scope .slds-m-top_medium {
+    margin-top: 0px !important;
+}
+
+.slds-checkbox {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.slds-scope .slds-button_brand.button {
+    float: right;
+    background-color: rgb(247, 148, 30) ;
+    border-color: rgb(247, 148, 30) ;
+    width: 100px;
+    border-radius: 4;
+    font-size: 15px ;
+    font-weight: bold ;
+    height: 48px;
+    cursor: pointer;
+}
+
+.slds-scope .slds-button_brand.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.slds-scope .slds-button_brand.button.nudgeRight {
+    float: right;
+    margin-right: -24px;
+    background-color: rgb(247, 148, 30) ;
+    border-color: rgb(247, 148, 30) ;
+    width: 100px;
+    border-radius: 4;
+    font-size: 15px ;
+    font-weight: bold ;
+    height: 48px;
+    cursor: pointer;
+}
+
+.slds-scope .slds-button_brand.button:hover, .slds-scope .slds-button_brand.button:focus, .slds-scope .slds-button_brand.button:active  {
+    background-color: #DF7E0A;
+    border-color: #DF7E0A;
+    box-shadow: none;
+}
+
+.emailDomain {
+    position: absolute;
+    top: 48px;
+    left: 9px;
+    color: #646568;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    direction: ltr;
+    font-size: 15px;
+}
+
+.slds-input .typeahead{
+    margin-top:16px;
+}
+
+.twitter-typeahead {
+    width: 100%;
+}
+
+.tt-menu {
+    width: 100%;
+}
+
+.tt-selectable {
+    padding: 16px 12px;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    cursor: pointer;
+    width: 100%;
+    background-color: white;
+}
+
+.tt-selectable:hover {
+    background-color: #F8F8F8;
+}
+
+
+.slds-size_1-of-1 .slds-m-top_large {
+    padding: 0 24px;
+}
+
+#accountCreate {
+    min-height: 404px;
+}
+
+#dummyCreate {
+    position: absolute;
+    width: 100%;
+    opacity: 0.4;
+}
+
+.slds-input.mobilePhone {
+    margin-bottom: 16px !important;
+}
+
+.button.noneEvent{
+    pointer-events: none;
+    cursor: auto;
+}
+
+
+/* Styling for Criteria Validation Start */
+
+
+.glyphicon-default {
+    color: #646568;
+    }
+    
+.glyphicon-ok {
+    color: #558b2f;
+}
+
+.sh-validate-status {
+    position:absolute;
+    right:13px;
+    top:14px;
+}
+
+.criteria-list {
+    margin-bottom: 24px;
+}
+
+.criteria-list_item {
+    position: relative;
+    padding-left: 28px;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.glyphicon.glyphicon-default + .slds-checkbox_criteria,
+.glyphicon.glyphicon-default.glyphicon-default + .slds-checkbox_criteria {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    vertical-align: middle;
+    border-radius: 9px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #dededf;
+    background-color: var(--sds-c-checkbox-color-background, white);
+    -webkit-transition: border 0.1s linear, background-color 0.1s linear;
+    transition: border 0.1s linear, background-color 0.1s linear;
+    }
+
+.glyphicon.glyphicon-default.glyphicon-ok + .slds-checkbox_criteria,
+.glyphicon.glyphicon-ok + .slds-checkbox_criteria {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    vertical-align: middle;
+    border-radius: 9px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #558b2f;
+    background-color: #558b2f;
+    -webkit-transition: border 0.1s linear, background-color 0.1s linear;
+    transition: border 0.1s linear, background-color 0.1s linear;
+    }
+
+.glyphicon.glyphicon-default.glyphicon-ok + .slds-checkbox_criteria:after,
+.glyphicon.glyphicon-ok + .slds-checkbox_criteria:after {
+    display: block;
+    content: "";
+    height: 0.25rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 50%;
+    /*! @noflip */
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    border-bottom: 2px solid white;
+    /*! @noflip */
+    border-left: 2px solid white;
+}
+
+
+

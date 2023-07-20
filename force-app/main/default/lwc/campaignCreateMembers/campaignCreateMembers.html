@@ -1,0 +1,28 @@
+<template>
+    <p>Create campaign members from above selected contacts.</p>
+<div class="c-container">
+    <lightning-layout>
+        <lightning-layout-item padding="around-small">
+            <div class="custom-box"> <lightning-button label="Create Campaign Members" slot="actions" onclick={handleCreateCampaignMembers}></lightning-button> </div>
+            <div class="custom-box">  <lightning-input type="checkbox" label="Customer marketing email opt out status" onclick={handleExcludeOptout} field-level-help ="When checked, customers who have opted out of marketing communications will be excluded from the recipient list."></lightning-input>
+            
+    </div>
+        </lightning-layout-item>
+        
+        
+    </lightning-layout>
+</div>
+
+<template if:true={isLoading}>
+    <div class="slds-align_absolute-center slds-p-vertical_large">
+        <div class="loading-spinner-container">
+            <div class="loading-spinner">
+                <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+            </div>
+        </div>
+    </div>
+</template>
+<template if:true={error}>
+    <c-error-panel errors={error}></c-error-panel>
+</template>
+</template>

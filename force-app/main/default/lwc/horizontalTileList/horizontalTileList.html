@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <template for:each={items} for:item="data">
+            <div class="slds-col slds-size_1-of-3" key={data.id}>
+                <div class="card">
+                    <template if:false={noData}>
+                        <c-tile-item-object id={data.id} onclick={notifyClick} class="slds-p-horizontal_medium slds-p-vertical_medium" key={data.id} object={data}></c-tile-item-object>
+                    </template>
+                    <template if:true={noData}>
+                        <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Survey_Email</name>
+        <label>Send Survey Email</label>
+        <locationX>176</locationX>
+        <locationY>455</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Log_email_to_case</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>emailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>Get_Onboarding_Case.Contact.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>emailSentFrom</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>emailSubject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <constants>
+        <name>emailSentFrom</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>provision@n4l.co.nz</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Subject of the Survey email sent</description>
+        <name>emailSubject</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Internal Environment Monitoring installation. How did we do?</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>The GetFeedback unique identifier of the survey. Can use this to switch between draft and live survey for testing. 
+Live survey: eMtNwqM2
+draft survey: x4yvtGAg (check getfeedback, this is not fixed)</description>
+        <name>surveyUniqueId</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>eMtNwqM2</stringValue>
+        </value>
+    </constants>
+    <description>V5: API version 55
+V4: updated to link to live survey
+Send the survey email to Primary Contact on the related Case
+https://n4lconz.atlassian.net/browse/SFB-496</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>The distribution URL of the Survey from GetFeedback, includes the merge fields.</description>
+        <name>surveyURL</name>
+        <dataType>String</dataType>
+        <expression>&quot;https://n4l.getfeedback.com/r/&quot;+{!surveyUniqueId}+
+&quot;?CaseID=&quot;+{!Get_Onboarding_Case.Id}+
+&quot;&amp;AccountName=&quot;+{!Get_Onboarding_Case.Account.Name}+
+&quot;&amp;gf_unique=&quot;+{!Get_Onboarding_Case.Id}+
+&quot;&amp;gf_id=&quot;+{!Get_Onboarding_Case.Id}+
+&quot;&amp;AccountId=&quot;+{!Get_Onboarding_Case.AccountId}</expression>
+    </formulas>
+    <interviewLabel>Task - Send IEM Survey email when Install task is Completed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Task - Send IEM Survey email when Install task is Completed</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Create an EmailMessage record with details of the email sent. This will display on Chatter Feed and Activity Timeline on the caes record</description>
+        <name>Log_email_to_case</name>
+        <label>Log email to case</label>
+        <locationX>176</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>FromAddress</field>
+            <value>
+                <elementReference>emailSentFrom</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HtmlBody</field>
+            <value>
+                <elementReference>emailBody</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>Get_Onboarding_Case.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>3</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>emailSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ToAddress</field>
+            <value>
+                <elementReference>Get_Onboarding_Case.Contact.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Get the Onboarding Case related to the triggering task</description>
+        <name>Get_Onboarding_Case</name>
+        <label>Get Onboarding Case</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Survey_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Onboarding_Case</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Programme__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IEM - Internal Environmental Monitoring</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Install</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Task</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <textTemplates>
+        <description>This is the email body of the IEM_Work_Complete_Survey email template</description>
+        <name>emailBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;/&gt;
+    
+
+    &lt;style type=&quot;text/css&quot;&gt;
+        @import url(&apos;https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&amp;display=swap&apos;);
+        
+        body{
+            margin: 0;
+            background-color: #f2f2f2; 
+            width: 100%;
+            font-family: &apos;Open Sans&apos;, Arial, Sans Serif;
+            font-size: 14px;
+            line-height:24px;
+            color: #646568;     
+        }
+        
+        a{
+            color: #980d76 !important;
+        }
+    
+        img {
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        td img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        
+        }
+    
+        a img {
+            border: none;
+        }
+    
+        #outlook a {
+            padding: 0;
+        }
+
+    
+        li{
+            margin-bottom: 12px;    
+        }
+
+        table {
+            border-spacing: 0;
+            vertical-align: top;
+        }
+    
+        .templateContainer{
+            max-width: 640px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0px 16px 24px 16px;
+        }
+
+        .templateHeader {
+            overflow: hidden;
+            width: 100%;
+            max-width: 640px;
+            height: 80px;
+            max-height: 80px;
+            background-color: #980d76;
+        }
+    
+        .cardContainer{
+            border-radius: 4px;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        .mb-sat {
+            display: none;
+        }
+    
+        @media only screen and (max-width: 380px) {
+            .headerImage {
+                display: none !important;        
+            }
+        }
+
+        @media only screen and (max-width: 640px) {
+            .mb-sat {
+                display: table;
+                border-spacing: 16px;
+                margin: auto;
+            }
+
+            .dt-sat {
+                display: none;
+            }
+
+            .sat-label {
+                font-size: 14px !important;
+            }
+
+        }
+
+        .sat-option{
+            position: relative; 
+            text-align: center; 
+            background-color: #f3f3f3; 
+            border-radius: 8px;
+            width: 112px;
+            height: 80px;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body width=”100%” height=&quot;100%&quot; style=&quot; 
+width: 100%;
+height: 100%;
+margin: 0;
+background-color: #f2f2f2;
+font-family: &apos;Open Sans&apos;, Arial, Sans Serif;
+font-size: 14px;
+line-height:24px;
+color: #646568;&quot;&gt;
+&lt;!-- // Begin Template Container --&gt;
+&lt;table align=&quot;center&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0 !important&quot; cellpadding=&quot;0 !important&quot; cellspacing=&quot;0 !important&quot; class=&quot;templateContainer&quot; height=&quot;100%&quot; style=&quot;
+width: 100%;
+height: 100%;
+background-color: #f2f2f2;
+padding: 8px 16px&quot; width=&quot;”100%”&quot;&gt;
+	&lt;tbody&gt;
+		&lt;tr&gt;
+			&lt;td&gt;
+			&lt;table align=&quot;center&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0 !important&quot; cellpadding=&quot;0 !important&quot; cellspacing=&quot;0 !important&quot; class=&quot;contentContainer&quot; height=&quot;100%&quot; max-width=&quot;640px&quot; style=&quot;
+            width: 100%;
+            height: 100%;
+            background-color: #f2f2f2;&quot; width=&quot;”100%”&quot;&gt;
+				&lt;tbody&gt;&lt;!-- // Begin Template Preheader --&gt;&lt;!-- // End Template Preheader --&gt;&lt;!-- // Begin Card Container --&gt;
+					&lt;tr&gt;
+						&lt;td&gt;
+						&lt;table align=&quot;center&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0 !important&quot; cellpadding=&quot;0 !important&quot; cellspacing=&quot;0&quot; max-width=&quot;640px&quot; style=&quot;
+                        width: 100%;
+                        max-width: 640px;
+                        height: 100%;
+                        border-radius: 4px;
+                        background-color: #ffffff;
+                        overflow: hidden;&quot; width=&quot;100%&quot;&gt;
+							&lt;tbody&gt;&lt;!-- // Begin Email Header --&gt;
+								&lt;tr&gt;
+									&lt;td&gt;
+									&lt;table bgcolor=&quot;#980d76&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0px&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; class=&quot;cardHeader&quot; height=&quot;80px&quot; style=&quot;
+                                    width: 100%;
+                                    height: 80px;
+                                    overflow: hidden
+                                    background-color: #980d76;&quot; width=&quot;100%&quot;&gt;
+										&lt;tbody&gt;
+											&lt;tr&gt;
+												&lt;td align=&quot;left&quot; height=&quot;80px&quot; style=&quot;padding-left: 40px;&quot;&gt;&lt;a href=&quot;https://www.n4l.co.nz/&quot; style=&quot;display: inline-block;&quot;&gt;&lt;img alt=&quot;Network for Learning&quot; border=&quot;0&quot; height=&quot;32px&quot; src=&quot;https://www2.n4l.co.nz/l/226952/2019-09-13/5dc76/226952/82913/n4l_logo_white.png&quot; width=&quot;73px&quot;&gt; &lt;/a&gt;&lt;/td&gt;
+												&lt;td align=&quot;right&quot; class=&quot;headerImage&quot; height=&quot;80px&quot;&gt;&lt;img src=&quot;https://www2.n4l.co.nz/l/226952/2019-09-13/5dc74/226952/82911/n4l_head_clear.png&quot; style=&quot;float: right;&quot;&gt;&lt;/td&gt;
+											&lt;/tr&gt;
+										&lt;/tbody&gt;
+									&lt;/table&gt;
+									&lt;/td&gt;
+								&lt;/tr&gt;
+								&lt;!-- // End Email Header --&gt;&lt;!-- // Begin Email Copy --&gt;
+								&lt;tr&gt;
+									&lt;td&gt;
+									&lt;table align=&quot;center&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; max-width=&quot;640px&quot; style=&quot;
+                                    padding: 24px 0px 24px 0px&quot; width=&quot;100%&quot;&gt;
+										&lt;tbody&gt;
+											&lt;tr&gt;
+												&lt;td style=&quot;
+                                                padding: 0px 40px 24px 40px;
+                                                font-family: &apos;Open Sans&apos;, Arial, Sans Serif;
+                                                font-size: 14px !important;
+                                                line-height:24px;
+                                                color: #646568;&quot;&gt;Kia ora {!Get_Onboarding_Case.Contact.FirstName},&lt;/td&gt;
+											&lt;/tr&gt;
+											&lt;tr&gt;
+												&lt;td pardot-region=&quot;body_copy&quot; style=&quot;
+                                                padding: 0px 40px 8px 40px;
+                                                font-family: &apos;Open Sans&apos;, Arial, Sans Serif;
+                                                font-size: 14px !important;
+                                                line-height:24px;
+                                                color: #646568;&quot; class=&quot;&quot; pardot-data=&quot;link-underline:none;&quot;&gt;We’ve completed the installation of Internal Environmental Monitoring (IEM) devices into your school, and we’d love to know how you think it went. We’d really appreciate it if you could take a couple of minutes to answer a few questions.&lt;br&gt;&lt;br&gt;
+How satisfied were you with your overall upgrade experience?&lt;br&gt;&lt;br&gt;
+&lt;/td&gt;
+											&lt;/tr&gt;
+											&lt;tr&gt;
+												&lt;td&gt;
+&lt;table align=&quot;center&quot; class=&quot;layout&quot; width=&quot;600&quot; style=&quot;background-color:#ffffff;border-radius:2px;border-spacing:0;color:#222222;margin-right:auto;margin-left:auto;-webkit-font-smoothing:antialiased;font-family:&apos;Open Sans&apos;, sans-serif;font-size:11px;font-weight:300;line-height:26px;width:600px&quot;&gt;
+													&lt;tr&gt;
+														&lt;td class=&quot;padded&quot; style=&quot;padding: 18px 15px; background-color: #ffffff; text-align: center;&quot;&gt;
+															
+															&lt;div class=&quot;multiple-choice&quot; style=&quot;margin-top:15px&quot;&gt;
+																&lt;a href=&quot;{!surveyURL}&quot; style=&quot;text-decoration:none;color:#FFFFFF;&quot;&gt;
+																	&lt;div class=&quot;multiple-choice-text&quot; style=&quot;padding:12px;font-size:14px;border-radius:3px;font-weight:bold;margin-bottom:3px;line-height:normal;text-align:center;background-color:#f7941e;color:#FFFFFF;display:inline-block;&quot;&gt;Take the Survey&lt;/div&gt;
+																&lt;/a&gt;
+																
+															&lt;/div&gt;
+														&lt;/td&gt;
+													&lt;/tr&gt;
+												&lt;/table&gt;
+												&lt;/td&gt;
+											&lt;/tr&gt;
+											&lt;tr&gt;
+												&lt;td style=&quot;
+                                                padding: 32px 40px 24px 40px;  
+                                                font-family: &apos;Open Sans&apos;, Arial, Sans Serif;
+                                                font-size: 14px !important;
+                                                line-height:24px;
+                                                color: #646568;&quot;&gt;
+Ngā mihi&lt;br&gt;
+     
+												&lt;span style=&quot;font-weight:600;&quot;&gt;The team at Network for Learning &lt;/span&gt;&lt;br&gt;
+
+												
+												&lt;span style=&quot;color:transparent;&quot;&gt;{!Get_Onboarding_Case.Case_Thread_ID__c}&lt;/span&gt;
+												&lt;/td&gt;
+												
+											&lt;/tr&gt;
+										&lt;/tbody&gt;
+									&lt;/table&gt;
+									&lt;/td&gt;
+								&lt;/tr&gt;
+								&lt;!-- // End Email Copy --&gt;
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;!-- // End Card Container --&gt;&lt;!-- // Begin Template Footer --&gt;
+					&lt;tr&gt;
+						&lt;td&gt;
+						&lt;table align=&quot;center&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; max-width=&quot;640px&quot; width=&quot;100%&quot;&gt;
+							&lt;tbody&gt;
+								&lt;tr&gt;
+									&lt;td style=&quot;
+                                    width: 100%;
+                                    color: #646568;
+                                    padding:12px 0px 12px 0px; 
+                                    text-align:center; 
+                                    font-size:13px; 
+                                    line-height:24px&quot;&gt;&lt;a href=&quot;https://www.n4l.co.nz&quot; style=&quot;color:#646568 !important; text-decoration:none&quot; target=&quot;_blank&quot;&gt;Network for Learning&lt;/a&gt;&lt;br&gt;
+									&lt;a href=&quot;tel:0800532764&quot; style=&quot;color:#646568 !important; text-decoration:none&quot; target=&quot;_blank&quot;&gt;0800 LEARNING&lt;/a&gt; | &lt;a href=&quot;mailto:info@n4l.co.nz&quot; style=&quot;color:#646568 !important; text-decoration:none&quot; target=&quot;_blank&quot;&gt;info@n4l.co.nz&lt;/a&gt;&lt;/td&gt;
+								&lt;/tr&gt;
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;!-- // End Template Footer --&gt;
+				&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;!-- // End Template Container --&gt;</text>
+    </textTemplates>
+</Flow>

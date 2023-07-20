@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Error_Message</name>
+        <label>Error Message</label>
+        <locationX>440</locationX>
+        <locationY>278</locationY>
+        <actionName>PostApiForErrorMessagesController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>action</name>
+            <value>
+                <elementReference>Update_User</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>errorMessages</name>
+            <value>
+                <stringValue>Unable to deactive user</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Ids</name>
+            <value>
+                <elementReference>$Record.userId__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>origin</name>
+            <value>
+                <stringValue>Salesforce</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>PostApiForErrorMessagesController</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>Deactivate MyN4L User - Platform Event Triggered {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Deactivate MyN4L User - Platform Event Triggered</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Set user IsActive to False. Id received from Platform Event.</description>
+        <name>Update_User</name>
+        <label>Update User</label>
+        <locationX>176</locationX>
+        <locationY>170</locationY>
+        <faultConnector>
+            <targetReference>Error_Message</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.userId__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IsActive</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>User</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_User</targetReference>
+        </connector>
+        <object>Deactivate_MyN4L_User__e</object>
+        <triggerType>PlatformEvent</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

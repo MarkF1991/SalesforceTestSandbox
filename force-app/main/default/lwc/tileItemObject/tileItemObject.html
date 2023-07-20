@@ -1,0 +1,23 @@
+<template>
+    <div class="slds-grid">
+        <template if:true={object.title}>
+            <div class="slds-col slds-size_2-of-3 slds-align-middle slds-text-align_left">
+                <p class="slds-truncate slds-text-color_weak slds-m-bottom_medium labelText">{object.title}</p>
+            </div>
+        </template>
+        <template if:true={object.unit}>
+            <div class="slds-col slds-size_1-of-3 slds-align-middle slds-text-align_right">
+                <p class="slds-truncate slds-text-color_weak slds-m-bottom_medium labelText">{object.unit}</p>
+            </div>
+        </template>
+    </div>
+
+    <div class="slds-grid">
+        <div class="slds-col slds-size_2-of-3 slds-align-middle slds-text-align_left">
+            <c-tile-chip-object object={object.chip}></c-tile-chip-object>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-align-middle slds-text-align_right">
+            <p class="slds-truncate valueText">{object.value}</p>
+        </div>
+    </div>
+</template>

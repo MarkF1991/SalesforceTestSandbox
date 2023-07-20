@@ -1,0 +1,88 @@
+<template>
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <template if:true={useAvatar}>
+                            <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium">
+                                <span class="slds-avatar slds-avatar_medium">
+                                    <abbr class="slds-avatar__initials" title={title}>{acronym}</abbr>
+                                </span>
+                            </div>
+                        </template>
+
+                        <template if:false={useAvatar}>
+                            <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium">
+                                <span class={materialIconClass}>
+                                    <i class="material-icons">{materialIconName}</i>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1 class="page-title">
+                                    {title}
+                                </h1>
+                            </div>
+                            <template if:true={showSwitcher}>
+                                <div class="slds-page-header__name-switcher">
+                                    <div class="slds-m-left_small">
+                                        <lightning-button-menu id="sub-view-button" alternative-text="Show menu" variant="bare" menu-alignment="auto" onselect={handleMenuItemSelected}>
+                                            <template for:each={menuItems} for:item="menuItem">
+                                                <lightning-menu-item key={menuItem.id} value={menuItem.value} label={menuItem.label}>
+                                                </lightning-menu-item>
+                                            </template>
+                                        </lightning-button-menu>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-meta">
+                <template if:false={disableFilter}>
+                    <span class="slds-page-header__meta-text">Filtered by: </span>
+                    <template for:each={filteredBy} for:item="filter">
+                        <span class="slds-page-header__meta-text" key={filter.label}>{filter.label}</span>
+                        <span class="slds-page-header__meta-text" key={filter.text}><b>{filter.text}</b></span>
+                    </template>
+                </template>
+            </div>
+            <template if:false={disableFilter}>
+                <div class="slds-page-header__col-controls">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <div class={filterDropDownClass}>
+                                <lightning-button variant="neutral" label="Update Filter" title="Update Filters" icon-name="utility:filterList" icon-position="right" onclick={toggleFilterExpanded} class="slds-m-left_x-small "></lightning-button>
+                                <div class="slds-dropdown slds-dropdown_right">
+                                    <c-filter show-filters=true selected-filter={selectedfilter} onfilterchanged={handleFilterChanged} onclosefilterselect={handleCloseFilterSelect} oncurrentlyselectedoptions={handleCurrentlySelectedOptions}></c-filter>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <template if:true={showDetails}>
+            <div class="slds-page-header__row slds-page-header__row_gutters">
+                <div class="slds-page-header__col-details">
+                    <ul class="slds-page-header__detail-row">
+                      <template for:each={details} for:item="data">
+                          <li class="slds-page-header__detail-block" key={data.id}>
+                              <div class="slds-text-title slds-truncate" title={data.title}>{data.title}</div>
+                              <div class="slds-truncate" title={data.value}>{data.value}</div>
+                          </li>
+                      </template>
+                    </ul>
+                </div>
+            </div>
+        </template>
+        
+    </div>
+</template>

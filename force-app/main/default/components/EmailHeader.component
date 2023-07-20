@@ -1,0 +1,9 @@
+<apex:component access="global">
+    <html>
+    <table id="page-wrap" width="100%" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff">
+    <tr><td><table id="top-banner" width="588" cellspacing="0" cellpadding="0" align="center">
+    <tr><td align="center"><img style="width: 588px; height: 96px; display: block;" src="http://www2.n4l.co.nz/l/226952/2016-09-04/23y/226952/122/N4L_Master_Header.600px.jpg"
+                                alt="" width="600" height="96" border="0" /></td></tr>
+    </table></td></tr></table>
+    </html>
+</apex:component>

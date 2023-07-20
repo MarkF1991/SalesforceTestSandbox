@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <assignments>
+        <description>Set the case status to &apos;Closed - Created in Error&apos;</description>
+        <name>Set_CaseStatus</name>
+        <label>Set_CaseStatus</label>
+        <locationX>270</locationX>
+        <locationY>636</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_Cases.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Closed - Created in Error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Store_CasesToUpdate</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the cases with the status set to &apos;Closed - Created in Error&apos; to the collection variable, for updating after the loop.</description>
+        <name>Store_CasesToUpdate</name>
+        <label>Store_CasesToUpdate</label>
+        <locationX>270</locationX>
+        <locationY>756</locationY>
+        <assignmentItems>
+            <assignToReference>var_coll_CasesToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Cases</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Cases</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check how many cases were retrieved, if zero exit the flow. Otherwise, continue.</description>
+        <name>Check_NumberOfCases</name>
+        <label>Check_NumberOfCases</label>
+        <locationX>380</locationX>
+        <locationY>396</locationY>
+        <defaultConnectorLabel>Check_NumberOfCases_ZeroCases</defaultConnectorLabel>
+        <rules>
+            <name>Check_NumberOfCases_MoreThanZero</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Cases</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_Cases</targetReference>
+            </connector>
+            <label>Check_NumberOfCases_MoreThanZero</label>
+        </rules>
+    </decisions>
+    <description>Runs daily at 7:30 AM.
+
+The flow performs a Get Record element on the Case object, with two criteria:
+Case_Owner_Name__c = ‘Switch On Safety’ AND
+AccountId is null
+
+Then a decision element checks that records were found. If no records are found the flow exits. If a non zero amount are found the flow proceeds to update the status field of the retrieved case records to ‘Closed - Created In Error’.
+
+After Updating the records the flow pauses for 5 minutes, then performs a Delete Records action on the cases.</description>
+    <formulas>
+        <description>Set the length of time to pause the flow - 5 minutes</description>
+        <name>form_datetime_pauselength</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime} + 5/1440</expression>
+    </formulas>
+    <interviewLabel>Case_ {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CASE_BAT_DeleteSwitchOnSafetyCases</label>
+    <loops>
+        <description>Loop over the cases</description>
+        <name>Loop_Cases</name>
+        <label>Loop_Cases</label>
+        <locationX>182</locationX>
+        <locationY>516</locationY>
+        <collectionReference>Get_Cases</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_CaseStatus</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_List_CaseStatus</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordDeletes>
+        <description>Deletes the case records that previously had their status updated.</description>
+        <name>Del_List_Cases</name>
+        <label>Del_List_Cases</label>
+        <locationX>50</locationX>
+        <locationY>1212</locationY>
+        <inputReference>var_coll_CasesToUpdate</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <description>Get the cases which need to be updated and then deleted</description>
+        <name>Get_Cases</name>
+        <label>Get_Cases</label>
+        <locationX>380</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_NumberOfCases</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Case_Owner_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Switch On Safety</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the case status of the record collection</description>
+        <name>Update_List_CaseStatus</name>
+        <label>Update_List_CaseStatus</label>
+        <locationX>182</locationX>
+        <locationY>972</locationY>
+        <connector>
+            <targetReference>Pause_5MinutePause</targetReference>
+        </connector>
+        <inputReference>var_coll_CasesToUpdate</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Cases</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2022-06-02</startDate>
+            <startTime>07:30:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Cases from the loop are added to this collection for updating.</description>
+        <name>var_coll_CasesToUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <waits>
+        <description>Pause the flow for 5 minutes after the update records element. This prevents the NVM case routing from interfering with the delete records element.</description>
+        <name>Pause_5MinutePause</name>
+        <label>Pause_5MinutePause</label>
+        <locationX>182</locationX>
+        <locationY>1092</locationY>
+        <defaultConnectorLabel>Default Path</defaultConnectorLabel>
+        <waitEvents>
+            <name>Resume_After_5_Minutes</name>
+            <conditionLogic>and</conditionLogic>
+            <connector>
+                <targetReference>Del_List_Cases</targetReference>
+            </connector>
+            <eventType>AlarmEvent</eventType>
+            <inputParameters>
+                <name>AlarmTime</name>
+                <value>
+                    <elementReference>form_datetime_pauselength</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Hours</stringValue>
+                </value>
+            </inputParameters>
+            <label>Resume After 5 Minutes</label>
+        </waitEvents>
+    </waits>
+</Flow>

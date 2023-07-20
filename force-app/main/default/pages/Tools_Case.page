@@ -1,0 +1,6 @@
+<apex:page standardController="Case" showheader="false" sidebar="false">
+  <!-- This will launch the flow, RAS Case Intro -->
+<flow:interview name="Support_Tools_Case" finishLocation="/{!Case.Id}">
+<apex:param name="CaseId" value="{!Case.Id}"/>
+</flow:interview>
+</apex:page>

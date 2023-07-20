@@ -1,0 +1,1107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Add the contract ID to the collection for update</description>
+        <name>Add_Contract_ID_to_collection</name>
+        <label>Add Contract ID to collection</label>
+        <locationX>264</locationX>
+        <locationY>1514</locationY>
+        <assignmentItems>
+            <assignToReference>contractIDsToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_selected_Draft_Orders.ContractId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_selected_Draft_Orders</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the ID of the original order to a string collection - used to get the related order products</description>
+        <name>Add_Order_Id_to_Collection</name>
+        <label>Add Order Id to Collection</label>
+        <locationX>264</locationX>
+        <locationY>1406</locationY>
+        <assignmentItems>
+            <assignToReference>originalOrderIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_selected_Draft_Orders.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Contract_ID_to_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_to_inactivePricebookIds_collection</name>
+        <label>Add to inactivePricebookIds collection</label>
+        <locationX>264</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>inactivePricebookIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_old_pricebooks.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_old_pricebooks</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add to a collection of Order Products to be inserted</description>
+        <name>Add_to_newOrderProducts_collection</name>
+        <label>Add to newOrderProducts collection</label>
+        <locationX>1232</locationX>
+        <locationY>3494</locationY>
+        <assignmentItems>
+            <assignToReference>newOrderProducts</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempOrderProduct</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_order_products</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add to a collection of orders which will be created</description>
+        <name>Add_to_order_collection</name>
+        <label>Add to order collection</label>
+        <locationX>264</locationX>
+        <locationY>1298</locationY>
+        <assignmentItems>
+            <assignToReference>newOrders</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempOrder</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Order_Id_to_Collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Price Book Entry to the temporary variable, to use when creating the new order product.</description>
+        <name>Assign_PBE_to_tempPriceBookEntry_variable</name>
+        <label>Assign PBE to tempPriceBookEntry variable</label>
+        <locationX>1320</locationX>
+        <locationY>2894</locationY>
+        <assignmentItems>
+            <assignToReference>tempPriceBookEntry</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Filtered_Price_Book_Entry_collection</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Filtered_Price_Book_Entry_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Create a clone of the order in a temporary variable</description>
+        <name>Clone_Order_into_Temp_Variable</name>
+        <label>Clone Order into Temp Variable</label>
+        <locationX>264</locationX>
+        <locationY>1082</locationY>
+        <assignmentItems>
+            <assignToReference>tempOrder</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_selected_Draft_Orders</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Order_Pricebook</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign filtered Price Book Entry collection size to a number variable to check collection size in the decision element.</description>
+        <name>Get_count_of_filtered_records</name>
+        <label>Get count of filtered PBE records</label>
+        <locationX>1430</locationX>
+        <locationY>2570</locationY>
+        <assignmentItems>
+            <assignToReference>tempNumberOfPBEs</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_Price_Book_Entries_for_Product</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_the_product_active_in_the_new_Price_Book</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>The Unit Price of the new Order Product is equal to the original Order Product</description>
+        <name>Inherit_Unit_Price_from_Order_Product</name>
+        <label>Inherit Unit Price from Order Product</label>
+        <locationX>1100</locationX>
+        <locationY>3302</locationY>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.UnitPrice</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.UnitPrice</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Buy_Price__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.UnitPrice</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_newOrderProducts_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>The Unit Price of the new Order Product is equal to the List Price of the Product in the new Pricebook</description>
+        <name>Inherit_Unit_Price_from_Price_Book</name>
+        <label>Inherit Unit Price from Price Book</label>
+        <locationX>1364</locationX>
+        <locationY>3302</locationY>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.UnitPrice</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>tempPriceBookEntry.UnitPrice</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_newOrderProducts_collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set a meaningful error message to display to the user</description>
+        <name>Set_Error_Message</name>
+        <label>Set Error Message</label>
+        <locationX>1628</locationX>
+        <locationY>2786</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Unable to reprice Order #{!Loop_through_order_products.Order.OrderNumber}. The product &quot;{!Loop_through_order_products.Product2.Name}&quot; is not active in the new Price Book</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Rollback_all_changes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update the temp variable to clone the values from the original Order Product</description>
+        <name>Set_temp_Order_Product_variable_values</name>
+        <label>Set temp Order Product variable values</label>
+        <locationX>1232</locationX>
+        <locationY>3086</locationY>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.OrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_new_orders.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.PricebookEntryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>tempPriceBookEntry.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Discount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.Discount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Quantity</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.Quantity</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Reference__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.Reference__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.ServiceDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.ServiceDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_order_products.EndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrderProduct.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Price_Type</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update the Price Book on the cloned order and remove the ID (to create new order on insert)</description>
+        <name>Update_Order_Pricebook</name>
+        <label>Update Order Pricebook</label>
+        <locationX>264</locationX>
+        <locationY>1190</locationY>
+        <assignmentItems>
+            <assignToReference>tempOrder.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrder.Pricebook2Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pricebookId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempOrder.Previous_Order_Id__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_selected_Draft_Orders.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_order_collection</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>Filter_order_products_for_this_order_only</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter order products for this order only</label>
+        <locationX>1012</locationX>
+        <locationY>2246</locationY>
+        <assignNextValueToReference>currentItem_Filter_order_products_for_this_order_only</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_Order_Products</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_Filter_order_products_for_this_order_only.OrderId</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <elementReference>Loop_through_new_orders.Previous_Order_Id__c</elementReference>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>Loop_through_order_products</targetReference>
+        </connector>
+    </collectionProcessors>
+    <collectionProcessors>
+        <description>Filter the collection of Price Book Entries to find the one for this product, only include active price book entries</description>
+        <name>Filter_Price_Book_Entries_for_Product</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter Price Book Entries for Product</label>
+        <locationX>1430</locationX>
+        <locationY>2462</locationY>
+        <assignNextValueToReference>currentItem_Filter_Price_Book_Entries_for_Product</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_New_Pricebook_Entries</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_Filter_Price_Book_Entries_for_Product.Product2Id</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <elementReference>Loop_through_order_products.Product2Id</elementReference>
+            </rightValue>
+        </conditions>
+        <conditions>
+            <leftValueReference>currentItem_Filter_Price_Book_Entries_for_Product.IsActive</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <booleanValue>true</booleanValue>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>Get_count_of_filtered_records</targetReference>
+        </connector>
+    </collectionProcessors>
+    <decisions>
+        <description>Check if the filtered Price Book Entry collection has any records in it</description>
+        <name>Is_the_product_active_in_the_new_Price_Book</name>
+        <label>Is the product active in the new Price Book?</label>
+        <locationX>1430</locationX>
+        <locationY>2678</locationY>
+        <defaultConnector>
+            <targetReference>Set_Error_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No new price for this Pricebook</defaultConnectorLabel>
+        <rules>
+            <name>New_Price_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_Price_Book_Entries_for_Product</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>tempNumberOfPBEs</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_Filtered_Price_Book_Entry_collection</targetReference>
+            </connector>
+            <label>New Price found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Unit Price = the Unit Price on the new Order Product is inherited from the previous order product.  
+List Price = the Unit Price for the new Order Product will reflect the List Price from the new Pricebook 
+
+Use Unit Price only if the product is Miscellaneous Charges, Accommodation and Meals, Install Capping - non-standard or above 2.5m, or Lifter hire; otherwise use List Price</description>
+        <name>Price_Type</name>
+        <label>Price Type</label>
+        <locationX>1232</locationX>
+        <locationY>3194</locationY>
+        <defaultConnector>
+            <targetReference>Inherit_Unit_Price_from_Price_Book</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>List Price</defaultConnectorLabel>
+        <rules>
+            <name>Unit_Price</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_order_products.Product2.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Miscellaneous Charges</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_order_products.Product2.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accommodation and Meals</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_order_products.Product2.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Install Capping - non-standard or above 2.5m</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_order_products.Product2.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Lifter hire</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_through_order_products.Product2.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Adjustment</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Inherit_Unit_Price_from_Order_Product</targetReference>
+            </connector>
+            <label>Unit Price</label>
+        </rules>
+    </decisions>
+    <description>https://n4lconz.atlassian.net/browse/MNTC-1435
+Exclude Equipment Only Price Books from repricing</description>
+    <dynamicChoiceSets>
+        <name>inactivePricebookChoiceSet</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Provider__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Current_Pricebook.Provider__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Pricebook2</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <formulas>
+        <description>Unit Price for the new Order Product will reflect the List Price from the new Pricebook excluding the following products:
+Miscellaneous Charges, Accommodation and Meals, Install Capping - non-standard or above 2.5m, Lifter hire.
+For these products, the Unit Price on the new Order Product is inherited from the previous order product.</description>
+        <name>unitPrice</name>
+        <dataType>Currency</dataType>
+        <expression>IF(OR(
+{!tempOrderProduct.Product2.Name} == &apos;Miscellaneous Charges&apos;,
+{!tempOrderProduct.Product2.Name} == &apos;Accommodation and Meals&apos;,
+{!tempOrderProduct.Product2.Name} == &apos;Install Capping - non-standard or above 2.5m&apos;,
+{!tempOrderProduct.Product2.Name} == &apos;Lifter hire&apos;),
+1, 
+0)</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Screen Flow: Update Price Book on Draft Orders {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
+    <label>Screen Flow: Update Price Book on Draft Orders</label>
+    <loops>
+        <description>Workaround - cannot retrieve collection variables by index. 
+Salesforce will only allow one Price Book Entry per product per pricebook, so the collection will only contain one product. 
+Loop through the collection to add the Price Book Entry to a temp variable, this will be used to create the new Order Product record</description>
+        <name>Loop_Filtered_Price_Book_Entry_collection</name>
+        <label>Loop Filtered Price Book Entry collection</label>
+        <locationX>1232</locationX>
+        <locationY>2786</locationY>
+        <collectionReference>Filter_Price_Book_Entries_for_Product</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_PBE_to_tempPriceBookEntry_variable</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Set_temp_Order_Product_variable_values</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through the newly created orders to create the order products</description>
+        <name>Loop_through_new_orders</name>
+        <label>Loop through new orders</label>
+        <locationX>176</locationX>
+        <locationY>2138</locationY>
+        <collectionReference>Get_new_Orders</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Filter_order_products_for_this_order_only</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_new_Order_Products</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through the old pricebooks to build a colllection of old pricebook IDs</description>
+        <name>Loop_through_old_pricebooks</name>
+        <label>Loop through old pricebooks</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <collectionReference>Get_all_inactive_pricebooks_with_the_same_provider</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_to_inactivePricebookIds_collection</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Introduction</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop through the Order Products for the original order to replicate them on the new order</description>
+        <name>Loop_through_order_products</name>
+        <label>Loop through order products</label>
+        <locationX>1012</locationX>
+        <locationY>2354</locationY>
+        <collectionReference>Filter_order_products_for_this_order_only</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Filter_Price_Book_Entries_for_Product</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Loop_through_new_orders</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_through_selected_Draft_Orders</name>
+        <label>Loop through selected Draft Orders</label>
+        <locationX>176</locationX>
+        <locationY>974</locationY>
+        <collectionReference>orderSelectedForUpdate</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Clone_Order_into_Temp_Variable</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_new_orders</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>Create the new order products</description>
+        <name>Create_new_Order_Products</name>
+        <label>Create new Order Products</label>
+        <locationX>176</locationX>
+        <locationY>3854</locationY>
+        <connector>
+            <targetReference>Update_Contracts_with_reprice_Date_Time</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Rollback_all_changes</targetReference>
+        </faultConnector>
+        <inputReference>newOrderProducts</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <description>Create the cloned orders attached to the new Price Book</description>
+        <name>Create_new_orders</name>
+        <label>Create new orders</label>
+        <locationX>176</locationX>
+        <locationY>1706</locationY>
+        <connector>
+            <targetReference>Get_new_Orders</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Rollback_all_changes</targetReference>
+        </faultConnector>
+        <inputReference>newOrders</inputReference>
+    </recordCreates>
+    <recordDeletes>
+        <description>Delete the original orders linked to the old pricebooks</description>
+        <name>Delete_original_orders</name>
+        <label>Delete original orders</label>
+        <locationX>176</locationX>
+        <locationY>4070</locationY>
+        <connector>
+            <targetReference>Success</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Rollback_all_changes</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>originalOrderIds</elementReference>
+            </value>
+        </filters>
+        <object>Order</object>
+    </recordDeletes>
+    <recordLookups>
+        <description>Use this list to locate draft orders linked to the old pricebooks</description>
+        <name>Get_all_inactive_pricebooks_with_the_same_provider</name>
+        <label>Get all inactive pricebooks with the same provider</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_old_pricebooks</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3 AND NOT (4)</filterLogic>
+        <filters>
+            <field>Provider__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Current_Pricebook.Provider__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Provider__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Equipment Only</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Pricebook2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the current (new) pricebook record.</description>
+        <name>Get_Current_Pricebook</name>
+        <label>Get Current Pricebook</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_all_inactive_pricebooks_with_the_same_provider</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>pricebookId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Pricebook2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all draft orders that don&apos;t use the current pricebook</description>
+        <name>Get_Draft_Orders</name>
+        <label>Get Draft Orders</label>
+        <locationX>176</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Preview_Draft_Orders</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Pricebook2Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>inactivePricebookIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Draft</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Order</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_new_Orders</name>
+        <label>Get new Orders</label>
+        <locationX>176</locationX>
+        <locationY>1814</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Order_Products</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Previous_Order_Id__c</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>originalOrderIds</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Order</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all Price Book Entries for the new Price Book</description>
+        <name>Get_New_Pricebook_Entries</name>
+        <label>Get New Pricebook Entries</label>
+        <locationX>176</locationX>
+        <locationY>2030</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_new_orders</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Pricebook2Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>pricebookId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>PricebookEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all order products related to the original orders</description>
+        <name>Get_Order_Products</name>
+        <label>Get Order Products</label>
+        <locationX>176</locationX>
+        <locationY>1922</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_New_Pricebook_Entries</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OrderId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>originalOrderIds</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>OrderItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordRollbacks>
+        <description>Rollback the changes for this transaction</description>
+        <name>Rollback_all_changes</name>
+        <label>Rollback all changes</label>
+        <locationX>968</locationX>
+        <locationY>3962</locationY>
+        <connector>
+            <targetReference>Display_Error_Message</targetReference>
+        </connector>
+    </recordRollbacks>
+    <recordUpdates>
+        <description>Stamp the date/time on the</description>
+        <name>Update_Contracts_with_reprice_Date_Time</name>
+        <label>Update Contracts with reprice Date / Time</label>
+        <locationX>176</locationX>
+        <locationY>3962</locationY>
+        <connector>
+            <targetReference>Delete_original_orders</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Rollback_all_changes</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>contractIDsToUpdate</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Order_Reprice_Date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Contract</object>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <name>Display_Error_Message</name>
+        <label>Display Error Message</label>
+        <locationX>968</locationX>
+        <locationY>4070</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>displayErrorMessageText</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Error: &lt;/strong&gt;Unable to re-price draft orders due to the following error:&lt;/p&gt;&lt;p&gt;{!errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Introduce the function of the flow</description>
+        <name>Introduction</name>
+        <label>Introduction</label>
+        <locationX>176</locationX>
+        <locationY>650</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Draft_Orders</targetReference>
+        </connector>
+        <fields>
+            <name>PromptToProceed</name>
+            <fieldText>&lt;p&gt;Reprice draft orders for {!Get_Current_Pricebook.Provider__r.Name}.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Click &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Next &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;to review orders&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Preview_Draft_Orders</name>
+        <label>Preview Draft Orders</label>
+        <locationX>176</locationX>
+        <locationY>866</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Loop_through_selected_Draft_Orders</targetReference>
+        </connector>
+        <fields>
+            <name>Instructions</name>
+            <fieldText>&lt;p&gt;Select Orders for repricing&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Draft_Orders_DataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Order</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Draft Orders</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>MULTI_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Draft_Orders</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedRows</name>
+                <value>
+                    <elementReference>Get_Draft_Orders</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;OrderNumber&quot;,&quot;guid&quot;:&quot;column-da13&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Order Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;School_Name__c&quot;,&quot;guid&quot;:&quot;column-ab46&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;School&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;School Name&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;Type&quot;,&quot;guid&quot;:&quot;column-1ecb&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Order Type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Charge_To__c&quot;,&quot;guid&quot;:&quot;column-011f&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Charge To&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Price_Book_Name__c&quot;,&quot;guid&quot;:&quot;column-e1d3&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Price Book&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Price Book Name&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ContractId&quot;,&quot;guid&quot;:&quot;column-a5dc&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:5,&quot;label&quot;:&quot;Contract ID&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;TotalAmount&quot;,&quot;guid&quot;:&quot;column-1dbd&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:6,&quot;label&quot;:&quot;Order Amount&quot;,&quot;type&quot;:&quot;currency&quot;},{&quot;apiName&quot;:&quot;DiscountedTotalAmount__c&quot;,&quot;guid&quot;:&quot;column-6093&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:7,&quot;label&quot;:&quot;Discounted Order Amount&quot;,&quot;type&quot;:&quot;currency&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>orderSelectedForUpdate</assignToReference>
+                <name>selectedRows</name>
+            </outputParameters>
+        </fields>
+        <nextOrFinishButtonLabel>Reprice</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Success</name>
+        <label>Success</label>
+        <locationX>176</locationX>
+        <locationY>4178</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>SuccessMessage</name>
+            <fieldText>&lt;p&gt;Orders repriced successfully&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Current_Pricebook</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>A collection of Contract IDs to be updated with the date/time of the reprice.</description>
+        <name>contractIDsToUpdate</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_order_products_for_this_order_only</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OrderItem</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_Price_Book_Entries_for_Product</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>PricebookEntry</objectType>
+    </variables>
+    <variables>
+        <name>currentItemFromSourceCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <description>error message to display</description>
+        <name>errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.FaultMessage</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>A collection of IDs of inactive pricebooks, used to find the draft orders that are related to retired pricebooks</description>
+        <name>inactivePricebookIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The new Order Product records to be inserted</description>
+        <name>newOrderProducts</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OrderItem</objectType>
+    </variables>
+    <variables>
+        <description>A collection of orders to be created with the new pricebook</description>
+        <name>newOrders</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <description>A collection of draft order records selected by the user to reprice</description>
+        <name>orderSelectedForUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <description>Used to get the order products</description>
+        <name>originalOrderIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>ID of the new (current) pricebook</description>
+        <name>pricebookId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The number of Price Book Entries in the filtered collection</description>
+        <name>tempNumberOfPBEs</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <description>Loop variable to clone orders and update the Price Book</description>
+        <name>tempOrder</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Order</objectType>
+    </variables>
+    <variables>
+        <description>Temp variable used in order product loop</description>
+        <name>tempOrderProduct</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>OrderItem</objectType>
+    </variables>
+    <variables>
+        <description>Temporary variable to store Price Book Entry in loop, then used to create the new order product</description>
+        <name>tempPriceBookEntry</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>PricebookEntry</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,32 @@
+<template>
+    <template if:true={account}>
+        
+        <article class="slds-tile">
+            <h3 class="slds-tile__title slds-truncate" title={account.Name}>
+                    
+                <a href="#" onclick={handleClick}>{account.Name}</a>
+            </h3>
+            
+            <div class="slds-tile__detail">
+                    <ul class="slds-list_horizontal slds-has-dividers_right slds-m-top_xx-small slds-wrap">
+                            <li class="slds-item">{account.ShippingStreet}</li>
+                            <li class="slds-item">{account.ShippingCity}</li>
+                            <li class="slds-item">Owner: {account.Owner.Name}</li>
+                          </ul>
+                <!-- <dl class="slds-list_horizontal slds-wrap">
+                <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Address">{account.ShippingStreet}	{account.ShippingCity}</dt>
+                <dd class="slds-item_detail slds-truncate" title="Description for first label">Description for first label</dd>
+                </dl> -->
+            </div>
+        </article>
+        
+
+
+    </template>
+    <template if:false={account}
+        ><p>No account data available.</p></template
+    >
+
+    
+
+</template>

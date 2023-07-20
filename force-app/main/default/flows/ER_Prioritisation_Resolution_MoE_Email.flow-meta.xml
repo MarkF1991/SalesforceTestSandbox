@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <assignments>
+        <description>emailSent variable is set to TRUE. This variable is used by Aura Component that contains this screen flow.</description>
+        <name>Assign_emailSent_to_TRUE</name>
+        <label>Assign emailSent to TRUE</label>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>emailSent</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Revert_Resolution_Category_to_null</name>
+        <label>Revert Resolution Category to null</label>
+        <locationX>446</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>getCase.Resolution_Category__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ChooseResolutionCategory_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Case_MoE_Emails_Acknowledged_to_true</name>
+        <label>Set Case MoE Emails Acknowledged to true</label>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>getCase.Acknowledge_MoE_Emails__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Case</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>User clicks this in screen 1 to choose not to send MoE emails.</description>
+        <name>No_Proceed</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>false</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>User clicks this in screen one to proceed with send of MoE Emails</description>
+        <name>Yes_Proceed</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>true</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Proceed</name>
+        <label>Proceed?</label>
+        <locationX>446</locationX>
+        <locationY>398</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Proceed_to_Send</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Case_MoE_Emails_Acknowledged_to_true</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Proceed_to_Send</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Revert_Resolution_Category_to_null</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks whether the user has chosen a Resolution Category the triggers an MoE Email</description>
+        <name>Resolution_Category_triggers_MoE_Email</name>
+        <label>Resolution Category triggers MoE Email?</label>
+        <locationX>446</locationX>
+        <locationY>878</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Triggers_email</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>getCase.Resolution_Category__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>School ER prioritisation Not approved</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getCase.Resolution_Category__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>School ER prioritisation request approved</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Warning</targetReference>
+            </connector>
+            <label>Triggers email</label>
+        </rules>
+    </decisions>
+    <description>When RM closes Inquiry case as “Not Approved” or “Approved”
+
+&gt;Pop-up screen/Alert message is displayed after selecting Resolution category: Not Approved or Approved . The popup has only cancel :cross_mark: option in it.
+
+&gt; If user clicks X button, Resolution Category is still have the same value Save button is still enabled
+
+&gt;Button: By clicking the &quot;Save&quot; button, emails will be sent to MoE Team for both Not Approved or Approved resolution category</description>
+    <environments>Default</environments>
+    <interviewLabel>ER Prioritisation Resolution MoE Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CS-498 Create the alert messages for sending the MoE emails</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Get the case from the recordId</description>
+        <name>getCase</name>
+        <label>getCase</label>
+        <locationX>446</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Warning</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordID</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Case</name>
+        <label>Update Case</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <connector>
+            <targetReference>Assign_emailSent_to_TRUE</targetReference>
+        </connector>
+        <inputReference>getCase</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Case_0</name>
+        <label>Update Case</label>
+        <locationX>446</locationX>
+        <locationY>758</locationY>
+        <connector>
+            <targetReference>Resolution_Category_triggers_MoE_Email</targetReference>
+        </connector>
+        <inputReference>getCase</inputReference>
+    </recordUpdates>
+    <screens>
+        <name>ChooseResolutionCategory_0</name>
+        <label>ChooseResolutionCategory</label>
+        <locationX>446</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Update_Case_0</targetReference>
+        </connector>
+        <fields>
+            <name>SelectNewResolution_0</name>
+            <fieldText>&lt;p&gt;Choose a different resolution category&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <fieldType>ObjectProvided</fieldType>
+            <isRequired>false</isRequired>
+            <objectFieldReference>getCase.Resolution_Category__c</objectFieldReference>
+        </fields>
+        <fields>
+            <fieldType>ObjectProvided</fieldType>
+            <isRequired>false</isRequired>
+            <objectFieldReference>getCase.Product__c</objectFieldReference>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getCase.Product__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <nextOrFinishButtonLabel>Update Resolution Category</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Warning</name>
+        <label>Warning</label>
+        <locationX>446</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Proceed</targetReference>
+        </connector>
+        <fields>
+            <name>WarningText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;You have selected the resolution category &lt;/span&gt;&lt;em style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!getCase.Resolution_Category__c}&lt;/em&gt;&lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;. Emails will be sent to &lt;/span&gt;&lt;strong style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;MoE Team&lt;/strong&gt;&lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Proceed_to_Send</name>
+            <choiceReferences>Yes_Proceed</choiceReferences>
+            <choiceReferences>No_Proceed</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Do you wish to proceed?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>getCase</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>used to tell Aura component to close the modal that this flow runs in.</description>
+        <name>closeModal</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Boolean field which is checked when user confirms that they will send emails to MoE Team. Output variable to notify Aura Component that contains this screen flow to fire a info toast to let the user know the emails were sent</description>
+        <name>emailSent</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>The ID of the case record that the screen flow will run on.</description>
+        <name>recordID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

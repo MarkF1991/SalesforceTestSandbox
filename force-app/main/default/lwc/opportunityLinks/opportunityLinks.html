@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title={title} icon-name="standard:opportunity">
+
+        <!-- <lightning-button label="New" slot="actions" onclick={handleNew}></lightning-button> -->
+      
+        <div class="slds-m-around_medium" onmodalsaved={handleLinksSaved} onmodalcanceledcreate={handleCreateLinksCanceled} onmodalconfirmtodelete={handleLinksDeleted}>
+            <template if:true={record}>
+
+                <c-link-list links={links}></c-link-list>
+               
+                <div class="newbox slds-box slds-align_absolute-center">
+                    <lightning-button-icon icon-name="action:new" variant="bare" alternative-text="add url" size="large" onclick={handleNew}></lightning-button-icon>
+                </div>
+
+            </template>
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <div class="loading-spinner-container">
+                        <div class="loading-spinner">
+                            <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            
+        </div>
+       
+        
+        <!-- <div class="slds-box"><p>output:</p><p>{output}</p></div> -->
+    </lightning-card>
+                       
+    
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

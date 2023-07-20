@@ -1,0 +1,31 @@
+<template>
+    <template if:true={showFilters}>
+        <div class="slds-p-right_medium">
+            <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open" aria-hidden="false">
+                <div class="slds-panel__header slds-theme_shade slds-p-horizontal_large">
+                    <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate " title="Filter">FILTERS</h2>
+                    <button class="slds-button" onclick={handleCloseClick}><i class="material-icons md-16">close</i></button>
+                </div>
+                <div class="slds-panel__body slds-p-horizontal_large">
+                    <div class="slds-filters ">
+                        <h3 class="slds-text-body_small slds-m-vertical_x-small">Date Ranges</h3>
+                        <ol class="slds-list_vertical slds-list_vertical-space">
+                            <template for:each={filters} for:item="data">
+                                <c-filter-item onfilterclick={handleFilterItemClicked} key={data.id} object={data}></c-filter-item>
+                            </template>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template><!-- conditional showFilters -->
+
+    <template if:true={showOptions}>
+        <div class="slds-p-right_medium">
+            <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open" aria-hidden="false">
+                <c-visual-picker options={optionsWithSelection} onsaved={selectionSaved} oncancelled={selectionCancelled}></c-visual-picker>
+            </div>
+        </div>
+    </template><!-- conditional showOptions -->
+
+</template>

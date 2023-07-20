@@ -1,0 +1,19 @@
+<template>
+    <div class={overrideCssClass}>
+        <div class="section-title">
+            <c-tile-page-header title={listViewTitle} disable-selection-menu={disableSelectionMenu} label={pageHeaderLabel} selectedfilter={selectedfilter} selected-menu-item-value={view} onheaderfilterchanged={applyFilter} onmenuchanged={handleMenuChanged}></c-tile-page-header>
+        </div>
+
+        <c-reporting-data-table
+            id="security-table"
+            key-field="id"
+            data={data}
+            columns={columns}
+            hide-checkbox-column></c-reporting-data-table>
+        <div class="loading-more-container">
+            <div class="loading-more">
+                <lightning-spinner variant="brand" if:true={tableLoadingState} alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </div>
+    </div>
+</template>

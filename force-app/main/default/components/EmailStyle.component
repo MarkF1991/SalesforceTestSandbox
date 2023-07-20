@@ -1,0 +1,32 @@
+<apex:component access="global">
+<head>
+        <!-- [if gte mso 9]>
+        <style type="text/css; font-family: 'Arial'; font-size: 11px;" id="Mail Designer Outlook Style Sheet">
+          .mso-fixed-width { width: 592px !important; }
+          .mso-fixed-width-wrapping-table { width: 592px !important; }
+          table.layout-block-horizontal-spacer {
+              display: none !important;
+          }
+          table {
+              border-collapse:collapse;
+              mso-table-lspace:0pt;
+              mso-table-rspace:0pt;
+              mso-table-bspace:0pt;
+              mso-table-tspace:0pt;
+              mso-padding-alt:0;
+              mso-table-top:0;
+              mso-table-wrap:around;
+          }
+          td {
+              border-collapse:collapse;
+              mso-cellspacing:0;
+          }
+      </style>
+      <![endif]-->
+        <!-- [if gte mso 9]>
+      <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+      <v:fill type="tile" src="box-bg-3.jpg" />
+      </v:background>
+      <![endif]-->
+</head>
+</apex:component>

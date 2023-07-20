@@ -1,0 +1,2207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Case_Contact_NULL</name>
+        <label>Case Contact NULL</label>
+        <locationX>464</locationX>
+        <locationY>77</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>AdviseNoContact</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visibility</name>
+            <value>
+                <stringValue>InternalUsers</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Request_Type_NULL</name>
+        <label>Request Type NULL</label>
+        <locationX>1018</locationX>
+        <locationY>86</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>SerReqType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visibility</name>
+            <value>
+                <stringValue>InternalUsers</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>EVAL_Contact</name>
+        <label>EVAL Contact</label>
+        <locationX>718</locationX>
+        <locationY>35</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Contact_Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ContactLookup</targetReference>
+            </connector>
+            <label>Contact Yes</label>
+        </rules>
+        <rules>
+            <name>Contact_No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Case_Contact_NULL</targetReference>
+            </connector>
+            <label>Contact No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>RequestType_AND_RequestNote_AND_RecordType</name>
+        <label>RequestType AND RequestNote AND RecordType</label>
+        <locationX>719</locationX>
+        <locationY>364</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Contact_IsNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Case_Contact_NULL</targetReference>
+            </connector>
+            <label>Contact IsNull</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Circuit Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D) Access</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CLNE Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D) CLNE</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Circuit &amp; CLNE Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D) Access AND CLNE</label>
+        </rules>
+        <rules>
+            <name>SR_Complex_CIR_EIR_change_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex CIR/ EIR change (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_CIR_EIR_change_5D</targetReference>
+            </connector>
+            <label>SR_Complex CIR/ EIR change (5D)</label>
+        </rules>
+        <rules>
+            <name>Complex_Firewall_Rule_incl_Prov_and_Disconnect_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Firewall Rule (incl Prov and Disconnect) (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Firewall_Rule_incl_Prov_and_Disconnect_5D</targetReference>
+            </connector>
+            <label>Complex Firewall Rule (incl Prov and Disconnect) (5D)</label>
+        </rules>
+        <rules>
+            <name>Complex_IP_Address_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex IP Address (10H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_IP_Address_10H</targetReference>
+            </connector>
+            <label>Complex IP Address (10H)</label>
+        </rules>
+        <rules>
+            <name>Customised_Complex_Routing_Change_incl_BGP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>(Customised) Complex Routing Change (incl BGP)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Complex_Routing_Change_incl_BGP</targetReference>
+            </connector>
+            <label>(Customised) Complex Routing Change (incl BGP)</label>
+        </rules>
+        <rules>
+            <name>Customised_Firewall_Rule_incl_Provision_and_Disconnect_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customised Firewall Rule (incl Provision and Disconnect) (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Firewall_Rule_incl_Provision_and_Disconnect_5D</targetReference>
+            </connector>
+            <label>Customised Firewall Rule (incl Provision and Disconnect) (5D)</label>
+        </rules>
+        <rules>
+            <name>Complex_Email_Service_Securemail_for_a_school_or_user_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Email Service (Securemail) for a school or user (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Email_Service_Securemail_for_a_school_or_user_5D</targetReference>
+            </connector>
+            <label>Complex Email Service (Securemail) for a school or user (5D)</label>
+        </rules>
+        <rules>
+            <name>Customised_Hosted_VC_Bridge_Services_RCV_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customised Hosted VC Bridge Services (RCV) (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Hosted_VC_Bridge_Services_RCV_5D</targetReference>
+            </connector>
+            <label>Customised Hosted VC Bridge Services (RCV) (5D)</label>
+        </rules>
+        <rules>
+            <name>Customised_Mngd_Network_GRE_Tunnel_Diverse_Access_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customised Mngd Network GRE Tunnel/ Diverse Access (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Mngd_Network_GRE_Tunnel_Diverse_Access_5D</targetReference>
+            </connector>
+            <label>Customised Mngd Network GRE Tunnel/ Diverse Access (5D)</label>
+        </rules>
+        <rules>
+            <name>Complex_Mngd_Network_QOS_Traffic_Class_Security_Zone_MAC_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex Mngd Network QOS Traffic Class/ Security Zone MAC (10H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Mngd_Network_QOS_Traffic_Class_Security_Zone_MAC_10H</targetReference>
+            </connector>
+            <label>Complex Mngd Network QOS Traffic Class/ Security Zone MAC (10H)</label>
+        </rules>
+        <rules>
+            <name>Simple_Mngd_Network_VLAN_DHCP_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple Mngd Network VLAN/ DHCP (10H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_Mngd_Network_VLAN_DHCP_10H</targetReference>
+            </connector>
+            <label>Simple Mngd Network VLAN/ DHCP (10H)</label>
+        </rules>
+        <rules>
+            <name>Simple_N4L_User_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple N4L User (10H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_N4L_User_10H</targetReference>
+            </connector>
+            <label>Simple N4L User (10H)</label>
+        </rules>
+        <rules>
+            <name>No_Charge_PREAPPROVED_Firewall_Rule_4H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>(No Charge) PREAPPROVED Firewall Rule (4H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_No_Charge_PREAPPROVED_Firewall_Rule_4H</targetReference>
+            </connector>
+            <label>(No Charge) PREAPPROVED Firewall Rule (4H)</label>
+        </rules>
+        <rules>
+            <name>Customised_Relocate_ONT_CLNE_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customised Relocate ONT/ CLNE (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Relocate_ONT_CLNE_5D</targetReference>
+            </connector>
+            <label>Customised Relocate ONT/ CLNE (5D)</label>
+        </rules>
+        <rules>
+            <name>Simple_Remote_Access_VPN_CVPN_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple_Remote_Access_VPN_CVPN_10H</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_Remote_Access_VPN_CVPN_10H</targetReference>
+            </connector>
+            <label>Simple Remote Access VPN/CVPN (10H)</label>
+        </rules>
+        <rules>
+            <name>Complex_Remote_Access_VPN_CVPN_5D_Implementation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex_Remote_Access_VPN_CVPN_5D_Implementation</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Add Service (Existing Customer)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Remote_Access_VPN_CVPN_5D_Implementation</targetReference>
+            </connector>
+            <label>Complex Remote Access VPN/CVPN (5D) [Implementation]</label>
+        </rules>
+        <rules>
+            <name>Complex_Remote_Access_VPN_CVPN_5D_MAC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex_Remote_Access_VPN_CVPN_5D_MAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MAC (Existing Service)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Remote_Access_VPN_CVPN_5D_MAC</targetReference>
+            </connector>
+            <label>Complex Remote Access VPN/CVPN (5D) [MAC]</label>
+        </rules>
+        <rules>
+            <name>Simple_Firewall_Rule_1_Client_8H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple Firewall Rule (1 Client) (8H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_Firewall_Rule_1_Client_8H</targetReference>
+            </connector>
+            <label>Simple Firewall Rule (1 Client) (8H)</label>
+        </rules>
+        <rules>
+            <name>Simple_IP_Address_8H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple IP Address (8H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_IP_Address_8H</targetReference>
+            </connector>
+            <label>Simple IP Address (8H)</label>
+        </rules>
+        <rules>
+            <name>Simple_Routing_Change_8H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple Routing Change (8H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_Routing_Change_8H</targetReference>
+            </connector>
+            <label>Simple Routing Change (8H)</label>
+        </rules>
+        <rules>
+            <name>Customised_Webfilter_Scansafe_AD_5D</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Customised Webfilter/ Scansafe (AD) (5D)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Customised_Webfilter_Scansafe_AD_5D</targetReference>
+            </connector>
+            <label>Customised Webfilter/ Scansafe (AD) (5D)</label>
+        </rules>
+        <rules>
+            <name>Simple_Self_Service_Webfilter_Scansafe_excl_AD_10H</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Simple (Self Service) Webfilter/ Scansafe (excl AD) (10H)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Simple_Self_Service_Webfilter_Scansafe_excl_AD_10H</targetReference>
+            </connector>
+            <label>Simple (Self Service) Webfilter/ Scansafe (excl AD) (10H)</label>
+        </rules>
+        <rules>
+            <name>RemoteAccessRequest</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Subject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>F5 Remote Access</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000000TNWZAA4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Request_Type_NULL</targetReference>
+            </connector>
+            <label>RemoteAccessRequest</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Internet Connection</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Circuit Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_0</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D) Access_Update</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Internet Connection</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Circuit &amp; CLNE Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE_0</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D)_Access_AND_CLNE_Update</label>
+        </rules>
+        <rules>
+            <name>Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ProductType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Internet Connection</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CLNE Change Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01290000001Icp0AAC</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sObjCase.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE_0</targetReference>
+            </connector>
+            <label>Complex Access speed/ CLNE Upgrade/ downgrade (5D)_CLNE_Update</label>
+        </rules>
+        <rules>
+            <name>Req_Type_NULL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sObjCase.Spark_Service_Request_Type__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Request_Type_NULL</targetReference>
+            </connector>
+            <label>Req Type NULL</label>
+        </rules>
+    </decisions>
+    <description>Used to populate Service Request Note field with selection of service request type using agreed templates.</description>
+    <formulas>
+        <name>ProductType</name>
+        <dataType>String</dataType>
+        <expression>IF({!Product}=&quot;Internet Connection&quot;,&quot;Internet Connection&quot;,IF({!Product_Category}=&quot;Network Connection/Managed Network&quot;,&quot;Internet Connection&quot;,&quot;&quot;))</expression>
+    </formulas>
+    <formulas>
+        <name>SerReqType</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!sObjCase.Spark_Service_Request_Type__c})=&quot;&quot;,&quot;Blank&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <interviewLabel>SP Request Note Templates {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SP Request Note Templates</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>CaseLookup</name>
+        <label>CaseLookup</label>
+        <locationX>847</locationX>
+        <locationY>35</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>EVAL_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputAssignments>
+            <assignToReference>sObjCase.ContactId</assignToReference>
+            <field>ContactId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Current_CLNE_Make_Model__c</assignToReference>
+            <field>Current_CLNE_Make_Model__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Current_Connection_Bandwidth__c</assignToReference>
+            <field>Current_Connection_Bandwidth__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Current_LFC_Provider_Access_Type__c</assignToReference>
+            <field>Current_LFC_Provider_Access_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Primary_Site_Access_Contact__c</assignToReference>
+            <field>Primary_Site_Access_Contact__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>Product_Category</assignToReference>
+            <field>Product_Category__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>Product</assignToReference>
+            <field>Product__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.RecordTypeId</assignToReference>
+            <field>RecordTypeId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Requested_CLNE_Make_Model__c</assignToReference>
+            <field>Requested_CLNE_Make_Model__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Requested_Connection_Bandwidth__c</assignToReference>
+            <field>Requested_Connection_Bandwidth__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Requested_LFC_Provider_Access_Type__c</assignToReference>
+            <field>Requested_LFC_Provider_Access_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Spark_Request_Note__c</assignToReference>
+            <field>Spark_Request_Note__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Spark_Service_Request_Type__c</assignToReference>
+            <field>Spark_Service_Request_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Subject</assignToReference>
+            <field>Subject</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjCase.Type</assignToReference>
+            <field>Type</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>ContactLookup</name>
+        <label>ContactLookup</label>
+        <locationX>718</locationX>
+        <locationY>120</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Primary_Site_Access_Contact_Lookup</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.ContactId</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputAssignments>
+            <assignToReference>sObjContact.Email</assignToReference>
+            <field>Email</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact.FirstName</assignToReference>
+            <field>FirstName</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact.LastName</assignToReference>
+            <field>LastName</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact.MobilePhone</assignToReference>
+            <field>MobilePhone</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact.Phone</assignToReference>
+            <field>Phone</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>DeviceLookup</name>
+        <label>DeviceLookup</label>
+        <locationX>719</locationX>
+        <locationY>283</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>RequestType_AND_RequestNote_AND_RecordType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.Requested_CLNE_Make_Model__c</elementReference>
+            </value>
+        </filters>
+        <object>Device_Make_Model__c</object>
+        <outputAssignments>
+            <assignToReference>sObjDevice.Name</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Primary_Site_Access_Contact_Lookup</name>
+        <label>Primary Site Access Contact Lookup</label>
+        <locationX>717</locationX>
+        <locationY>200</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>DeviceLookup</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.Primary_Site_Access_Contact__c</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputAssignments>
+            <assignToReference>sObjContact_Primary.Email</assignToReference>
+            <field>Email</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact_Primary.FirstName</assignToReference>
+            <field>FirstName</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact_Primary.LastName</assignToReference>
+            <field>LastName</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact_Primary.MobilePhone</assignToReference>
+            <field>MobilePhone</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sObjContact_Primary.Phone</assignToReference>
+            <field>Phone</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_Access</label>
+        <locationX>12</locationX>
+        <locationY>34</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_Access</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_0</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_Access_Update</label>
+        <locationX>1495</locationX>
+        <locationY>265</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_Access</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Spark_Service_Request_Type__c</field>
+            <value>
+                <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_Access_AND_CLNE</label>
+        <locationX>10</locationX>
+        <locationY>192</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_Access_AND_CLNE</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_Access_AND_CLNE_0</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_Access_AND_CLNE_Update</label>
+        <locationX>1496</locationX>
+        <locationY>343</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_Access_AND_CLNE</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Spark_Service_Request_Type__c</field>
+            <value>
+                <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_CLNE</label>
+        <locationX>13</locationX>
+        <locationY>113</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_CLNE</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Access_speed_CLNE_Upgrade_downgrade_5D_CLNE_0</name>
+        <label>RBE - Complex Access speed/ CLNE Upgrade/ downgrade (5D)_CLNE_Update</label>
+        <locationX>1494</locationX>
+        <locationY>185</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexAccessspeedCLNEUpgradedowngrade5D_CLNE</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Spark_Service_Request_Type__c</field>
+            <value>
+                <stringValue>Complex Access speed/ CLNE Upgrade/ downgrade (5D)</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_CIR_EIR_change_5D</name>
+        <label>RBE - Complex CIR/ EIR change (5D)</label>
+        <locationX>14</locationX>
+        <locationY>272</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexCIREIRchange5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Email_Service_Securemail_for_a_school_or_user_5D</name>
+        <label>RBE - Complex Email Service (Securemail) for a school or user (5D)</label>
+        <locationX>78</locationX>
+        <locationY>745</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexEmailServiceSecuremailforaschooloruser5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Firewall_Rule_incl_Prov_and_Disconnect_5D</name>
+        <label>RBE - Complex Firewall Rule (incl Prov and Disconnect) (5D)</label>
+        <locationX>12</locationX>
+        <locationY>352</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexFirewallRuleinclProvandDisconnect5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_IP_Address_10H</name>
+        <label>RBE - Complex IP Address (10H)</label>
+        <locationX>12</locationX>
+        <locationY>430</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexIPAddress10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Complex_Mngd_Network_QOS_Traffic_Class_Security_Zone_MAC_10H</name>
+        <label>RBE - Complex Mngd Network QOS Traffic Class/ Security Zone MAC (10H)</label>
+        <locationX>212</locationX>
+        <locationY>895</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexMngdNetworkQOSTrafficClassSecurityZoneMAC10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Complex_Routing_Change_incl_BGP</name>
+        <label>RBE - (Customised) Complex Routing Change (incl BGP)</label>
+        <locationX>12</locationX>
+        <locationY>510</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedComplexRoutingChangeinclBGP</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Firewall_Rule_incl_Provision_and_Disconnect_5D</name>
+        <label>RBE - Customised Firewall Rule (incl Provision and Disconnect) (5D)</label>
+        <locationX>14</locationX>
+        <locationY>590</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedFirewallRuleinclProvisionandDisconnect5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Hosted_VC_Bridge_Services_RCV_5D</name>
+        <label>RBE - Customised Hosted VC Bridge Services (RCV) (5D)</label>
+        <locationX>14</locationX>
+        <locationY>671</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedHostedVCBridgeServicesRCV5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Mngd_Network_GRE_Tunnel_Diverse_Access_5D</name>
+        <label>RBE - Customised Mngd Network GRE Tunnel/ Diverse Access (5D)</label>
+        <locationX>145</locationX>
+        <locationY>820</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedMngdNetworkGRETunnelDiverseAccess5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Relocate_ONT_CLNE_5D</name>
+        <label>RBE - Customised Relocate ONT/ CLNE (5D)</label>
+        <locationX>1241</locationX>
+        <locationY>971</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedRelocateONTCLNE5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Remote_Access_VPN_CVPN_5D_Implementation</name>
+        <label>RBE - Customised Remote Access VPN/ CVPN (5D)[Implementation]</label>
+        <locationX>1382</locationX>
+        <locationY>808</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexRemoteAccessVPNCVPN5DImplementation</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Remote_Access_VPN_CVPN_5D_MAC</name>
+        <label>RBE - Customised Remote Access VPN/ CVPN (5D)[MAC]</label>
+        <locationX>1428</locationX>
+        <locationY>730</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>ComplexRemoteAccessVPNCVPN5DMAC</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Customised_Webfilter_Scansafe_AD_5D</name>
+        <label>RBE - Customised Webfilter/ Scansafe (AD) (5D)</label>
+        <locationX>1495</locationX>
+        <locationY>502</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>CustomisedWebfilterScansafeAD5D</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_No_Charge_PREAPPROVED_Firewall_Rule_4H</name>
+        <label>RBE - (No Charge) PREAPPROVED Firewall Rule (4H)</label>
+        <locationX>1173</locationX>
+        <locationY>1050</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>NoChargePREAPPROVEDFirewallRule4H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_Firewall_Rule_1_Client_8H</name>
+        <label>RBE - Simple Firewall Rule (1 Client) (8H)</label>
+        <locationX>718</locationX>
+        <locationY>1002</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleFirewallRule1Client8H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_IP_Address_8H</name>
+        <label>RBE - Simple IP Address (8H)</label>
+        <locationX>1495</locationX>
+        <locationY>657</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleIPAddress8H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_Mngd_Network_VLAN_DHCP_10H</name>
+        <label>RBE - Simple Mngd Network VLAN/ DHCP (10H)</label>
+        <locationX>277</locationX>
+        <locationY>972</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleMngdNetworkVLANDHCP10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_N4L_User_10H</name>
+        <label>RBE - Simple N4L User (10H)</label>
+        <locationX>342</locationX>
+        <locationY>1047</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleN4LUser10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_Remote_Access_VPN_CVPN_10H</name>
+        <label>RBE - Simple Remote Access VPN/ CVPN (10H)</label>
+        <locationX>1304</locationX>
+        <locationY>888</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleRemoteAccessVPNCVPN10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_Routing_Change_8H</name>
+        <label>RBE - Simple Routing Change (8H)</label>
+        <locationX>1492</locationX>
+        <locationY>578</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleRoutingChange8H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>RBE_Simple_Self_Service_Webfilter_Scansafe_excl_AD_10H</name>
+        <label>RBE - Simple (Self Service) Webfilter/ Scansafe (excl AD) (10H)</label>
+        <locationX>1496</locationX>
+        <locationY>422</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Spark_Request_Note__c</field>
+            <value>
+                <elementReference>SimpleSelfServiceWebfilterScansafeexclAD10H</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <startElementReference>CaseLookup</startElementReference>
+    <status>Active</status>
+    <textTemplates>
+        <name>AdviseNoContact</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>A case contact has not been specified. Please specify contacts before selecting Service Request type, as no service requests should be submitted without case contact details being captured.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexAccessspeedCLNEUpgradedowngrade5D_Access</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please upgrade (downgrade) the access speed from a {!sObjCase.Current_Connection_Bandwidth__c} to a {!sObjCase.Requested_Connection_Bandwidth__c}
+	
+Please upgrade (downgrade) the profiles from {!sObjCase.Current_LFC_Provider_Access_Type__c} to {!sObjCase.Requested_LFC_Provider_Access_Type__c}	
+	
+	
+Contact Name: {!sObjContact_Primary.FirstName} {!sObjContact_Primary.LastName}	
+Contact Phone: {!sObjContact_Primary.Phone}	
+Contact Mobile: {!sObjContact_Primary.MobilePhone}	
+Contact Email: {!sObjContact_Primary.Email}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexAccessspeedCLNEUpgradedowngrade5D_Access_AND_CLNE</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please upgrade (downgrade) the site router model from a {!sObjCase.Current_CLNE_Make_Model__c} to a {!sObjDevice.Name}
+	
+Please upgrade (downgrade) the access speed from a {!sObjCase.Current_Connection_Bandwidth__c} to a {!sObjCase.Requested_Connection_Bandwidth__c}	
+	
+Please upgrade (downgrade) the profiles from  {!sObjCase.Current_LFC_Provider_Access_Type__c} to  {!sObjCase.Requested_LFC_Provider_Access_Type__c}	
+	
+	
+Contact Name: {!sObjContact_Primary.FirstName} {!sObjContact_Primary.LastName}
+Contact Phone: {!sObjContact_Primary.Phone}	
+Contact Mobile: {!sObjContact_Primary.MobilePhone}	
+Contact Email: {!sObjContact_Primary.Email}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexAccessspeedCLNEUpgradedowngrade5D_CLNE</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please upgrade (downgrade) the site router model from a {!sObjCase.Current_CLNE_Make_Model__c} to a {!sObjCase.Requested_CLNE_Make_Model__c}	
+	
+Contact Name: {!sObjContact_Primary.FirstName} {!sObjContact_Primary.LastName}
+Contact Phone: {!sObjContact_Primary.Phone}	
+Contact Mobile: {!sObjContact_Primary.MobilePhone}	
+Contact Email: {!sObjContact_Primary.Email}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexCIREIRchange5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please upgrade (downgrade) CIR from ____________ to ___________
+
+Please upgrade (downgrade) EIR from ____________ to ___________
+
+Service IDL:
+Internet IDL:
+
+Contact Name: {!sObjContact.FirstName} {!sObjContact.LastName}
+Contact Phone: {!sObjContact.Phone}
+Contact Mobile: {!sObjContact.MobilePhone}
+Contact Email: {!sObjContact.Email}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexEmailServiceSecuremailforaschooloruser5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L, please include/ remove the following sections/ fields where applicable]
+If adding an email service
+Domain Name
+IP Address
+
+If deleting an email service
+Domain Name
+
+If changing an service
+Existing Domain Name
+Existing IP Address
+New Domain Name
+New IP Address</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexFirewallRuleinclProvandDisconnect5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Source Zone:	
+Souce IPs:	
+Destination Zone:	
+Destination IPs:	
+Protocol:	
+Port:	
+Rule:	
+Description:	
+Nat&apos;ed IP Address (if Applicable)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexIPAddress10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying script]	
+	
+[N4L, please include the following where applicable]	
+Interface Port Number	
+New ip address of the port and the subnet mask	
+Subinterface Required? (Y/N)	
+If subinterface Required: Provide Details</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexMngdNetworkQOSTrafficClassSecurityZoneMAC10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying script]</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexRemoteAccessVPNCVPN5DImplementation</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info and/or attachment]
+i.e. Complex Request to Implement NEW service</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ComplexRemoteAccessVPNCVPN5DMAC</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info and/or attachment]
+i.e. Complex MAC to existing service</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedComplexRoutingChangeinclBGP</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying script]	
+	
+[N4L, please include the following where applicable]	
+BGP Info	
+Default Gateway	
+Subnet Mask	
+(Relevant Firewall Rules) - if any)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedFirewallRuleinclProvisionandDisconnect5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Source Zone:	
+Souce IPs:	
+Destination Zone:	
+Destination IPs:	
+Protocol:	
+Port:	
+Rule:	
+Description:</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedHostedVCBridgeServicesRCV5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info and/or attachment]
+i.e. Provision/Change/Relinquish hosted videoconferencing bridge service for a Customer</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedMngdNetworkGRETunnelDiverseAccess5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info and/or attachment]	
+	
+School Router name:	
+Local Public IP address(IP assigned to G0/0 of CLNE):	
+Remote Public IP address(IP assigned to WAN interfaced of peer Router/Firewall):	
+Internet subnet of local LAN:	
+Internal subnet of remote LAN:	
+Private subnet assigned for Tunnel Interfaces:	
+IP address assigned to Local tunnel interface:	
+IP address assigned to remote tunnel interface:	
+Static route to reach remote LAN:	
+Keep Alive timer:	Please set keep-alive timer to 10 seconds manually</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedRelocateONTCLNE5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Questions	
+Where is the ONT/ CLNE being relocated?	
+Is it within the same bulding? Or in another building?	
+What is the approximate distance (in metres)?	
+Can you provide floorplans/ site plans?	
+Any known Health and Safety issue to be aware of (i.e. asbestos/ construction)?	
+Is there any pre-existing (or new - potentially) ducting available to be used?	
+Is the old building going to be demolished/ refurbished	
+What is the date for demolition?	
+What is the date for services to be reconnected/ recommissioned?	
+What is the impact if it is not reconnected on this specific date?	
+	
+	
+Relocation details:	
+Server room relocated (FROM)	
+Building:	
+Level:	
+Room:	
+In room location/rack details:	
+	
+Server room relocated (TO)	
+Building:	
+Level:	
+Room:	
+In room location/rack details:	
+	
+Contact Name: {!sObjContact.FirstName} {!sObjContact.LastName}
+Contact Phone: {!sObjContact.Phone}
+Contact Mobile: {!sObjContact.MobilePhone}
+Contact Email: {!sObjContact.Email}
+	
+Alternative Contact Name:	
+Alternative Contact Phone:	
+Alternative Contact Mobile:	
+Alternative Contact Email:</text>
+    </textTemplates>
+    <textTemplates>
+        <name>CustomisedWebfilterScansafeAD5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info to turn on/off]	
+	
+[N4L, please include the following where applicable]	
+Bypass Domain Names	
+IP Address</text>
+    </textTemplates>
+    <textTemplates>
+        <name>NoChargePREAPPROVEDFirewallRule4H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Source Zone:	
+Souce IPs:	
+Destination Zone:	
+Destination IPs:	
+Protocol:	
+Port:	
+Rule:	
+Description:</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Otherrequests5D</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L, please include attachments and further information where possible]</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SerReqNULL</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>The field Spark Service Request Type: {!SerReqType}, is not specified. Please specify and save the info</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleFirewallRule1Client8H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Source Zone:	
+Souce IPs:	
+Destination Zone:	
+Destination IPs:	
+Protocol:	
+Port:	
+Rule:	
+Description:	
+	
+------------------------------	
+The requested move/add/change is a port forward:	
+	
+Interface/VLAN:	Internet
+External IP`:	[Likely WAN IP of school&apos;s router]
+External Port TCP/UDP only:	[e.g. 3389]
+Internal Host:	[e.g. 192.168.1.1]
+Internal Port (TCP/UDP only):	[e.g. 3389]
+Protocol:	[TCP/UDP/IP]
+Description:</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleIPAddress8H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying script]	
+	
+[N4L, please include the following where applicable]	
+Vlan	
+New ip address of the interface port and the subnet mask	
+Secondary IP Address? (Y/N)	
+If secondary ip address required: Provide Details	
+Subinterface Required? (Y/N)	
+If subinterface Required: Provide Details</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleMngdNetworkVLANDHCP10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>(Remove VLAN or DHCP section if not relevant)	
+	
+VLAN	
+[N4L, please include the following where applicable]	
+VLAN#	
+Subnet Mask	
+IP Address of Sub Interface:	
+Firewall rules	
+	
+	
+DHCP (Yes/No)	
+[N4L, please include the following where applicable]	
+DHCP	
+Subnet Mask	
+DNS Servers	
+Excluded addresses	
+Default gateway address</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleN4LUser10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L to provide parameters regarding &apos;User&apos; request i.e. what? Create, Reset, Unlock or Remove.  Which systems? MGP, HPSC, Remedy, Infovista, Cortex, Cost Manager, Secure Mail, Web Filter or InfoVista]</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleRemoteAccessVPNCVPN10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info and/or attachment]
+i.e. Provision/Change/Decommission remote access user
+Simple change to Remote Access Configuration</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleRoutingChange8H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying script]	
+	
+[N4L, please include the following where applicable]	
+Default Gateway	
+Subnet Mask	
+(Relevant Firewall Rules) - if any)	
+(Relevant Nat Rules ) - if any)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SimpleSelfServiceWebfilterScansafeexclAD10H</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>[N4L supplying info to turn on/off]	
+	
+[N4L, please include the following where applicable]	
+Bypass Domain Names	
+IP Address</text>
+    </textTemplates>
+    <variables>
+        <name>CaseId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Product</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Product_Category</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>sObjCase</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>sObjContact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>sObjContact_Primary</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>sObjDevice</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Device_Make_Model__c</objectType>
+    </variables>
+</Flow>

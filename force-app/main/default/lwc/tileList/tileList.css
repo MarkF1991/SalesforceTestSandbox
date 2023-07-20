@@ -1,0 +1,81 @@
+.listItem{
+    border-top: 1px solid lightgrey;
+}
+
+.slds-icon_container {
+    color: white;
+    padding: 3px;  
+}
+
+.custom-icon {
+    /* background-color: #6489e4; */
+    color: white;
+    padding: 3px;
+}
+
+.slds-card {
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+    position: relative;
+    padding: 0;
+    background: rgb(255, 255, 255);
+    border: 1px solid #d4d4d4;
+    border-radius: .25rem;
+    background-clip: padding-box;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+.loading-spinner-container {
+    position: relative;
+}
+
+.card  {
+    min-height: 50px;
+}
+
+
+.security {
+    background-color: #f5675b !important; /*$color-background-error*/
+}
+
+.content {
+    background-color: #54698d !important; /* $brand-header-icon */
+}
+
+.user {
+    background-color: #31bfce!important; /* custom */
+}
+
+.category {
+    background-color: #8199af!important;
+}
+
+.application {
+    background-color: #0079bc!important;
+}
+
+.connection {
+    background-color: #a525e0 !important; /* $brand-header-icon */
+}
+
+.device, .devices {
+    background-color: #6489e4 !important; /* $brand-header-icon */
+}
+
+c-tile-item-object:hover {
+    background-color: #f3f2f2;
+    cursor: pointer;
+}
+
+.slds-card__body {
+    margin-bottom: 0;
+}
+
+.slds-card__footer {
+    text-align: center;
+    border-top: 1px solid #d3d3d3;
+    margin-top: 0;
+}

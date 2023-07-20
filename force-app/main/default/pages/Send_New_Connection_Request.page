@@ -1,0 +1,365 @@
+<apex:page standardController="Case" tabStyle="Case" extensions="calloutcontroller" action="{!checking}" >
+
+ <apex:pageMessage summary="New Connection Request for this case has already been submitted!" severity="error" escape="false" rendered="{!isExist}" >
+ <a class ="actionLink" href="/{!case.Id}" target="_parent">Back To Case</a>
+ </apex:pageMessage>
+ 
+ <apex:pageMessage summary="New Connection Request can only be submitted with 'To Be Actioned' TCNZ Work Stream Status! Please contact Salesforce Admin if you require further assitance." severity="error" escape="false" rendered="{!NOT(isStatusOk)}" >
+ <a class ="actionLink" href="/{!case.Id}" target="_parent">Back To Case</a>
+ </apex:pageMessage>
+ 
+
+<apex:pageMessage title="Please make sure the fields listed below have data as they are required for new connection request." severity="error" escape="false" rendered="{!NOT(validation)}" >
+
+<apex:pageMessages escape="false"/> 
+<a class ="actionLink" href="/{!case.Id}" target="_parent">Back To Case</a>
+ </apex:pageMessage>
+ 
+ <apex:outputpanel >
+     <apex:actionstatus id="actStatusId">
+       <apex:facet name="start">
+      <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;">
+      <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." />
+        <span class="waitingDescription">Connecting and Processing... This can take a while. Please Wait ...</span>
+         </div>
+          </div>
+      </apex:facet>
+ </apex:actionstatus>
+    </apex:outputpanel>
+ 
+ 
+<apex:form >
+<apex:outputpanel id="pgBlckId">
+        <apex:pageBlock title="New Request Details"  id="xmlform" rendered="{!beforeSubmit && allGood}">
+            <apex:pageMessages id="errormessage"/>
+            <apex:pageBlockButtons location="top">
+            
+                <!-- commented out on 21/6/2019 - as the HTTP endpoint of Spark has been turned off.
+					work around action: "take screenshot/pdf that screen and send it to spark manually"
+				<apex:commandButton value="Submit" action="{!postRequest}"  reRender="pgBlckId" status="actStatusId" />-->
+               <span>Spark's My Spark Digital portal is retired now. Please take screenshot/PDF of this screen and send it to spark manually</span>
+               <apex:commandButton value="Done" action="{!cancel}" immediate="true"/> 
+                
+            </apex:pageBlockButtons>
+          
+           
+          <apex:pageBlockSection columns="2" title="Request Info">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="CreatedBy User Name" />
+                <apex:outputText value="{!$User.Username}" /> 
+           </apex:pageBlockSectionItem>
+           
+                       <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Status" />
+                <apex:outputText value="Submitted" /> 
+           </apex:pageBlockSectionItem>
+           
+           </apex:pageBlockSection>
+           
+          
+        <apex:pageBlockSection columns="2" title="TSO Case info">
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Coordinator First Name" />
+                <apex:outputText value="{!case.Owner.FirstName}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Installation Building" />
+                <apex:outputText value="{!case.CLNE_Installation_Building__c}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Coordinator Last Name" />
+                <apex:outputText value="{!case.Owner.LastName}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Installation Level" />
+                <apex:outputText value="{!case.CLNE_Installation_Level__c}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Coordinator Email" />
+                <apex:outputText value="{!case.Owner.Email}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Installation Room" />
+                <apex:outputText value="{!case.CLNE_Installation_Room__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Installation Location" />
+                <apex:outputText value="{!case.CLNE_Installation_In_Room_Location__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is Long Cable Required" />
+                <apex:outputText value="{!case.X10m_Cable_Required__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+                      <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is CLNE Site Adheres School Site" />
+                <apex:outputText value="{!case.CLNE_Adheres_School_Site__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is Fibre Service Exist Already" />
+                <apex:outputText value="{!case.Currently_Connected_To_A_Fibre_Service__c}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="ExistingFibreServiceProvider" />
+                <apex:outputText value="{!case.Listed_ISP__c}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="ExistingFibreServiceDetails" />
+                <apex:outputText value="{!case.Legacy_Internet_Connection_Type__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is UPS Available" />
+                <apex:outputText value="{!case.Is_UPS_Available__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is Restricted Access" />
+                <apex:outputText value="{!case.Is_Restricted_Access__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Existing Restricted Access Details" />
+                <apex:outputText value="{!ExistingRestrictedAccessDetails}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Have Environment Risks" />
+                <apex:outputText value="{!case.Has_Environment_Risk__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Environment Risk Details" />
+                <apex:outputText value="{!case.Environment_Risk_Details__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Preferred Installation Time" />
+                <apex:outputText value="{!PreferredInstallationTime}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Details" />
+                <apex:outputText value="{!case.CLNE_Installation_Comment__c}" /> 
+           </apex:pageBlockSectionItem> 
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact Title" />
+                <apex:outputText value="{!case.Contact.Title}" /> 
+           </apex:pageBlockSectionItem>
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact First Name" />
+                <apex:outputText value="{!case.Contact.FirstName}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact Last Name" />
+                <apex:outputText value="{!case.Contact.LastName}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact Phone" />
+                <apex:outputText value="{!if(isblank(case.Contact.Phone),case.Contact.MobilePhone,case.Contact.Phone)}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact Mobile Phone" />
+                <apex:outputText value="{!if(isblank(case.Contact.MobilePhone),case.Contact.Phone,case.Contact.MobilePhone)}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Primary Site Contact Email" />
+                <apex:outputText value="{!case.Contact.Email}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact Title" />
+                <apex:outputText value="{!case.Secondary_Contact__r.title}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact First Name" />
+                <apex:outputText value="{!case.Secondary_Contact__r.FirstName}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact Last Name" />
+                <apex:outputText value="{!case.Secondary_Contact__r.LastName}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact Phone" />
+                <apex:outputText value="{!if(isblank(case.Secondary_Contact__r.Phone),case.Secondary_Contact__r.MobilePhone,case.Secondary_Contact__r.Phone)}" /> 
+                
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact Mobile Phone" />
+                <apex:outputText value="{!if(isblank(case.Secondary_Contact__r.MobilePhone),case.Secondary_Contact__r.Phone,case.Secondary_Contact__r.MobilePhone)}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Secondary Site Contact Email" />
+                <apex:outputText value="{!case.Secondary_Contact__r.Email}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Web Filter Administrattion First Name" />
+                <apex:outputText value="{!standardfirstname}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Web Filter Administrattion Last Name" />
+                <apex:outputText value="{!standardlastname}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Web Filter Administrattion Phone" />
+                <apex:outputText value="{!standardphonenumber}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Web Filter Administrattion Mobile Phone" />
+                <apex:outputText value="{!standardmobilenumber}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Web Filter Administrattion Email" />
+                <apex:outputText value="{!case.Web_Filtering_Administrator_Username__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Health and Safety Security Requirements" />
+                <apex:outputText value="{!case.HealthandSafetySecurityRequirements__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+      </apex:pageBlockSection>
+            
+            
+            
+            <apex:pageBlockSection columns="2" title="Account info">
+              
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Site Identifier" />
+                <apex:outputText value="{!case.Account.TCNZ_Common_Name__c}" /> 
+           </apex:pageBlockSectionItem>
+                       <apex:pageBlockSectionItem >
+                <apex:outputLabel value="School Name" />
+                <apex:outputText value="{!case.Account.Name}" /> 
+           </apex:pageBlockSectionItem>
+           
+                       <apex:pageBlockSectionItem >
+                <apex:outputLabel value="MoE SchoolId" />
+                <apex:outputText value="{!case.Account.MoE_School_ID__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="MoE SiteId" />
+                <apex:outputText value="{!case.Account.MoE_Site_ID_Lookup__r.name}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Number of Users" />
+                <apex:outputText value="{!case.Account.Total_Users__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Network Connections ContractTerm" />
+                <apex:outputText value="{!case.Account.Managed_Network_Contract_Term__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Network Connections Service Option" />
+                <apex:outputText value="{!case.Account.School_Signed_Base_Connection__r.TCNZ_Standard_Service_Option__c}" /> 
+           </apex:pageBlockSectionItem>
+
+
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Network Connections ServiceLevel" />
+                <apex:outputText value="{!case.Account.Service_Level__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Postal AddressLine1" />
+                <apex:outputText value="{!case.Account.Postal_Address_1__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Physical Address Street" />
+                <apex:outputText value="{!case.Account.Street__c}" /> 
+           </apex:pageBlockSectionItem> 
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Postal AddressLine2" />
+                <apex:outputText value="{!case.Account.Postal_Address_2__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Physical Address Suburb" />
+                <apex:outputText value="{!case.Account.Suburb__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Postal AddressLine3" />
+                <apex:outputText value="{!case.Account.Postal_Address_3__c}" /> 
+           </apex:pageBlockSectionItem>
+
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Physical Address City" />
+                <apex:outputText value="{!case.Account.City__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Postal Address Suburb" />
+                <apex:outputText value="{!case.Account.Suburb__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Physical Address PostCode" />
+                <apex:outputText value="{!case.Account.Postal_Code__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Postal Address PostCode" />
+                <apex:outputText value="{!case.Account.Postal_Code__c}" /> 
+           </apex:pageBlockSectionItem>
+           
+            </apex:pageBlockSection>
+            <apex:inputHidden value="{!Case.New_Connection_Request_Order_ID__c}"/>
+            <apex:inputHidden value="{!Case.CaseNumber}"/>
+            <apex:inputHidden value="{!Case.TCNZ_Work_Stream_Status__c}"/>
+                
+        </apex:pageBlock>
+    
+    <apex:outputPanel id="after">
+    <apex:pageMessage summary="Your new connection request has been submitted!" severity="confirm" escape="false" rendered="{!NOT(beforeSubmit) && created}" >
+ <a class ="actionLink" href="/{!case.Id}" target="_parent">Back To Case</a>
+ </apex:pageMessage>
+ 
+ <apex:pageMessage summary="Submission failed! Please contact Salesforce administrator!" severity="error" escape="false" rendered="{!NOT(beforeSubmit) && NOT(created)}" >
+ <a class ="actionLink" href="/{!case.Id}" target="_parent">Back To Case</a>
+ </apex:pageMessage>
+  </apex:outputPanel>  
+  </apex:outputpanel>
+  </apex:form>
+</apex:page>

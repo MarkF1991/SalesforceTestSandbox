@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <description>Did the user add a Authorised Signatory contact?</description>
+        <name>Authorised_Signatory_Contact</name>
+        <label>Authorised Signatory Contact</label>
+        <locationX>226</locationX>
+        <locationY>2231</locationY>
+        <defaultConnectorLabel>No Change</defaultConnectorLabel>
+        <rules>
+            <name>Authorised_Signatory_added_to_ATP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Signatory__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Signatory__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity_Authorised_Signatory_Contact</targetReference>
+            </connector>
+            <label>Authorised Signatory added to ATP</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the Authorised Signatory contact already on the opportunity</description>
+        <name>Existing_Authorised_Signatory_Contact</name>
+        <label>Existing Authorised Signatory Contact?</label>
+        <locationX>50</locationX>
+        <locationY>2447</locationY>
+        <defaultConnector>
+            <targetReference>Add_Authorised_Signatory_Contact_to_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Add Authorised Signatory contact</defaultConnectorLabel>
+        <rules>
+            <name>Don_t_add_Authorised_Signatory_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Technical_Contact</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Technical_Contact.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Signatory__c</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Don&apos;t add Authorised Signatory contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the primary contact already on the opportunity</description>
+        <name>Existing_Primary_Contact</name>
+        <label>Existing Primary Contact?</label>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Add_Primary_Contact_to_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Add primary contact</defaultConnectorLabel>
+        <rules>
+            <name>Don_t_add_primary_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Primary_Contact</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Primary_Contact.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Primary_Contact__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Secondary_Contact</targetReference>
+            </connector>
+            <label>Don&apos;t add primary contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the secondary contact already on the opportunity</description>
+        <name>Existing_Secondary_Contact</name>
+        <label>Existing Secondary Contact?</label>
+        <locationX>50</locationX>
+        <locationY>1247</locationY>
+        <defaultConnector>
+            <targetReference>Add_Secondary_Contact_to_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Add secondary contact</defaultConnectorLabel>
+        <rules>
+            <name>Don_t_add_secondary_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Secondary_Contact</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Secondary_Contact.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Secondary_Contact__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Technical_Contact</targetReference>
+            </connector>
+            <label>Don&apos;t add secondary contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the technical contact already on the opportunity</description>
+        <name>Existing_Technical_Contact</name>
+        <label>Existing Technical Contact?</label>
+        <locationX>50</locationX>
+        <locationY>1847</locationY>
+        <defaultConnector>
+            <targetReference>Add_Technical_Contact_to_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Add secondary contact</defaultConnectorLabel>
+        <rules>
+            <name>Don_t_add_technical_contact</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Technical_Contact</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Opportunity_Technical_Contact.ContactId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Technical_Contact__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Authorised_Signatory_Contact</targetReference>
+            </connector>
+            <label>Don&apos;t add technical contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Did the user add a primary contact?</description>
+        <name>Primary_Contact</name>
+        <label>Primary Contact</label>
+        <locationX>226</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Secondary_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Change</defaultConnectorLabel>
+        <rules>
+            <name>Primary_Contact_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Primary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Primary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity_Primary_Contact</targetReference>
+            </connector>
+            <label>Primary Contact changed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Did the user add a secondary contact?</description>
+        <name>Secondary_Contact</name>
+        <label>Secondary Contact</label>
+        <locationX>226</locationX>
+        <locationY>1031</locationY>
+        <defaultConnector>
+            <targetReference>Technical_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Change</defaultConnectorLabel>
+        <rules>
+            <name>Secondary_Contact_added_to_ATP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Secondary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Secondary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity_Secondary_Contact</targetReference>
+            </connector>
+            <label>Secondary Contact added to ATP</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Did the user add a technical contact?</description>
+        <name>Technical_Contact</name>
+        <label>Technical Contact</label>
+        <locationX>226</locationX>
+        <locationY>1631</locationY>
+        <defaultConnector>
+            <targetReference>Authorised_Signatory_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Change</defaultConnectorLabel>
+        <rules>
+            <name>Technical_Contact_added_to_ATP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Technical_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Technical_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity_Technical_Contact</targetReference>
+            </connector>
+            <label>Technical Contact added to ATP</label>
+        </rules>
+    </decisions>
+    <description>Flow that runs when a contact is added to an ATP.</description>
+    <environments>Default</environments>
+    <interviewLabel>ATP - contacts added {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ATP - contacts added</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get the opportunity related to the ATP</description>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
+        <locationX>226</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Primary_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the existing Authorised Signatory contact on the opportunity</description>
+        <name>Get_Opportunity_Authorised_Signatory_Contact</name>
+        <label>Get Opportunity Authorised Signatory Contact</label>
+        <locationX>50</locationX>
+        <locationY>2339</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existing_Authorised_Signatory_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Role</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Authorised Signatory</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityContactRole</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the existing primary contact on the opportunity</description>
+        <name>Get_Opportunity_Primary_Contact</name>
+        <label>Get Opportunity Primary Contact</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existing_Primary_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Role</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Primary Contact</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityContactRole</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the existing secondary contact on the opportunity</description>
+        <name>Get_Opportunity_Secondary_Contact</name>
+        <label>Get Opportunity Secondary Contact</label>
+        <locationX>50</locationX>
+        <locationY>1139</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existing_Secondary_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Role</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Secondary Contact</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityContactRole</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the existing technical contact on the opportunity</description>
+        <name>Get_Opportunity_Technical_Contact</name>
+        <label>Get Opportunity Technical Contact</label>
+        <locationX>50</locationX>
+        <locationY>1739</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existing_Technical_Contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Role</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Technical Survey Contact</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OpportunityContactRole</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>100</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Opportunity</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Primary_Contact__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Secondary_Contact__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Technical_Contact__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Signatory__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>ATP__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Add the technical contact as the opportunity contact with role = Authorised Signatory</description>
+        <name>Add_Authorised_Signatory_Contact_to_Opportunity</name>
+        <label>Add Authorised Signatory Contact to Opportunity</label>
+        <locationX>138</locationX>
+        <locationY>2555</locationY>
+        <flowName>ATP_Add_opportunity_contact_role</flowName>
+        <inputAssignments>
+            <name>ContactId</name>
+            <value>
+                <elementReference>$Record.Technical_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Opportunity</name>
+            <value>
+                <elementReference>Get_Opportunity</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RoleType</name>
+            <value>
+                <stringValue>Authorised Signatory</stringValue>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <description>Add the primary contact as the opportunity contact with role = primary contact</description>
+        <name>Add_Primary_Contact_to_Opportunity</name>
+        <label>Add Primary Contact to Opportunity</label>
+        <locationX>138</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Secondary_Contact</targetReference>
+        </connector>
+        <flowName>ATP_Add_opportunity_contact_role</flowName>
+        <inputAssignments>
+            <name>ContactId</name>
+            <value>
+                <elementReference>$Record.Primary_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Opportunity</name>
+            <value>
+                <elementReference>Get_Opportunity</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RoleType</name>
+            <value>
+                <stringValue>Primary Contact</stringValue>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <description>Add the secondary contact as the opportunity contact with role = secondary contact</description>
+        <name>Add_Secondary_Contact_to_Opportunity</name>
+        <label>Add Secondary Contact to Opportunity</label>
+        <locationX>138</locationX>
+        <locationY>1355</locationY>
+        <connector>
+            <targetReference>Technical_Contact</targetReference>
+        </connector>
+        <flowName>ATP_Add_opportunity_contact_role</flowName>
+        <inputAssignments>
+            <name>ContactId</name>
+            <value>
+                <elementReference>$Record.Secondary_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Opportunity</name>
+            <value>
+                <elementReference>Get_Opportunity</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RoleType</name>
+            <value>
+                <stringValue>Secondary Contact</stringValue>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <description>Add the technical contact as the opportunity contact with role = technical survey contact</description>
+        <name>Add_Technical_Contact_to_Opportunity</name>
+        <label>Add Technical Contact to Opportunity</label>
+        <locationX>138</locationX>
+        <locationY>1955</locationY>
+        <connector>
+            <targetReference>Authorised_Signatory_Contact</targetReference>
+        </connector>
+        <flowName>ATP_Add_opportunity_contact_role</flowName>
+        <inputAssignments>
+            <name>ContactId</name>
+            <value>
+                <elementReference>$Record.Technical_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Opportunity</name>
+            <value>
+                <elementReference>Get_Opportunity</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RoleType</name>
+            <value>
+                <stringValue>Technical Survey Contact</stringValue>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+</Flow>

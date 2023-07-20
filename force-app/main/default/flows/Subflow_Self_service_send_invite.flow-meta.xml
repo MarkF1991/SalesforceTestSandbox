@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send the invite email to the principal</description>
+        <name>Send_email_2_Sign_Up</name>
+        <label>Send email #2 - Sign Up</label>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Set_Response_Status_to_SUCCESS</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Response_Status_to_ERROR</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>emailHTMLbody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>emailRecipientContact.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>support@n4l.co.nz</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Get_Email_Template.Subject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Set the error message to inform that there is no recipient ID</description>
+        <name>Assign_error_message_no_recipient</name>
+        <label>Assign error message - no recipient</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Field accoundId cannot be null</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Set_Response_Status_to_ERROR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Populate the &apos;opportunityID&apos; variable with the newly created opportunity record ID</description>
+        <name>Assign_Opportunity_ID_to_output_variable</name>
+        <label>Assign Opportunity ID to output variable</label>
+        <locationX>578</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>opportunityId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Create_Opportunity_for_Self_Service_Onboarding</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Email_Template</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set the error message to return</description>
+        <name>Set_error_message_missing_school_ID</name>
+        <label>Set error message - missing school ID</label>
+        <locationX>50</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Recipient cannot be null</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Set_Response_Status_to_ERROR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Change the status variable to ERROR</description>
+        <name>Set_Response_Status_to_ERROR</name>
+        <label>Set Response Status to ERROR</label>
+        <locationX>842</locationX>
+        <locationY>1118</locationY>
+        <assignmentItems>
+            <assignToReference>status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ERROR</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <description>Change the status variable to SUCCESS</description>
+        <name>Set_Response_Status_to_SUCCESS</name>
+        <label>Set Response Status to SUCCESS</label>
+        <locationX>578</locationX>
+        <locationY>1118</locationY>
+        <assignmentItems>
+            <assignToReference>status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SUCCESS</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Check_if_variables_exist</name>
+        <label>Check if variables exist</label>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Get_Recipient_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>All variables exist</defaultConnectorLabel>
+        <rules>
+            <name>No_recipient</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>principalId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>principalId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_error_message_missing_school_ID</targetReference>
+            </connector>
+            <label>No recipient</label>
+        </rules>
+        <rules>
+            <name>No_School</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>accountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_error_message_no_recipient</targetReference>
+            </connector>
+            <label>No School</label>
+        </rules>
+    </decisions>
+    <description>Send invite email to principal and create opportunity for Self Service onboarding
+https://n4lconz.atlassian.net/browse/SS-1183</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>The html body from the email template, with merge fields populated</description>
+        <name>emailHTMLbody</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE(SUBSTITUTE({!Get_Email_Template.HtmlValue}, 
+&quot;[First.Name]&quot;, {!emailRecipientContact.FirstName}),
+&quot;https://reporting.n4l.co.nz/&quot;, {!$Label.Self_Service_Link})</expression>
+    </formulas>
+    <formulas>
+        <description>Close date of opportunity - 1 year from invite</description>
+        <name>opportunityCloseDate</name>
+        <dataType>Date</dataType>
+        <expression>today() + 365</expression>
+    </formulas>
+    <formulas>
+        <description>The name of the opportunity that will be created. &lt;School Name&gt; - Self Service</description>
+        <name>opportunityName</name>
+        <dataType>String</dataType>
+        <expression>{!Get_School_Account.Name} &amp; &quot; - Self Service&quot;</expression>
+    </formulas>
+    <formulas>
+        <description>Workaround because null principalId variable passed into flow is processed as &apos;()&apos;, causing decision element to evaluate the principalId variable as NOT NULL, even though it is empty string</description>
+        <name>principalIdLength</name>
+        <dataType>Number</dataType>
+        <expression>1</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Subflow: Self service send invite {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Subflow: Self service send invite</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Create an Onboarding Opportunity for the School  related to the Self Service campaign. The Id of the campaign is stored in a custom label</description>
+        <name>Create_Opportunity_for_Self_Service_Onboarding</name>
+        <label>Create Opportunity for Self Service Onboarding</label>
+        <locationX>578</locationX>
+        <locationY>638</locationY>
+        <connector>
+            <targetReference>Assign_Opportunity_ID_to_output_variable</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Set_Response_Status_to_ERROR</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>accountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CampaignId</field>
+            <value>
+                <elementReference>$Label.Self_Service_RM_Invite_Campaign_ID</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>CloseDate</field>
+            <value>
+                <elementReference>opportunityCloseDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>principalId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>opportunityName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Opportunity_Onboarding_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Onboarding</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Get the email template for the Self Service - 2 - Sign Up email template</description>
+        <name>Get_Email_Template</name>
+        <label>Get Email Template</label>
+        <locationX>578</locationX>
+        <locationY>878</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_email_2_Sign_Up</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Set_Response_Status_to_ERROR</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Self_Service_OB_2_Sign_up</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the onboarding record type to create opportunity</description>
+        <name>Get_Opportunity_Onboarding_Record_Type</name>
+        <label>Get Opportunity Onboarding Record Type</label>
+        <locationX>578</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Opportunity_for_Self_Service_Onboarding</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Onboarding</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the recipient contact record based on principalId input</description>
+        <name>Get_Recipient_Contact</name>
+        <label>Get Recipient Contact</label>
+        <locationX>578</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_School_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>principalId</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputReference>emailRecipientContact</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <queriedFields>Email</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the school account based on accountId for Opportunity Name formula</description>
+        <name>Get_School_Account</name>
+        <label>Get School Account</label>
+        <locationX>578</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Opportunity_Onboarding_Record_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>accountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_if_variables_exist</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>The record ID of the School that will receive the invite to Self Service</description>
+        <name>accountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The contact that will receive the invite email for Self Service (i.e. the principal)</description>
+        <name>emailRecipientContact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <description>The error message returned by the flow</description>
+        <name>errorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <elementReference>$Flow.FaultMessage</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>The ID of the Opportunity created for flow output</description>
+        <name>opportunityId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>The ID of the principal passed in to subflow. The recipient of the email</description>
+        <name>principalId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Response status - either SUCCESS or ERROR</description>
+        <name>status</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

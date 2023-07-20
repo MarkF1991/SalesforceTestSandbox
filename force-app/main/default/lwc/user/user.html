@@ -1,0 +1,20 @@
+<template>
+    <div class="slds-grid ">
+           
+        <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium initial">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium">
+                <abbr class="slds-avatar__initials" title="user initial">{initial}</abbr>
+            </span>
+        </div>
+
+        <div class="slds-col slds-align-middle slds-p-right_large slds-has-flexi-truncate ">
+            <div class="slds-grid slds-grid_vertical ">
+                <lightning-button-menu alternative-text="Show menu" label={name} onselect={handleOnselect}>
+                    <lightning-menu-item value="logout" label="Logout"></lightning-menu-item>
+                </lightning-button-menu>
+            </div>
+        </div>
+
+    </div>
+    
+</template>

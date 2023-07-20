@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <description>When Contact.FortiPortal_Access__c = FALSE update User.FortiPortal_Customer_Name__c = &quot;&quot; or NULL</description>
+        <name>Clear_FortiPortal_Customer_Name</name>
+        <label>Clear FortiPortal Customer Name</label>
+        <locationX>847</locationX>
+        <locationY>491</locationY>
+        <assignmentItems>
+            <assignToReference>userRecord.FortiPortal_Customer_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>When Granting Fortiportal access to user, copy username to set Federation ID  when it blank.</description>
+        <name>Set_Federation_ID</name>
+        <label>Set Federation ID</label>
+        <locationX>1219</locationX>
+        <locationY>229</locationY>
+        <assignmentItems>
+            <assignToReference>userRecord.FederationIdentifier</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>userRecord.Username</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_User</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>When Contact.FortiPortal_Access__c = TRUE update User.FortiPortal_Customer_Name__c = &quot;spark.co.nz&quot;</description>
+        <name>Set_FortiPortal_Customer_Name</name>
+        <label>Set FortiPortal Customer Name</label>
+        <locationX>841</locationX>
+        <locationY>318</locationY>
+        <assignmentItems>
+            <assignToReference>userRecord.FortiPortal_Customer_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>spark.co.nz</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Has_Federation_ID</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>copy the values:
+from Account.Fortinet_Adom_Name__c to User.Fortinet_ADOM__c
+from Contact.FortiPortal_User_Role__c to User.FortiPortal_User_Role__c
+based on Contact.FortiPortal_Access__c (TRUE/FALSE) update User.FortiPortal_Customer_Name__c (&quot;spark.co.nz&quot;/&quot;&quot;)</description>
+        <name>Set_User_Custom_Attributes</name>
+        <label>Set User Custom Attributes</label>
+        <locationX>480</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>userRecord.Fortinet_ADOM__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>accountRecord.Fortinet_Adom_Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userRecord.FortiPortal_User_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>User_FortiPortal_User_Role_Formula</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>userRecord.Fortinet_Adom_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>accountRecord.Fortinet_Adom_Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Grant_FortiPortal_Access</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Grant_FortiPortal_Access</name>
+        <label>Grant FortiPortal Access</label>
+        <locationX>623</locationX>
+        <locationY>400</locationY>
+        <defaultConnector>
+            <targetReference>Clear_FortiPortal_Customer_Name</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Grant_FortiPortal_Access_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>contactRecord.FortiPortal_Access__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_FortiPortal_Customer_Name</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>When a user record is created, the Federation ID is blank by default. When we grant FortiPortal access to user, if Federation ID is still blank, then we must update Federation ID with username.</description>
+        <name>Has_Federation_ID</name>
+        <label>Has Federation ID</label>
+        <locationX>977</locationX>
+        <locationY>321</locationY>
+        <defaultConnector>
+            <targetReference>Update_User</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_Federation_ID</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>User_Federation_ID_ISBLANK_formula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Federation_ID</targetReference>
+            </connector>
+            <label>No Federation ID</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>User_Record_Exist</name>
+        <label>User Record Exist</label>
+        <locationX>306</locationX>
+        <locationY>402</locationY>
+        <defaultConnectorLabel>User_Record_Exist_No</defaultConnectorLabel>
+        <rules>
+            <name>User_Record_Exist_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>userRecord</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_User_Custom_Attributes</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>When Contact.FortiPortal_Access__c is updated, modify Custom Attribute User.FortiPortal_Customer_Name__c to &quot;spark.co.nz&quot;. Finally upsert Onboarding Opportunity on related Account.</description>
+    <formulas>
+        <description>to check whether user&apos;s federation id is blank</description>
+        <name>User_Federation_ID_ISBLANK_formula</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!userRecord.FederationIdentifier})</expression>
+    </formulas>
+    <formulas>
+        <description>If contactRecord.FortiPortal_User_Role__c is blank (no picklist value selected), set custom attribute: User.FortiPortal_User_Role__c = &apos;Advanced&apos;
+Refer to Tips: https://help.salesforce.com/articleView?id=tips_for_using_picklist_formula_fields.htm&amp;type=5</description>
+        <name>User_FortiPortal_User_Role_Formula</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK(TEXT({!contactRecord.FortiPortal_User_Role__c})), &quot;Advanced&quot;,TEXT({!contactRecord.FortiPortal_User_Role__c}))</expression>
+    </formulas>
+    <interviewLabel>Grant Access to Fortiportal {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Grant Access to Fortiportal</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get a user by Contact Id</description>
+        <name>Get_A_Users</name>
+        <label>Get A User</label>
+        <locationX>314</locationX>
+        <locationY>183</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>User_Record_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>contactId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>userRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Fortinet_ADOM__c</queriedFields>
+        <queriedFields>FortiPortal_Customer_Name__c</queriedFields>
+        <queriedFields>FortiPortal_User_Role__c</queriedFields>
+        <queriedFields>FederationIdentifier</queriedFields>
+        <queriedFields>Username</queriedFields>
+        <queriedFields>Fortinet_Adom_Name__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Fortinet_Adom_Name__c from Account</description>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>181</locationX>
+        <locationY>184</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_A_Users</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>contactRecord.AccountId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>accountRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Fortinet_Adom_Name__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get FortiPortal_User_Role__c, FortiPortal_Access__c, AccountId, Account.Fortinet_Adom_Name__c from Contact</description>
+        <name>Get_Contact</name>
+        <label>Get Contact</label>
+        <locationX>50</locationX>
+        <locationY>184</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>contactId</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputReference>contactRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>FortiPortal_Access__c</queriedFields>
+        <queriedFields>FortiPortal_User_Role__c</queriedFields>
+        <queriedFields>AccountId</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update user</description>
+        <name>Update_User</name>
+        <label>Update User</label>
+        <locationX>1220</locationX>
+        <locationY>413</locationY>
+        <connector>
+            <targetReference>Maintain_Filtering_Portal_Opportunities</targetReference>
+        </connector>
+        <inputReference>userRecord</inputReference>
+    </recordUpdates>
+    <startElementReference>Get_Contact</startElementReference>
+    <status>Obsolete</status>
+    <subflows>
+        <name>Maintain_Filtering_Portal_Opportunities</name>
+        <label>Maintain Filtering Portal Opportunities</label>
+        <locationX>1447</locationX>
+        <locationY>397</locationY>
+        <flowName>subflow_Maintain_Onboarding_Opportunities</flowName>
+        <inputAssignments>
+            <name>accountRecord</name>
+            <value>
+                <elementReference>accountRecord</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>contactRecord</name>
+            <value>
+                <elementReference>contactRecord</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>Extract account record by account id input variable.</description>
+        <name>accountRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <description>use contactId to find user record</description>
+        <name>contactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>contactRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>opportunityRecords</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+    <variables>
+        <description>used as looping element in userList</description>
+        <name>userRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

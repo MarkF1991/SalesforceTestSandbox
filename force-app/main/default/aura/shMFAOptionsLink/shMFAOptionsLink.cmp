@@ -1,0 +1,14 @@
+<aura:component implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,lightning:availableForFlowActions" access="global">    
+	
+    <aura:attribute name="linkLabel" type="string" default="Try a different verification method" access="global"/>
+    <aura:attribute name="linkTarget" type="string" default="" access="global"/>
+    
+    <div class="slds-grid slds-wrap">
+    <div class="linkRelative">
+        <div class="linkAbsolute">
+    		<a class="linkActual" href="{!v.linkTarget}">{!v.linkLabel}</a>
+    	</div>
+    </div>
+    </div>    
+    
+</aura:component>

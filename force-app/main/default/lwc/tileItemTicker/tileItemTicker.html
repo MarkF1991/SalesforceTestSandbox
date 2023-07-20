@@ -1,0 +1,23 @@
+<template>
+    <div class="slds-grid slds-grid_vertical slds-m-vertical_small">
+
+        <div class="slds-col slds-p-right_large">
+            <div class="slds-grid slds-p-bottom_medium">
+                <template if:true={showChipImage}>
+                    <div class="slds-col slds-align-middle slds-grow-none">
+                        <span><i class="material-icons md-14 slds-text-color_weak">{chipImageName}</i></span>
+                    </div>
+                </template>
+                <p class="slds-col slds-grow-none slds-align-middle slds-p-left_xx-small slds-text-color_weak labelText">{label}</p>
+            </div>
+        </div>
+
+        <div class="slds-col slds-grid slds-p-right_large">
+            <p class="slds-col slds-grow-none slds-align-middle valueText">{value}</p>
+
+            <p if:false={hideTrend} class={tickerClass}>
+                <span> <i class="material-icons md-ticker ">{tickerIconName}</i> {tickerValue}</span>
+            </p>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,82 @@
+<!-- <template>
+        <lightning-card title={title} icon-name="standard:task">
+            <div class="slds-m-around_medium" ontaskselect={handleTaskSelect}>
+                <template if:true={hasRecords}>
+                    <template for:each={tasks} for:item="task">
+                            <div class="slds-m-bottom_small" key={task.id} >
+                                    <c-task-tile task={task}></c-task-tile>    
+                            </div>
+                        </template>
+                </template>
+                <template if:false={hasRecords}>
+                        <p>{emptyListMessage}</p>
+                </template>
+                <template if:true={error}>
+                    <c-error-panel errors={error}></c-error-panel>
+                </template>
+
+            </div>
+        </lightning-card> 
+        
+        <lightning-card title="Create Task" icon-name="standard:task">
+                <div class="slds-m-around_medium">
+                    <lightning-input label="Id" disabled value={taskId}></lightning-input>
+                    <lightning-input label="Subject" onchange={handleSubjectChange} class="slds-m-bottom_x-small"></lightning-input>
+                    <lightning-input type="date" name="ActivityDate" label="ActivityDate" onchange={handleDueDateChange}></lightning-input>
+                    <lightning-button label="Add" variant="brand" onclick={createTask}></lightning-button>
+                </div>
+        </lightning-card>
+</template> -->
+
+
+<template>
+    <lightning-card title={title} icon-name="standard:task">
+            <lightning-button label="New" slot="actions" onclick={handleNew}></lightning-button>
+
+                <template if:true={createMode}>
+                        <div class="slds-m-around_medium slds-box">
+                            <!-- <lightning-input label="Id" disabled value={taskId}></lightning-input> -->
+                            <lightning-input label="Subject" onchange={handleSubjectChange}></lightning-input>
+                            <lightning-input type="date" name="ActivityDate" label="Due Date" onchange={handleDueDateChange}></lightning-input>
+                            <lightning-textarea label="Description" onchange={handleDescriptionChange} max-length="32000"></lightning-textarea>
+                            
+                            <div class="slds-align_absolute-center slds-p-top_medium">
+                                <lightning-button label="Cancel" variant="neutral" onclick={handleCancel} ></lightning-button>
+                                <lightning-button label="Save" variant="brand" onclick={handleSave}  class="slds-m-left_x-small"></lightning-button>
+                            </div>
+                        </div>
+
+                    <!-- <div class="slds-m-around_medium">
+                        
+                        <lightning-input label="Subject" onchange={handleSubjectChange}></lightning-input>
+                        <lightning-input type="date" name="ActivityDate" label="Due Date" onchange={handleDueDateChange}></lightning-input>
+                        <lightning-textarea label="Description" onchange={handleDescriptionChange} max-length="32000"></lightning-textarea>
+                        <div class="slds-m-top_x-small">
+                                <lightning-button label="Add" variant="brand" onclick={createTask} ></lightning-button>
+                        </div>
+                        
+                    </div>  -->
+                </template>
+        
+                <template if:true={displayMode}>
+                    <div class="slds-m-around_medium" ontaskselect={handleTaskSelect}>
+                        <template if:true={hasRecords}>
+                            <template for:each={tasks} for:item="task">
+                                    <div class="slds-m-bottom_x-small" key={task.id} >
+                                        <c-task-tile task={task}></c-task-tile>    
+                                    </div>
+                                </template>
+                        </template>
+                        <template if:false={hasRecords}>
+                                <p>{emptyListMessage}</p>
+                        </template>
+                        <template if:true={error}>
+                            <c-error-panel errors={error}></c-error-panel>
+                        </template>
+                    </div>
+                </template>
+    
+    
+        
+    </lightning-card>
+</template>

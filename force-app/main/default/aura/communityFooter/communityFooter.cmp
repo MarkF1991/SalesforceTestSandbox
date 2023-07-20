@@ -1,0 +1,28 @@
+<aura:component description="footer" implements="forceCommunity:availableForAllPageTypes" access="global">
+	<aura:attribute name="footer" type="String" default="Micado Limited New Zealand" access="global" />
+	<aura:attribute name="footerYear" type="String" default="2021" access="global" />
+    <aura:attribute name="footerPhone" type="String" default="0800 123456" access="global" />
+    <aura:attribute name="footerTerms" type="String" default="Terms" access="global" />
+    <aura:attribute name="footerPrivacy" type="String" default="Privacy Policy" access="global" />
+    <aura:attribute name="footerEmail" type="String" default="Company Email" access="global" />
+    <aura:attribute name="footerHeight" type="String" default="5em"/>
+    
+	<aura:html tag="style">
+    	:root {
+        	--experience_footer_height: {!v.footerHeight}
+        }
+    </aura:html>
+    
+    <div class="slds-grid slds-grid_vertical-align-center">
+        <div class="slds-col slds-p-horizontal_medium">
+            <span>&copy; {!v.footerYear} &nbsp; {!v.footer} </span>
+            <br></br>
+            <span> <a href="{!v.footerTerms}" target="_blank"> Terms </a> | <a href="{!v.footerPrivacy}" target="_blank"> Privacy </a> | <a href="https://www.n4l.co.nz" target="_blank"> Go to n4l.co.nz </a></span>
+        </div>
+        <div class="slds-col slds-p-horizontal_medium slds-text-align_right">
+            <span> {!v.footerPhone} </span>
+            <br></br>
+            <span><lightning:formattedEmail value="{!v.footerEmail}" hideIcon="true"/></span>
+        </div>
+    </div>
+</aura:component>

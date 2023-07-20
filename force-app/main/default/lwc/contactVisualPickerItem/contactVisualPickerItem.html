@@ -1,0 +1,14 @@
+<template>
+        <div class="slds-visual-picker slds-visual-picker_vertical" onclick={handleSelect}>
+            <input type="radio" id={object.contactid} name="options" value={object.contactid} checked={propertyChecked} disabled={propertyDisabled} />
+            <label for={object.contactid}>
+                <span class="slds-visual-picker__figure slds-visual-picker__text slds-align_Left ">
+                        <c-contact-tile contactstring={object.contactstring} userstring={object.userstring}></c-contact-tile>
+                </span>
+                <span class="slds-icon_container slds-visual-picker__text-check">
+                    <lightning-icon icon-name="utility:check" alternative-text={object.alternativeText} variant="inverse" size="x-small"></lightning-icon>
+                    <!-- <i class="material-icons md-16">check</i> -->
+                </span>
+            </label>
+            </div>
+    </template>

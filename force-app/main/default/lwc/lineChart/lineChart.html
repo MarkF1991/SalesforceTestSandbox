@@ -1,0 +1,15 @@
+<template>
+
+    <lightning-card title="Line Chart"  icon-name="custom:custom3">
+        
+        <div class='slds-box slds-m-vertical_medium ct-chart ct-minor-seventh'></div>
+
+        <template if:true={error}>
+            <c-error-panel errors={error}></c-error-panel>
+        </template>
+        <p>JSON.stringify(chartdata) = </p>
+        <p>{output4}</p>
+
+    </lightning-card>
+
+</template>

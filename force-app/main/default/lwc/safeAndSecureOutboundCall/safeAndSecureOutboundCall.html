@@ -1,0 +1,68 @@
+<template>
+    <div class="slds-p-around_x-medium">
+        <!-- <p>{display}</p> -->
+        <lightning-card title={title} 
+            onmodalconfirmedtoemailmoreinfo={handleProceedToEmailMoreInfo}
+            onmodalconfirmedtofix={handleProceedToFix}
+            onmodalconfirmedtooptout={handleProceedToOptOut}>
+            <!-- <lightning-button label="Opt Out" slot="actions" variant="neutral" disabled={disabledButton} onclick={handleOptOut}></lightning-button>
+            <lightning-button label="To Fix" slot="actions" variant="brand" disabled={disabledButton} onclick={handleToFix} class="slds-m-left_x-small"></lightning-button> -->
+
+            <!-- <div class="slds-p-right_x-small"> -->
+            <div class={sldsHorizontalMargin}>
+                <div class="slds-m-bottom_small">
+                    <c-safe-and-secure-summary record-id={accountId}></c-safe-and-secure-summary>
+                </div>
+                <div class="slds-m-top_medium">
+                    <label class="slds-form-element__label" for="form-element-02">Outbound Call Contact</label>
+                    <lightning-helptext content="Outbound call contact to be updated to use these buttons"></lightning-helptext>
+                </div>
+                
+                <div class="slds-box">
+                    <c-contact-visual-picker account-id={accountId} current-contact-id={selectedContactId} submit-button-name="Select"  onsaved={handleContactSelection}></c-contact-visual-picker>
+                </div>
+
+                <div class="slds-m-top_medium">Outbound Call Action</div>
+                <div class="slds-box">
+                    <div class="slds-align_absolute-center">
+                        <lightning-button label={moreInfoButton} variant="brand" onclick={handleWantMoreInfo} disabled={disabledButton}></lightning-button>
+                        <lightning-button label={tofixButton} variant="brand" onclick={handleToFix}  disabled={disabledButton} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button label={optoutButton} variant="brand" onclick={handleOptOut} disabled={disabledButton} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </div>
+               
+            </div>
+            <!-- <div class="slds-m-top_medium">
+                <p>v2</p>
+                <c-task-list record-id={recordId} title="Log a call" enable-reminder></c-task-list>
+            </div> -->
+            
+
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <div class="loading-spinner-container">
+                        <div class="loading-spinner">
+                            <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
+
+            <c-modal 
+                header={modal.header} 
+                id={modal.id} 
+                elements={modal.elements} 
+                mode={modal.mode} 
+                cancel-button-name={modal.cancelButtonName} 
+                submit-button-name={modal.submitButtonName} 
+                confirmation-message={modal.confirmationMessage}
+                confirmation-message2={modal.confirmationMessage2} >
+            </c-modal>
+        </lightning-card>
+        
+    </div>
+</template>

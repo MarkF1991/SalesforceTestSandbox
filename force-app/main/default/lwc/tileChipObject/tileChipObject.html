@@ -1,0 +1,34 @@
+<template>
+    <div>
+        <div class="slds-grid ">
+            <template if:true={isAvatar}>
+                <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium">
+                    <span class="slds-avatar slds-avatar_circle slds-avatar_medium">
+                    <abbr class="slds-avatar__initials" title="user initial">{object.image.name}</abbr>
+                </span>
+            </div>
+            </template>
+
+            <template if:true={isIcon}>
+                <div class="slds-col slds-align-middle slds-grow-none slds-avatar_medium">
+                    <span class={avatarClass}>
+                        <i class="material-icons">{object.image.name}</i>
+                    </span>
+                </div>
+            </template>
+
+            <div class="slds-col slds-align-middle slds-p-right_large slds-has-flexi-truncate slds-m-left_small">
+                <div class="slds-grid slds-grid_vertical">
+                    <template if:true={href}>
+                        <a href="#" onclick={navigateClick}>
+                            <template if:true={object.label}><p class="slds-col slds-truncate">{object.label}</p></template>
+                        </a>
+                    </template>
+
+                    <template if:false={href}><template if:true={object.label}><p class="slds-col slds-truncate">{object.label}</p></template></template>
+                    <template if:true={object.description}><p class="slds-col slds-truncate  slds-text-color_weak descriptionText">{object.description}</p></template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

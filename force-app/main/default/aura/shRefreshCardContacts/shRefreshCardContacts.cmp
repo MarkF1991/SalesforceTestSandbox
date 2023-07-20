@@ -1,0 +1,28 @@
+<aura:component implements="forceCommunity:layout">
+    <aura:attribute name="cardComponents" type="Aura.Component[]"/>
+    <aura:attribute name="cardComponentsOuter" type="Aura.Component[]"/>
+    	
+    <div class="sh-screen slds-p-left_large slds-p-right_large">
+
+        <div class="slds-size_1-of-1 slds-align_absolute-center">
+            <div class="sh-card">
+
+                <div class="sh-card_components">
+                    {!v.cardComponents}
+                </div>
+
+            </div>
+        </div>
+                
+            
+        <div class="slds-size_1-of-1 slds-align_absolute-center">
+            <div class="sh-card_components outer">
+                {!v.cardComponentsOuter}
+            </div>
+        </div>
+
+    </div>
+
+        
+
+</aura:component>

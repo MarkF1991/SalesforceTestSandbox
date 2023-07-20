@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>Checks the Record Type name to end the flow for records that aren&apos;t post implementation surveys</description>
+        <name>Case_Survey_Record_Type</name>
+        <label>Case Survey Record Type</label>
+        <locationX>380</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Post_Implementation_Survey</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Post_Implementation_Survey</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Overall_Experience</targetReference>
+            </connector>
+            <label>Post Implementation Survey</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>What was the sentiment of the Overall Experience rating</description>
+        <name>Overall_Experience</name>
+        <label>Overall Experience</label>
+        <locationX>182</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>Panel_Member_Satisfaction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Positive</defaultConnectorLabel>
+        <rules>
+            <name>Negative_Experience</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Overall_Experience__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dissatisfied</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Overall_Experience__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Very dissatisfied</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Escalate_Survey_low_Overall_Satisfaction</targetReference>
+            </connector>
+            <label>Negative</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>What was the sentiment of the Panel Member Helpfulness response</description>
+        <name>Panel_Member_Satisfaction</name>
+        <label>Panel Member Satisfaction</label>
+        <locationX>182</locationX>
+        <locationY>791</locationY>
+        <defaultConnectorLabel>Helpful</defaultConnectorLabel>
+        <rules>
+            <name>Unhelpful_Panel_Member</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Panel_member_helpfulness__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Unhelpful</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Panel_member_helpfulness__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not very helpful</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Escalate_Survey_Low_Panel_Score</targetReference>
+            </connector>
+            <label>Unhelpful</label>
+        </rules>
+    </decisions>
+    <description>Send email alerts to escalate case surveys. https://n4lconz.atlassian.net/browse/MAR-111</description>
+    <environments>Default</environments>
+    <interviewLabel>Case Survey Escalations {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Survey Escalations</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Case_Survey_Record_Type</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Overall_Experience__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Dissatisfied</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Panel_member_helpfulness__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Not very helpful</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Overall_Experience__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Very dissatisfied</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Panel_member_helpfulness__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Unhelpful</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Case_Record_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Onboarding</stringValue>
+            </value>
+        </filters>
+        <object>MNU_Case_Survey__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Sends escalates the survey based on the escalation configuration in Custom Metadata</description>
+        <name>Escalate_Survey_low_Overall_Satisfaction</name>
+        <label>Escalate Survey - low Overall Satisfaction</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <connector>
+            <targetReference>Panel_Member_Satisfaction</targetReference>
+        </connector>
+        <flowName>Send_Case_Survey_Escalation_email</flowName>
+        <inputAssignments>
+            <name>CaseSurvey</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>EscalationType</name>
+            <value>
+                <stringValue>OVERALL</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Sends escalates the survey based on the escalation configuration in Custom Metadata</description>
+        <name>Escalate_Survey_Low_Panel_Score</name>
+        <label>Escalate Survey - Low Panel Score</label>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
+        <flowName>Send_Case_Survey_Escalation_email</flowName>
+        <inputAssignments>
+            <name>CaseSurvey</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>EscalationType</name>
+            <value>
+                <stringValue>PANEL</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>The name of the email template that is sent</description>
+        <name>emailTemplateName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Project_Survey_Escalation</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>The number of emails in the recipients collection</description>
+        <name>numberOfRecipients</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <description>Collection of email addresses to send the escalation email to.</description>
+        <name>recipients</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

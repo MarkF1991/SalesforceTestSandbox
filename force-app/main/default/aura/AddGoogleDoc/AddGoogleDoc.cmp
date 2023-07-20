@@ -1,0 +1,17 @@
+<aura:component implements="flexiPage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="AddGoogleDocController" >
+
+    <aura:attribute name="recordId" type="String" />
+    <div>
+        <lightning:card title="Add Google Doc" iconName="doctype:gdoc">
+            <aura:set attribute="actions">
+                <button class="slds-button slds-button_neutral" onclick="{!c.handleSave}">Save</button>
+            </aura:set>
+            <p class="slds-p-horizontal_small">
+                <ui:inputText aura:id="ui_inputs" label="Google Doc Name"  class="slds-m-bottom_x-small" value="" updateOn="keyup" required="true"/>
+                <ui:inputURL aura:id="ui_inputs" label="Google Doc URL"  class="slds-m-bottom_x-small" value="" required="true"/>
+                <span><a href="javascript:void(0);" onclick="{!c.handleGoogleDocRedirect}">Take me to Google Docs</a></span>
+            </p>
+        </lightning:card>
+    </div>
+
+</aura:component>

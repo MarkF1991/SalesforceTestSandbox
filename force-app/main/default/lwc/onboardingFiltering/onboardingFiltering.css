@@ -1,0 +1,46 @@
+.feedback-box {
+    color: white;
+    background-color: #980d76;
+}
+
+.THIS{
+    background-color:rgb(233, 233, 233);
+}
+
+.filtering-portal {
+    padding: 20px; 
+    /* border: 2px solid #eeeeee; 
+    border-radius: 4px; 
+    background-color: #f5f5f5; */
+}
+
+.loading-spinner-container {
+    position: relative;
+}
+
+.loading-spinner {
+    /* position: absolute;
+    right: 0px;
+     */
+}
+
+.slds-checkbox_faux{
+    border-color: #646568;
+}
+
+.slds-theme_shade {
+    background-color: #f5f5f5; 
+}
+
+/* .Title {
+    color: rgb(100, 101, 104);
+    text-align: center;
+    font-weight: 700;
+    font-size: 28px;
+    margin: .5em 0;
+}
+
+.titleDescription{
+    font-size: 10pt;
+    font-weight: 300;
+} */

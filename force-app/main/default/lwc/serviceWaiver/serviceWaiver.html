@@ -1,0 +1,129 @@
+<template>
+        <div class="slds-p-around_x-medium">
+            <lightning-card title="Service Waiver" >
+                <div class="slds-p-right_x-small">
+                    <div class="slds-m-bottom_xx-large">
+    
+                        <template if:true={contacts}>
+                            <lightning-combobox options={contactOptions} label="Contacts" placeholder="Select a contact" onchange={handleComboBoxChange}></lightning-combobox>
+    
+                            <lightning-input class="slds-m-vertical_small" label="tick if school already has web security (Akamai DNS)" type="checkbox" onchange={handleCheckboxChange}></lightning-input>
+    
+                            <button class="slds-button slds-button_brand" disabled={disabledButton} onclick={handleButtonClick}>Send Waiver Email</button>
+                        </template>
+                        <template if:true={error}>
+                            <c-error-panel errors={error}></c-error-panel>
+                        </template>
+    
+                        
+                        
+                        
+                    </div>
+                </div>
+            </lightning-card>
+            
+            
+
+            <lightning-card title="Waiver Form Response" >
+                <template if:true={account.data}>
+                    <!--
+                    <label class="slds-checkbox_toggle slds-grid slds-m-top_small">
+                        <span class="slds-col slds-form-element__label slds-m-bottom_none">Firewall</span>
+                        <div class="slds-float_right">
+                            <input name="checkbox-toggle-1" type="checkbox" aria-describedby="checkbox-toggle-1" value="checkbox-toggle-1" checked={waiverFirewallRemoved} />
+                            <span id="checkbox-toggle-1" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </div>
+                    </label>
+    
+                    <label class="slds-checkbox_toggle slds-grid slds-m-top_small">
+                        <span class="slds-col slds-form-element__label slds-m-bottom_none">Web Security</span>
+                        <div class="slds-float_right">
+                            <input name="checkbox-toggle-2" type="checkbox" aria-describedby="checkbox-toggle-2" value="checkbox-toggle-2" checked={waiverWebSecurityRemoved} />
+                            <span id="checkbox-toggle-2" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </div>
+                    </label>
+    
+                    <label class="slds-checkbox_toggle slds-grid slds-m-top_small">
+                        <span class="slds-col slds-form-element__label slds-m-bottom_none">Default Categories</span>
+                        <div class="slds-float_right">
+                            <input name="checkbox-toggle-3" type="checkbox" aria-describedby="checkbox-toggle-3" value="checkbox-toggle-3" checked={waiverDefaultCategoriesRemoved} />
+                            <span id="checkbox-toggle-3" class="slds-checkbox_faux_container" aria-live="assertive">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Enabled</span>
+                                <span class="slds-checkbox_off">Disabled</span>
+                            </span>
+                        </div>
+                    </label>
+                    -->
+
+                    <div class="slds-m-vertical_medium">
+                            <span>Firewall</span>
+                            <template if:true={waiverFirewallRemoved}>
+                                    <span class="slds-float_right slds-badge serviceEnabled">Opt in</span>
+                                </template>
+                                <template if:false={waiverFirewallRemoved}>
+                                    <span class="slds-float_right slds-badge serviceDisabled">Opt out</span>
+                            </template>
+                    </div> 
+                    
+                    <div class="slds-m-vertical_medium">
+                            <span>Web Security</span>
+                            <template if:true={waiverWebSecurityRemoved}>
+                                    <span class="slds-float_right slds-badge serviceEnabled">Opt in</span>
+                                </template>
+                                <template if:false={waiverWebSecurityRemoved}>
+                                    <span class="slds-float_right slds-badge serviceDisabled">Opt out</span>
+                            </template>
+                    </div> 
+
+                    <div class="slds-m-vertical_medium">
+                        <span>Default Categories</span>
+                        <template if:true={waiverDefaultCategoriesRemoved}>
+                                <span class="slds-float_right slds-badge serviceEnabled">Opt in</span>
+                            </template>
+                            <template if:false={waiverDefaultCategoriesRemoved}>
+                                <span class="slds-float_right slds-badge serviceDisabled">Opt out</span>
+                        </template>
+                    </div> 
+
+    
+                    
+                        <p>Allowed Default Categories</p>
+                        <div class="slds-box slds-p-around_x-large slds-m-bottom_medium">
+        
+                            <div class="slds-grid slds-wrap ">
+                                <template iterator:it={waiverDefaultCategories}>
+                                    <span key={it.value} class="slds-badge slds-m-vertical_xx-small ">{it.value}</span>
+                                </template>
+                            </div>
+                        </div>
+                    
+                        <p>Blocked Default Categories</p>
+                        <div class="slds-box slds-p-around_x-large slds-m-bottom_medium">
+        
+                            <div class="slds-grid slds-wrap ">
+                                <template iterator:it={waiverDefaultCategoriesUnselectedValues}>
+                                    <span key={it.value} class="slds-badge slds-m-vertical_xx-small ">{it.value}</span>
+                                </template>
+                            </div>
+                        </div>
+                
+                </template>
+                <template if:true={account.error}>
+                    <c-error-panel errors={account.error}></c-error-panel>
+                </template>
+            </lightning-card>
+
+
+        </div>
+    
+    
+    </template>

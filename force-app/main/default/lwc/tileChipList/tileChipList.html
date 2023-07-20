@@ -1,0 +1,16 @@
+<template>
+    <template for:each={items} for:item="data">
+        <div class="container" key={data.id}>
+            <c-tile-chip-object 
+                data-navigation="enable"
+                row-id={data.id}
+                image-type={data.imagetype}
+                image-name={data.imagename}
+                image-class={data.imageclass}
+                label={data.label}
+                description={data.description}
+                key={data.id}>
+            </c-tile-chip-object>
+    </div>
+    </template>
+</template>

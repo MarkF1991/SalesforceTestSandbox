@@ -1,0 +1,9 @@
+.THIS.slds-grid {
+	margin: auto;
+    height: var(--experience_footer_height) !important;
+    color: #FFFFFF !important;
+}
+
+.THIS a {
+                color: #FFFFFF !important;
+            }

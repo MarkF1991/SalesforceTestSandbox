@@ -1,0 +1,20 @@
+<template>
+    <template if:true={product}>
+        <div class="slds-p-around_medium lgc-bg slds-grid">
+            <div class="slds-col overflow-hidden">
+            <lightning-tile label={product.Name}  type="media" onclick={handleClick} href="#" > 
+                <lightning-avatar slot="media" src="" fallback-icon-name="custom:custom64" alternative-text="product" size="x-small"></lightning-avatar>
+                    <ul class="slds-list_horizontal slds-has-dividers_right">
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={product.N4l_Product_Name__c}></lightning-formatted-text></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={product.Status__c}></lightning-formatted-text></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-date-time value={product.Active_Date__c} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p></li>
+                    </ul>
+            </lightning-tile>
+            </div>
+        </div>
+        
+    </template>
+    <template if:false={product}>
+        <p>No product data available.</p>
+    </template>
+</template>

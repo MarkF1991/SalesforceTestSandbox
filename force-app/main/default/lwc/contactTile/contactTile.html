@@ -1,0 +1,80 @@
+<template>
+    <template if:true={contact}>
+            <!-- <lightning-layout vertical-align="center" class="lgc-bg" >  -->
+                <lightning-layout vertical-align="center"> 
+                        
+                    <lightning-layout-item>
+                        <a href='#' onclick={handleAvatarClick}> <!--commented out to prevent user from editing Picture URL for now.--> 
+                            <template if:false={IsShowInitial}>
+                                <span class="slds-avatar slds-avatar_circle slds-avatar_large" >
+                                    <img alt={contact.Name} src={displayURL} title={contact.Name}  />
+                                </span>
+                            </template>
+                            <template if:true={IsShowInitial}>
+                                <span class="slds-avatar slds-avatar_circle slds-avatar_large" >
+                                    <abbr class="slds-avatar__initials slds-icon-standard-user" title={contact.Name}>{Initial}</abbr>
+                                </span>
+                            </template>
+                        </a>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item class="full-width" padding="around-small">
+                        <template if:false={editPictureMode}>
+                            <h3 class="slds-tile__title slds-truncate" title={contact.Name}>
+                                <a href="#" onclick={handleClick}>{contact.Name}</a>
+                            </h3>
+
+                            <template if:true={isShowBusinessRole}>
+                                <p class="slds-truncate">{businessRoleOrTitle}</p>
+                            </template>
+                            
+                            <div class="slds-grid slds-wrap">
+                                <div class="col slds-m-right_small">
+                                <lightning-formatted-email value={contact.Email}></lightning-formatted-email>
+                                </div>
+                                <template if:true={contact.Phone}>
+                                    <div class="col">
+                                    <span class="slds-truncate">
+                                        <lightning-icon icon-name="utility:call" variant="base" size="xx-small"></lightning-icon>
+                                        <lightning-formatted-phone value={contact.Phone}></lightning-formatted-phone>
+                                    </span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <template if:true={user}>
+                                <div class="slds-grid slds-wrap slds-text-color_weak finetext">
+                                    <div class="col slds-m-right_x-small">
+                                        <span title={userIcon.title}>
+                                            <lightning-icon icon-name={userIcon.iconname} variant={userIcon.variant} size="xx-small"></lightning-icon>
+                                        </span>
+                                    </div>
+                                    <div class="col slds-m-right_x-small">
+                                        <span> last login: {lastLoginString}</span>
+                                    </div>
+                                    <template if:true={lastLoginDateTime}>
+                                        <div class="col">
+                                            <span> (<lightning-relative-date-time value={lastLoginDateTime}></lightning-relative-date-time>)</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            
+                        </template>
+                        <template if:true={editPictureMode}>
+                            <div class="slds-grid slds-grid_vertical-align-end">
+                                <div class="slds-col">
+                                    <lightning-input type="url" label="Picture URL" name="inputURL" value={url} onchange={handlePictureURLChange} ></lightning-input>
+                                </div>
+                                <div class="slds-col_bump-right">
+                                    <lightning-button variant="base" icon-name="utility:save" icon-position="right" class="slds-m-left_x-small"  onclick={handlePictureURLSave}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+    </template>
+    <template if:false={contact}
+        ><p>No contact data available.</p></template
+    >
+</template>

@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title={listTitle} icon-name="standard:contact" onmodalconfirmtoproceed={handleAddUser}>
+        <!--<a href={getFeedback_NHR_ATP_URL} target="_blank" slot="actions" class="slds-m-right_xx-small">
+            <lightning-button-icon icon-name="utility:work_order_type" alternative-text="getFeedback NHR ATP"></lightning-button-icon>
+        </a>-->
+        <!-- Ben Soh @ 8/3/2021 removed entire section, as the form no longer required since we have implemented new Contact Management enhancement 5/3/2021
+        <a href={schoolcontactformURL} target="_blank" slot="actions">
+            <lightning-button-icon icon-name="utility:edit_form" alternative-text="School Business Contacts Form"></lightning-button-icon>
+        </a> -->
+        <div class="slds-m-around_medium" oncontactselect={handleContactSelect} oncontactsaved={handleContactSaved}>
+            <template if:true={hasRecords}>
+                <!-- <template for:each={contacts} for:item="contact">
+                    <div class="slds-col slds-m-bottom_x-small" key={contact.id}>
+                        <c-contact-tile contact={contact}></c-contact-tile>
+                    </div>
+                </template> -->
+
+                <template for:each={elements} for:item="element">
+                    <div class="slds-grid slds-gutters slds-m-top_medium" key={element.contactid}>
+
+                    <div class="slds-col slds-size_6-of-7">
+                        <c-contact-tile contactstring={element.contactstring} userstring={element.userstring}></c-contact-tile>  
+                    </div>
+
+                    <div class="slds-col slds-align-center slds-m-top_medium slds-size_1-of-7">
+                        <template if:true={element.IsButtonDisabled}>
+                        <lightning-button-icon icon-name="utility:adduser" name ={element.contactid} variant="bare" alternative-text="Create a Customer User" size="large" onclick={handleAddUserModal}></lightning-button-icon>                       
+                        </template>
+                    </div>
+
+                    </div>
+                </template>
+
+            </template>
+            <template if:false={hasRecords}>
+                <p>{emptyListMessage}</p>
+            </template>
+            <template if:true={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
+        </div>
+        <c-modal 
+            header={modal.header} 
+            id={modal.id} 
+            elements={modal.elements} 
+            mode={modal.mode} 
+            cancel-button-name={modal.cancelButtonName} 
+            submit-button-name={modal.submitButtonName} 
+            confirmation-message={modal.confirmationMessage1}
+            confirmation-message2={modal.confirmationMessage2} >
+        </c-modal>
+    </lightning-card>
+    
+    
+
+</template>

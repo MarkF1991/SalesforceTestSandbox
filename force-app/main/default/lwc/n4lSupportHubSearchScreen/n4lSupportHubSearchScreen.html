@@ -1,0 +1,71 @@
+<template>
+    <div class="slds-combobox_container">
+        <div class={txtclassname} tabindex="-1" data-id="resultBox" aria-expanded="false" aria-haspopup="listbox"
+            role="combobox">
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon slds-input-has-icon_right"
+                role="none" onmouseout={checkSearchEmailDuplicate}>
+                <lightning-input tabindex="0" data-id="userinput" required=true read-only={inputReadOnly} label={label}
+                    name="searchText" onchange={searchField} onclick={searchField}
+                    onkeypress={checkSearchEmailDuplicate} autocomplete="none" value={emailaddress}
+                    placeholder="Enter an email address">
+                </lightning-input>
+                <div if:true={iconFlag}>
+                    <!--
+                    <span
+                        class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right iconheight contactSearch">
+                        <lightning-icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default"
+                            icon-name="utility:search" size="x-small" alternative-text="icon"></lightning-icon>
+                    </span>
+                    -->
+                </div>
+                <div if:true={clearIconFlag}>
+                    <button
+                        class="slds-input__icon slds-input__icon_right slds-button slds-button_icon iconheight contactClear"
+                        onclick={resetData}>
+                        <lightning-icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default"
+                            icon-name="utility:clear" size="x-small" alternative-text="icon"></lightning-icon>
+                        <span class="slds-assistive-text">Clear</span>
+                    </button>
+                </div>
+                <template if:true={showEmailDomainWarning} data-id="domainerror">
+                    <div class="slds-col slds-size_1-of-1">
+                        <p style="color:#ff8c00">{domainWarningMes}</p>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Second part display result -->
+            <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid "
+                role="listbox" style="border:none;padding:0">
+                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+
+                    <template if:true={isShowResults} for:each={searchRecords} for:item="serecord">
+                        <li key={itemLabel}><label class="slds-form-element__label sh-list-item_label">Link to an
+                                external contact:</label></li>
+                        <li role="presentation" class="slds-listbox__item" key={serecord.recId}>
+                            <div data-id={serecord.recId} data-name={serecord.recEmail} onclick={setSelectedRecord}
+                                class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                role="option">
+                                <span class="slds-media__body">
+                                    <span
+                                        class="slds-listbox__option-text slds-listbox__option-text_entity">{serecord.recDetail}
+                                    </span>
+                                    <!--   <template if:true={isContact}>
+                                        <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                           {serecord.recEmail}&nbsp;
+                                        </span>
+                                    </template>-->
+                                </span>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <!--
+            <div if:true={LoadingText}>
+                Loading...
+            </div>
+        -->
+        </div>
+    </div>
+</template>

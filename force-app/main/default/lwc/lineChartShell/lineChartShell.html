@@ -1,0 +1,21 @@
+<template>
+
+    <lightning-card title="Line Chart Shell"  icon-name="custom:custom3">
+        <!--
+
+        <p>Title: {charttitle}</p>
+    -->
+        <div class='slds-m-vertical_medium ct-chart ct-minor-seventh'></div>
+        
+        <!--
+            <p>labels = {labels}</p>
+        <p>series = {series}</p>
+
+            <rect x="5" y="5" width="10" height="10" style="fill:blue"></rect>
+        -->
+        <template if:true={error}>
+            <c-error-panel errors={error}></c-error-panel>
+        </template>
+    </lightning-card>
+
+</template>

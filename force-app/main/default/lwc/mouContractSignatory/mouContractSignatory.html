@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title={title} icon-name="standard:contact">
+        <lightning-button label="Invite" slot="actions" disabled={IsInviteButtonDisabled} onclick={handleSendInvite}></lightning-button>
+
+        <div class="slds-m-around_medium" >
+            <c-contact-visual-picker account-id={AccountId} current-contact-id={CustomerSignedId} submit-button-name="Save" onsaved={handleSave}></c-contact-visual-picker> <!--disable-picker-for-null-user=True-->
+
+            <template if:true={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
+            <template if:true={messageTitle}>
+                    <div class="slds-align_absolute-center">
+                            <div class="slds-grid-vertical slds-text-align_center">
+                                    <div class="Title">{messageTitle}</div>
+                                    <div class="titleDescription">{messageDescription1}</div>
+                                    <div class="titleDescription">{messageDescription2}</div>
+                            </div>
+                    </div>
+            </template>   
+        </div>
+    </lightning-card>
+</template>

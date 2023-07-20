@@ -1,0 +1,103 @@
+<template>
+    <lightning-card title={title} icon-name="standard:orders" onmodalconfirmedtocancelorder={handleproceedToCancelOrder}>
+        <!-- <lightning-button  label="Approve" slot="actions" disabled={IsApproveButtonDisabled} onclick={handleApproveOrder}></lightning-button> -->
+        <button class="slds-button slds-button_neutral"  slot="actions" disabled={CancelButtonDisabled} onclick={handleCancelOrder}>Cancel</button>    
+        <button class="slds-button slds-button_brand"  slot="actions" disabled={IsApproveButtonDisabled} onclick={handleApproveOrder}>Approve</button>
+            
+        <div class="slds-p-horizontal_large slds-p-bottom_x-small" >
+
+            <template if:true={showOrderFields}>
+                <div>
+                    <h2 class="slds-text-heading_medium slds-p-bottom_small">
+                        Order Fields
+                    </h2>
+                    <ul class="">
+                        <template for:each={orderFields} for:item='message'>
+                                <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small"  key={message}>{message}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <template if:true={showOrderValidationErrors}>
+                <div class="slds-text-color_error">
+                    <h2 class="slds-text-heading_medium slds-p-bottom_small">
+                        Validations
+                    </h2>
+                    <ul class="">
+                        <template for:each={orderValidationErrors} for:item='message'>
+                                <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small"  key={message}>{message}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <template if:true={showOrderApprovalErrorMessages}>
+                <div class="slds-text-color_error">
+                    <h2 class="slds-text-heading_medium slds-p-bottom_small">
+                        Results
+                    </h2>
+                    <ul class="">
+                        <template for:each={orderApprovalErrorMessages} for:item='message'>
+                                <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small"  key={message}>{message}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <!-- <template if:true={showGoodResults}>
+                <div class=slds-text-color_success>
+                    <h2 class="slds-text-heading_medium slds-p-bottom_small">
+                        Results
+                    </h2>
+                    <ul class="">
+                        <template for:each={goodResults} for:item='message'>
+                                <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small"  key={message}>{message}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <template if:true={showBadResults}>
+                <div class=slds-text-color_error>
+                    <h2 class="slds-text-heading_medium slds-p-bottom_small">
+                        Errors
+                    </h2>
+                    <ul class="">
+                        <template for:each={badResults} for:item='message'>
+                                <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small"  key={message}>{message}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template> -->
+
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-vertical_large">
+                    <div class="loading-spinner-container">
+                        <div class="loading-spinner">
+                            <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template if:true={messageTitle}>
+                    <div class="slds-align_absolute-center">
+                            <div class="slds-grid-vertical slds-text-align_center">
+                                    <div class="Title">{messageTitle}</div>
+                                    <div class="titleDescription">{messageDescription1}</div>
+                                    <div class="titleDescription">{messageDescription2}</div>
+                            </div>
+                    </div>
+            </template>   
+            <template if:true={error}>
+                <c-error-panel errors={error}></c-error-panel>
+            </template>
+        </div>
+        <c-modal 
+            header={modal.header} 
+            id={modal.id} 
+            elements={modal.elements} 
+            mode={modal.mode} 
+            cancel-button-name={modal.cancelButtonName} 
+            submit-button-name={modal.submitButtonName} 
+            confirmation-message={modal.confirmationMessage}
+            confirmation-message2={modal.confirmationMessage2} >
+        </c-modal>
+    </lightning-card>
+</template>

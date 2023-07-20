@@ -1,0 +1,33 @@
+<template>
+    <template if:true={sfcase}>
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-tile label={sfcase.Subject}  type="media" onclick={handleClick} href="#" > 
+                    <!-- onclick={handleRecordView} href={recordPageUrl}-->
+                
+                <lightning-avatar slot="media" src="" fallback-icon-name="standard:case" alternative-text="Case" size="x-small"></lightning-avatar>
+                <!-- <p class="slds-truncate">{sfcase.Status}</p> -->
+                
+                <!-- <p class="slds-truncate"><lightning-formatted-text value={sfcase.Status}></lightning-formatted-text></p>
+                <p class="slds-truncate"><lightning-formatted-date-time value={sfcase.CreatedDate} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p> -->
+                <!-- <template if:true={sfcase.Contact}> -->
+                        <!-- <p class="slds-truncate"><lightning-formatted-email value={sfcase.Contact.Email} ></lightning-formatted-email></p> -->
+                        <!-- <p class="slds-truncate">{sfcase.Contact.Name}</p> -->
+                <!-- </template> -->
+
+                <ul class="slds-list_horizontal slds-has-dividers_right">
+                        <template if:true={sfcase.Contact}>
+                                <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={sfcase.Contact.Name} ></lightning-formatted-text></p></li>
+                        </template>    
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={sfcase.Status}></lightning-formatted-text></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-date-time value={sfcase.CreatedDate} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={sfcase.Owner.Name} ></lightning-formatted-text></p></li>
+                        
+                    </ul>
+                
+            </lightning-tile>
+        </div>
+    </template>
+    <template if:false={sfcase}>
+        <p>No case data available.</p>
+    </template>
+</template>

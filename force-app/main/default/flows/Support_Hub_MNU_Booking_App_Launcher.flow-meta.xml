@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <formulas>
+        <name>varF_bookingappurlbyuserid</name>
+        <dataType>String</dataType>
+        <expression>&quot;https://booking.n4l.co.nz/book?id=&quot;&amp;{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_useraccountid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Account_ID_Formula__c}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_usercontactid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.ContactId}</expression>
+    </formulas>
+    <formulas>
+        <description>Get the current user id.</description>
+        <name>varF_userid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_username</name>
+        <dataType>String</dataType>
+        <expression>{!$User.FirstName} &amp; &quot; &quot; &amp;{!$User.LastName}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_userprofileid</name>
+        <dataType>String</dataType>
+        <expression>{!$User.ProfileId}</expression>
+    </formulas>
+    <formulas>
+        <name>varF_userprofilename</name>
+        <dataType>String</dataType>
+        <expression>{!$Profile.Name} &amp; &quot; - &quot; &amp; TEXT({!$Profile.LicenseType})</expression>
+    </formulas>
+    <formulas>
+        <name>varF_uservompanyname</name>
+        <dataType>String</dataType>
+        <expression>{!$User.CompanyName}</expression>
+    </formulas>
+    <interviewLabel>Support Hub MNU Booking App Launcher {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Support Hub MNU Booking App Launcher</label>
+    <processType>Flow</processType>
+    <screens>
+        <name>Display_ICT_Name</name>
+        <label>Display ICT Name</label>
+        <locationX>241</locationX>
+        <locationY>26</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>SourrceZone</name>
+            <fieldText>{!FinalDisplayHtml}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <helpText>Use this system to book schools for their Managed Network Upgrade.</helpText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Display_ICT_Name</startElementReference>
+    <status>Active</status>
+    <textTemplates>
+        <name>FinalDisplayHtml</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;
+&lt;a href=&quot;{!varF_bookingappurlbyuserid}&quot;&gt;
+&lt;img src=&quot;https://c.ap1.content.force.com/servlet/servlet.ImageServer?id=0159000000FcUF1&amp;oid=00D5P0000009M0I&quot; width=&quot;203&quot; height=&quot;57&quot; style=&quot;display: block; margin-left: auto; margin-right: auto;&quot;&gt;
+&lt;/a&gt;
+&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>varO_User</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

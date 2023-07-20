@@ -1,0 +1,27 @@
+<template>
+    <div onmodalconfirmedtoproceed={handleProceed} onmodalcanceledtoproceed={handleCancel} onmodaldialogclosed={handleCancel}>
+        <label class="slds-checkbox_toggle slds-grid">
+            <span class="slds-form-element__label slds-m-bottom_none">{checkboxLabel}</span>
+            <div class="slds-col_bump-right ">
+            </div>
+            <input type="checkbox" name="checkbox-toggle-1" value="checkbox-toggle-1" aria-describedby="checkbox-toggle-1" disabled={checkbox_toggle1_disabled} checked={checkbox_toggle1_checked} onchange={handleCheckboxToggle1Change} />
+            <span id="checkbox-toggle-1" class="slds-checkbox_faux_container" aria-live="assertive">
+                <span class="slds-checkbox_faux"></span>
+                <span class="slds-checkbox_on">{checkboxOnLabel}</span>
+                <span class="slds-checkbox_off">{checkboxOffLabel}</span>
+            </span>
+        </label>
+            
+        <c-modal 
+            header={modal.header} 
+            id={modal.id} 
+            elements={modal.elements} 
+            mode={modal.mode} 
+            cancel-button-name={modal.cancelButtonName} 
+            submit-button-name={modal.submitButtonName} 
+            confirmation-message={modal.confirmationMessage}
+            confirmation-message2={modal.confirmationMessage2} >
+        </c-modal>
+    </div>
+        
+</template>

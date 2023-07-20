@@ -1,0 +1,384 @@
+<apex:page showHeader="false" 
+    docType="html-5.0"
+    controller="SupportHubSignupController"
+    title="N4L Support Hub Signup"
+    applyBodyTag="false"
+    applyHtmlTag="false"
+    standardStylesheets="false"
+    id="signupPage"
+>
+
+    <head>
+        <title>N4L Support Hub Signup</title>
+        <apex:slds />   
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/styles.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/fonts.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/jquery-3.7.0.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/typeahead.bundle.js')}" />
+        <style> ul.typeahead.dropdown-menu { max-height: 150px; overflow: auto; } </style>
+        
+        <!-- Hotjar Tracking Code for https://support.n4l.co.nz/s/ -->
+        <script>
+           (function(h,o,t,j,a,r){
+             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+             h._hjSettings={hjid:690802,hjsv:6};
+             a=o.getElementsByTagName('head')[0];
+             r=o.createElement('script');r.async=1;
+             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+             a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+    </head>
+
+    <body>
+
+        <apex:form id="pageForm">
+
+            
+            <div class="slds-scope signUp">
+ 
+                 <apex:outputPanel id="pageMessages" layout="block" styleClass="slds-size_1-of-1">
+                        <!-- Custom page messages component -->
+                        <c:PageMessages />
+                 </apex:outputPanel>
+                
+               <div class="slds-form_compound">
+                
+                <div class="slds-form_gradientHeader">
+                	<div class="gradientHeader_logo">
+                         <img class="headerLogo" alt="" src="{!URLFOR($Resource.SupportHubSignup, 'img/logo.png')}" height="80px"/>
+                    </div>  
+                </div>
+
+                <!-- Include the spinner for loading -->
+                <c:Spinner />
+
+                <div class="slds-grid slds-wrap">
+
+
+
+                    <div class="slds-size_1-of-1 slds-align_absolute-center ">
+                        <div class="slds-size_1-of-1 slds-m-top_large slds-m-bottom_large">
+                            <legend class="slds-form-element__label-heavy">Select your school</legend>
+                            <apex:inputHidden id="selectedSchoolId" value="{!selectedSchoolId}"/>
+                            <input type="text" class="slds-input typeahead" placeholder="Start typing your school name..." data-input="{!$Component.selectedSchoolId}" />
+                        </div>
+                    </div>
+
+                    <!-- THE DUMMY FORM -->   
+                    
+<div class="slds-size_1-of-1 slds-align_absolute-center">
+
+    <div class="slds-form slds-size_1-of-1">
+
+        <div>
+                
+                <fieldset class="slds-box_m-small slds-theme--default slds-container" id="dummyCreate">
+
+                <legend class="slds-form-element__label-heavy">Create your account</legend>
+
+                    <div class="slds-form-element slds-m-top_medium">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label"><label class="slds-required">*</label>First Name</label>
+                                    <div class="slds-form-element__control">
+                                        <input disabled="true" class="slds-input"/>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element slds-size_1-of-2 ">
+                                    <label class="slds-form-element__label"><label class="slds-required">*</label>Last Name</label>
+                                    <div class="slds-form-element__control">
+                                        <input disabled="true" class="slds-input"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-top_medium">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label"><label class="slds-required">*</label>Email</label>    
+                                    <div class="slds-form-element__control">
+                                        <input disabled="true" class="slds-input slds-text-align_right slds-p-right"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <span class="emailDomain">@</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-top_medium">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-required">*</label><label class="slds-form-element__label">Mobile</label>
+                                    <div class="slds-form-element__control">
+                                        <input disabled="true" class="slds-input mobilePhone"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-clearfix">
+
+                        <div class="slds-float--right">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <button class="slds-button slds-button_brand button noneEvent">
+                                        Sign up
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+            
+            </div>
+
+        </div>
+
+</div>
+
+                    
+                    <!-- THE ACTUAL FORM -->
+                    
+                    <div class="slds-size_1-of-1 slds-align_absolute-center" id="accountCreate">
+
+                        <apex:outputPanel layout="block" styleClass="slds-form slds-size_1-of-1" id="signupForm">
+
+                            <apex:outputPanel rendered="{!selectedSchoolId != null}">
+
+                                
+
+                                
+								    
+                                    <fieldset class="slds-box_m-small slds-theme--default slds-container">
+
+									<legend class="slds-form-element__label-heavy">Create your account</legend>
+
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.firstNameErrors != null, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label"><label class="slds-required">*</label>{!$ObjectType.Contact.Fields.FirstName.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.firstName}" styleClass="slds-input" disabled="{!noEmailDomain}" />
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.firstNameErrors != null}">
+                                                            <apex:outputText value="{!errors.firstNameErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.lastNameErrors != null, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label"><label class="slds-required">*</label>{!$ObjectType.Contact.Fields.LastName.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.lastName}" styleClass="slds-input" disabled="{!noEmailDomain}" />
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block"  rendered="{!errors.lastNameErrors != null}">
+                                                            <apex:outputText value="{!errors.lastNameErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-form-element slds-m-top_medium {!IF(errors.emailErrors != null, 'slds-has-error', '')}">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                        <label class="slds-form-element__label"><label class="slds-required">*</label>{!$ObjectType.Contact.Fields.Email.Label}</label>    
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.email}" styleClass="slds-input slds-text-align_right slds-p-right" disabled="{!noEmailDomain}"/>
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.emailErrors != null}">
+                                                            <apex:outputText value="{!errors.emailErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    
+                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                        <span class="emailDomain"><apex:outputText rendered="{!NOT(ISBLANK(selectedSchool.Email_Domain__c))}" value="@{!selectedSchool.Email_Domain__c}" /></span>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.mobileHasError, 'slds-has-error', '')}">
+                                                        <!--<label class="slds-form-element__label">{!$ObjectType.Contact.Fields.MobilePhone.Label}</label>-->
+                                                        <label class="slds-required">*</label><label class="slds-form-element__label">Mobile</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.mobile}" styleClass="slds-input mobilePhone" disabled="{!noEmailDomain}" html-placeholder="02x xxx xxxx" onchange="formatNumber($(this));"/>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="slds-form-element slds-size_1-of-2 {!IF(errors.phoneHasError, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label">{!$ObjectType.Contact.Fields.Phone.Label}</label>
+                                                        <label class="slds-form-element__label">DDI</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.phone}" styleClass="slds-input phone" disabled="{!noEmailDomain}" html-placeholder="0x xxx xxxx" onchange="formatNumber($(this));"/>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.phoneErrors != null}" style="color: #c23934;">
+                                                <apex:outputText value="{!errors.phoneErrors}" escape="false" />
+                                            </apex:outputPanel>
+                                        </div>
+<!--
+                                        <div class="slds-form-element slds-m-top_medium {!IF(errors.termsNotAccepted, 'slds-has-error', '')}">
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-checkbox">
+                                                    <apex:inputCheckbox value="{!registration.acceptTerms}" id="acceptTerms" />
+                                                    <label class="slds-checkbox__label" for="signupPage:pageForm:acceptTerms">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                        <span class="slds-form-element__label">I accept the <a href="{!$Label.Support_Hub_Signup_Terms_URL}" target="_blank">Support Hub Terms</a></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.termsNotAccepted}">
+                                                Please accept the terms and conditions.
+                                            </apex:outputPanel>
+                                        </div>
+-->
+                                        <div class="slds-clearfix">
+
+                                            <div class="slds-float--right">
+                                                <div class="slds-form-element">
+                                                    <div class="slds-form-element__control">
+                                                        <apex:commandButton action="{!submit}" rerender="signupForm, pageMessages" value="Sign up" styleClass="slds-button slds-button_brand button" status="loading" disabled="{!noEmailDomain}" oncomplete="initSearch();" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                
+                            </apex:outputPanel>
+
+                        </apex:outputPanel>
+
+                    </div>
+  
+                    <div class="slds-size_1-of-1 slds-align_absolute-center">
+
+                        <div id="liveagent_button_online_{!$Label.Support_Hub_Signup_LA_Button_Id}" style="display: none;" class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                            <hr />
+                            {!$Label.Support_Hub_Signup_Live_Agent_Message}<br/><br/>
+                            <a id="" class="slds-button slds-button_brand" href="javascript://Chat"  onclick="liveagent.startChat('{!$Label.Support_Hub_Signup_LA_Button_Id}')">
+                                {!$Label.Support_Hub_Signup_Live_Agent_Button}
+                            </a>
+                            <br/><br/>
+                            <script>
+                                var buttonId = '{!$Label.Support_Hub_Signup_LA_Button_Id}';
+                                if (!window._laq) { 
+                                    window._laq = []; 
+                                }
+                                window._laq.push(function(){
+                                    liveagent.showWhenOnline(buttonId, document.getElementById('liveagent_button_online_' + buttonId));
+                                    //liveagent.showWhenOffline(buttonId, document.getElementById('liveagent_button_offline_' + buttonId));
+                                });
+                            </script>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                   
+                </div>
+
+            </div>
+
+            <apex:actionFunction action="{!selectSchool}" name="selectSchool" reRender="signupForm, pageMessages" status="loading" oncomplete="initSearch();" />
+
+        </apex:form>
+
+        <!-- Live Agent chat widget -->
+        <script type="text/javascript" src="https://c.la1-c1-ukb.salesforceliveagent.com/content/g/js/41.0/deployment.js"></script>
+        <script>
+
+            // Init Live Agent
+            liveagent.init('https://d.la1-c1-ukb.salesforceliveagent.com/chat', '{!$Label.Support_Hub_Signup_LA_Deployment_Id}', '{!$Label.Support_Hub_Signup_Org_Id}');
+
+            $(document).ready(function() {
+
+                initSearch();
+            });
+
+            // Format the phone number to correct format
+            function formatNumber ($attr) {
+
+                // Get the phone value
+                var phoneValue = $attr.val();
+
+                // Only process if phone has a value
+                if (phoneValue) {
+                    // Strip all entered whitespace from the string
+                    phoneValue = phoneValue.replace(/\D/g,'');
+                    // Add the correct spacing
+                    if ( $attr.hasClass('mobilePhone') ) {
+
+                        // FOr mobile phone, we want the format xxx xxx xxxxx
+                        phoneValue = phoneValue.substring(0,3) + ' ' + phoneValue.substring(3,6) + ' ' + phoneValue.substring(6);
+                    }
+                    else {
+
+                        // For business phone, we want the format xx xxx xxxx
+                        phoneValue = phoneValue.substring(0,2) + ' ' + phoneValue.substring(2,5) + ' ' + phoneValue.substring(5);
+                    }
+                    // Assign back to the field
+                    $attr.val(phoneValue);
+                }
+            }
+
+            // Load the search engine for the accounts
+            function initSearch() {
+
+                // Init the bloodhound engine
+                var engine = new Bloodhound({
+                    //datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Name'),
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Support_Hub_Searchable_Name__c'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: {!accountsJson}
+                });
+
+                $('.typeahead').typeahead({
+                    hint: false,
+                    highlight: true,
+                    minLength: 1
+                },
+                {
+                    name: 'accounts',
+                    limit: 20,
+                    //display: 'Name',
+                    display: 'Support_Hub_Searchable_Name__c',
+                    source: engine
+                })
+                .bind('typeahead:selected', function (obj, datum) {
+
+                    // If we have a selected value
+                    if (typeof datum !== 'undefined' && typeof datum.Id !== 'undefined') {
+                        // Set id value
+                        $(document.getElementById($(this).data('input'))).val(datum.Id);
+
+                        selectSchool();
+                    }
+                });
+            }
+        </script>
+
+    </body>
+
+</apex:page>

@@ -1,0 +1,213 @@
+<apex:page showHeader="false" 
+    docType="html-5.0"
+    controller="SupportHubDelegateAuthorityController"
+    title="N4L Support Hub Signup"
+    applyBodyTag="false"
+    applyHtmlTag="true"
+    standardStylesheets="true" 
+    lightningStylesheets="true"
+    id="signupPage" 
+>
+
+    <head>  
+        <title>N4L Support Hub Delegate</title>
+        <link rel="icon shortcut" href="{!$Resource.N4LFavicon16x16}" />
+        <apex:slds />  
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/styles.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/fonts.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/jquery-3.7.0.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/typeahead.bundle.js')}" />
+        <style> ul.typeahead.dropdown-menu { max-height: 150px; overflow: auto; } </style>
+        <!-- Hotjar Tracking Code for https://support.n4l.co.nz/s/ -->
+        <script>
+           (function(h,o,t,j,a,r){
+             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+             h._hjSettings={hjid:690802,hjsv:6};
+             a=o.getElementsByTagName('head')[0];
+             r=o.createElement('script');r.async=1;
+             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+             a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+    </head>
+
+    <body>
+    
+        
+
+         <apex:form id="pageForm">
+            
+            <div class="slds-scope signUp">
+
+                <!-- Include the spinner for loading -->
+                <c:Spinner />
+                
+                 
+                <div class="slds-grid slds-wrap">
+
+                  
+                    <div class="slds-size_1-of-1 slds-align_absolute-center">
+
+                        <apex:outputPanel layout="block" styleClass="slds-form slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-m-bottom_large" id="signupForm">
+                                  
+                            <apex:outputPanel >
+
+                                
+
+                                <div class="slds-form_compound">
+                                    <div class="slds-form_gradientHeader">
+                                    <div class="gradientHeader_logo">
+                                        <img class="headerLogo" alt="" src="{!URLFOR($Resource.SupportHubSignup, 'img/logo.png')}"/>
+                                    </div>  
+                                    </div>
+
+                                    <fieldset class="slds-box slds-theme--default slds-container">
+
+                                        <legend class="slds-form-element__label-heavy">Please enter your delegate’s contact details. We’ll then send them an email with all the info they need.</legend>
+
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.firstNameErrors != null, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>{!$ObjectType.Contact.Fields.FirstName.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.firstName}" styleClass="slds-input"/>
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.firstNameErrors != null}">
+                                                            <apex:outputText value="{!errors.firstNameErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.lastNameErrors != null, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>{!$ObjectType.Contact.Fields.LastName.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.lastName}" styleClass="slds-input"/>
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block"  rendered="{!errors.lastNameErrors != null}">
+                                                            <apex:outputText value="{!errors.lastNameErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-form-element slds-m-top_medium {!IF(errors.emailErrors != null, 'slds-has-error', '')}">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                        <label class="slds-form-element__label"><abbr class="slds-required" title="required">*</abbr>{!$ObjectType.Contact.Fields.Email.Label}</label>    
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.email}" styleClass="slds-input slds-text-align_left slds-p-left_xxx-small" />
+                                                        </div>
+                                                        <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.emailErrors != null}">
+                                                            <apex:outputText value="{!errors.emailErrors}" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                        <span class="emailDomain"><apex:outputText rendered="{!NOT(ISBLANK(selectedSchool.Email_Domain__c))}" value="@{!selectedSchool.Email_Domain__c}" /></span>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- hide roles and mobile
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <div class="slds-form-element__group">
+                                                <div class="slds-form-element__row">
+                                                    
+                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                        
+                                                        <label class="slds-form-element__label"  ><abbr class="slds-required" title="required">*</abbr>Roles</label>
+                                                        
+                                                        <div class="slds-form-element__control">
+                                                            <apex:selectList value="{!getSelectedValue}" title="{!$ObjectType.AccountContactRelation.fields.Roles.inlineHelpText}"  size="1" multiselect="false" id="mSP" styleClass="slds-input slds-text-align_right slds-p-right_xxx-small" >
+                                                                <apex:selectOptions value="{!SelectOptionListByField}" />
+                                                            </apex:selectList>  
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                                    <div class="slds-form-element slds-size_1-of-2 {!IF(errors.mobileHasError, 'slds-has-error', '')}">
+                                                        <label class="slds-form-element__label">Mobile</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputText value="{!registration.mobile}" styleClass="slds-input mobilePhone" html-placeholder="02x xxx xxxx" onchange="formatNumber($(this));"/>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.phoneErrors != null}" style="color: #c23934;">
+                                                <apex:outputText value="{!errors.phoneErrors}" escape="false" />
+                                            </apex:outputPanel> 
+                                        </div>  
+                                       -->
+                                        
+                                        <div class="slds-clearfix">
+
+                                            <div class="slds-float--right">
+                                                <div class="slds-form-element"> 
+                                                    <div class="slds-form-element__control">
+                                                        <apex:commandButton action="{!doDelegate}" rerender="signupForm, pageMessages" value="Delegate" styleClass="slds-button slds-button_brand button" status="loading" disabled="false" oncomplete="initSearch();" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </fieldset>
+
+                                    </div>
+                            </apex:outputPanel>
+
+                        </apex:outputPanel>
+
+                    </div>
+
+                </div>
+
+            </div>
+             
+       </apex:form>
+
+        <!-- Live Agent chat widget -->
+        <script type="text/javascript" src="https://c.la1-c1-ukb.salesforceliveagent.com/content/g/js/41.0/deployment.js"></script>
+        <script>
+
+            // Init Live Agent
+            liveagent.init('https://d.la1-c1-ukb.salesforceliveagent.com/chat', '{!$Label.Support_Hub_Signup_LA_Deployment_Id}', '{!$Label.Support_Hub_Signup_Org_Id}');
+
+            $(document).ready(function() {
+
+                initSearch();
+            });
+
+            // Format the phone number to correct format
+            function formatNumber ($attr) {
+
+                // Get the phone value
+                var phoneValue = $attr.val();
+
+                // Only process if phone has a value
+                if (phoneValue) {
+                    // Strip all entered whitespace from the string
+                    phoneValue = phoneValue.replace(/\D/g,'');
+                    // Add the correct spacing
+                    if ( $attr.hasClass('mobilePhone') ) {
+
+                        // FOr mobile phone, we want the format xxx xxx xxxxx
+                        phoneValue = phoneValue.substring(0,3) + ' ' + phoneValue.substring(3,6) + ' ' + phoneValue.substring(6);
+                    }
+                    else {
+
+                        // For business phone, we want the format xx xxx xxxx
+                        phoneValue = phoneValue.substring(0,2) + ' ' + phoneValue.substring(2,5) + ' ' + phoneValue.substring(5);
+                    }
+                    // Assign back to the field
+                    $attr.val(phoneValue);
+                }
+            }
+
+        </script>
+
+    </body>
+
+</apex:page>

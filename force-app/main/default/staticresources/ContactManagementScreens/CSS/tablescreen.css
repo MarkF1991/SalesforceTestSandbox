@@ -1,0 +1,22 @@
+.tableScreenCSS .slds-page-header {
+    background-color: #ffffff;
+}
+
+.tableScreenCSS .slds-table_header-fixed_container {
+    border: 1px solid #d8d9da;
+    font-size: 10px;
+}
+
+.tableScreenCSS .slds-scrollable_y{
+    width: unset !important;
+    overflow: unset !important;
+}
+
+.tableScreenCSS .slds-accordion__summary{
+    background: rgb(243, 242, 242);
+    margin-bottom : 1%;
+}
+
+.tableScreenCSS .slds-form-element__control .slds-radio, .slds-form-element__control .slds-checkbox{
+    display: inline-block;
+}

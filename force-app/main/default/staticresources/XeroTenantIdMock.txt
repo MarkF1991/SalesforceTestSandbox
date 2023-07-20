@@ -1,0 +1,11 @@
+[
+  {
+    "id": "42e9f9ca-2922-47b3-836e-9b214599333a",
+    "authEventId": "b94869ea-ab10-49f5-9f8f-b131499d9743",
+    "tenantId": "89c85696-03f0-43ab-8c25-a87b23795839",
+    "tenantType": "ORGANISATION",
+    "tenantName": "N4L_Trial1",
+    "createdDateUtc": "2020-07-15T02:45:39.4330090",
+    "updatedDateUtc": "2020-07-15T02:45:39.4366380"
+  }
+]

@@ -1,0 +1,17 @@
+<template>
+    <div class="slds-visual-picker slds-visual-picker_vertical" onclick={handleSelect}>
+        <input type="radio" id={object.id} name="options" value={object.value} checked={propertyChecked} />
+        <label for={object.id}>
+            <span class="slds-visual-picker__figure slds-visual-picker__text slds-align_Left ">
+            <span>
+                <span class="slds-text-heading_x-small">{object.label}</span>
+                <span class="slds-text-title">{object.description}</span>
+            </span>
+            </span>
+            <span class="slds-icon_container slds-visual-picker__text-check">
+                <!-- <lightning-icon icon-name="utility:check" alternative-text={object.alternativeText} variant="base" size="x-small"></lightning-icon> -->
+                <i class="material-icons md-16">check</i>
+            </span>
+        </label>
+        </div>
+</template>

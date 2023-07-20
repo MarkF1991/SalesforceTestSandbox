@@ -1,0 +1,10 @@
+.valueText {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+a {
+    text-decoration:none;
+ }

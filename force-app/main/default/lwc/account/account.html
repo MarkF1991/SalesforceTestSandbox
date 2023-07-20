@@ -1,0 +1,34 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__body">
+              <h2 class="slds-card__header-title">
+                  <span>Account on LWC</span>
+              </h2>
+            </div>
+            <div class="slds-no-flex">
+              <button class="slds-button slds-button_neutral" onclick={handleGetAccountUUID}>Get by UUID</button>
+            </div>
+          </header>
+        </div>
+    
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-form-element__control slds-box">
+                <template if:true={display1}>
+                  <div class="slds-form-element__static">
+                    <p>UUID: {schoolId}</p>  
+                    <p>{display1}</p>
+                      </div>
+                </template>
+                <template if:true={error}>
+                  <c-error-panel errors={error}></c-error-panel>
+                </template>
+            </div>
+      
+          
+        </div>
+      
+      </article>
+      
+</template>

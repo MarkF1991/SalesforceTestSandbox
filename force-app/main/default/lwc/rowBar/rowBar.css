@@ -1,0 +1,23 @@
+.slds-progress-bar__value.browsingTime, .slds-progress-bar__value.bandwidthUsage{
+    background: #11a791;
+}
+.slds-progress-bar.browsingTime, .slds-progress-bar.bandwidthUsage {
+    background: #7ac6c5;
+}
+
+.slds-progress-bar__value.blockedAttempts{
+    background: #f5675b !important; /*$color-background-error*/
+}
+.slds-progress-bar.blockedAttempts{
+    background: #d88481;
+}
+
+.slds-progress-bar {
+    height: 1.5rem;
+}
+
+.slds-text-title {
+    font-size: 10px;
+    line-height: 1.25;
+    color: #575757;
+}

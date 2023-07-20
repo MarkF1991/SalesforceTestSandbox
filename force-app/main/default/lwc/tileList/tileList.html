@@ -1,0 +1,41 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class={iconClass} title={header}>
+                        <span><i class="material-icons md-18">{iconName}</i></span>
+                        <span class="slds-assistive-text">{header}</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>{header}</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="card slds-card__body">
+            <template if:true={isLoading}>
+                <div class="loading-spinner-container">
+                    <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <div class="slds-grid slds-grid_vertical">
+                    <template for:each={items} for:item="data">
+                        <c-tile-item-object class="slds-p-horizontal_medium slds-p-vertical_medium listItem" id={data.id} onclick={notifyClick} key={data.id} object={data}></c-tile-item-object>
+                    </template>
+                </div>
+            </template>
+        </div>
+        <template if:true={footer}>
+            <footer class="slds-card__footer">
+                <a class="slds-card__footer-action" onclick={handleViewAllClick} href="javascript:void(0);">
+                    {footer.title}
+                </a>
+            </footer>
+        </template>
+    </article>
+
+</template>

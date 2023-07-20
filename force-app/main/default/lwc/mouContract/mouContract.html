@@ -1,0 +1,485 @@
+<template>
+
+    <!-- 
+    <p>MOU Contract as child component</p>
+    
+    <div class="slds-box">
+        <p>contractId: {contractId}</p>
+        <p>json contractOutput: {contractOutput}</p>
+    </div>
+    <div class="slds-box">
+        <p>json generalOutput 1: {generalOutput}</p>
+    </div>
+    <div class="slds-box">
+        <p>json generalOutput 2: {generalOutput2}</p>
+    </div>
+    <div class="slds-box">
+        <p>json generalOutput 3: {generalOutput3}</p>
+    </div> -->
+
+    <template if:true={contract}>
+        <!-- Pop up window -->
+        <template if:true={popUpWindow}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">confirm changes</span>
+                    </button>
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Message</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p>Due to the price change of the order/the inclusion of non-funded order, the additional charges have been adjusted by <b>${showAdditionalCharges}</b>. The new charges for the school are now <b>${showOrderTotalAmount}</b>.</p>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button onclick={handleAlertClick} class="slds-button slds-button_brand">Ok</button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+
+        <div class="mou-container">
+            <!-- Heading: Memorandum of Understanding -->
+            <div class="section">
+                <div class="section-content">
+                    <h3>Order Form - {contract.Product__c}</h3>
+                    <div class="slds-p-vertical_small">
+                        <p>Between {contract.Account.Name} (School, you or your) & The Network for Learning Limited
+                            (N4L)</p>
+                        <p>In relation to the {contract.Programme__c} at: {contract.Account.Name}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parties and signatories to the Agreement -->
+            <div class="section">
+                <div class="section-heading">
+                    <h4 class="heading">Parties and Signatories to the Agreement</h4>
+                </div>
+                <div class="section-content">
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>N4L CEO</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{contract.N4L_Signatory_Name__c} </strong>(<a
+                                    href="#">{contract.N4L_Signatory_Email__c}</a>)</div>
+                        </div>
+                    </div>
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>{contract.Account.Name} Principal</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{principal.Name} </strong>(<a href="#">{principal.Email}</a>)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>{contract.Account.Name} Authorised Signatory</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{contract.CustomerSigned.Name} </strong>(<a
+                                    href="#">{contract.CustomerSigned.Email}</a>)</div>
+                        </div>
+                    </div>
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>Ministry of Education</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{contract.MoE_Party_Name__c} </strong>(<a
+                                    href="#">{contract.MoE_Party_Email__c}</a>)</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Ministry of Education Contribution Details-->
+            <div class="section short">
+                <div class="section-heading">
+                    <h4 class="heading">Ministry of Education Contribution Details</h4>
+                </div>
+                <div class="section-content">
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>School Name</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{contract.Account.Name}</strong></div>
+                        </div>
+                    </div>
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>School Number</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">{contract.Account.MoE_School_ID__c}</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-content grey">
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                            <div>Annual Contribution for this year</div>
+                        </div>
+                        <div class="row-cell-right">
+                            <div><strong class="bold-text">${contractAnnualContribution} (ex GST)</strong> based on
+                                confirmed roll count as at {contractRollCountAsAt} of {contractRollCount} @
+                                ${contractPerPupilContribution} per pupil per year.</div>
+                        </div>
+                    </div>
+                    <div class="section-row">
+                        <div class="row-cell-left">
+                        </div>
+                        <div class="row-cell-right">
+                            <div>This is an annual School Contribution which will be payable to the Ministry of
+                                Education on each anniversary of your contract, based on the School roll at the date of
+                                each anniversary. The annual School Contribution may be varied by the Ministry of
+                                Education in accordance with the Ministry of Education <a
+                                    href="https://www.education.govt.nz/school/digital-technology/your-schools-ict-network/te-mana-tuhono/">Terms
+                                    of Service</a>.</div>
+                        </div>
+                    </div>
+                    <template if:true={isNHR}>
+                        <div class="section-row">
+                            <div class="row-cell-left">
+                            </div>
+                            <div class="row-cell-right">
+                                <div>The Te Mana Tūhono Services have a minimum term of five years, in accordance with
+                                    the Ministry of Education <a
+                                        href="https://www.education.govt.nz/school/digital-technology/your-schools-ict-network/te-mana-tuhono/">Terms
+                                        of Service</a>.</div>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="section-row">
+                        <!-- <template if:true={isShowSubmitButton}> -->
+                        <div class="slds-checkbox">
+                            <div class="slds-grid">
+                                <div class="col slds-size_1-of-13">
+                                    <!-- for some strange reason 1-of-13 allows check box and text to stay close together. 1-of-12 will seperate them apart -->
+                                    <abbr class="slds-required" title="required">*</abbr>
+                                    <input type="checkbox" name="options" id="checkbox1" value="checkbox1"
+                                        disabled={checkboxes_disabled} checked={checkbox1_checked}
+                                        onchange={handleCheckboxChange1} />
+
+                                    <label class="slds-checkbox__label" for="checkbox1">
+                                        <span class="slds-checkbox_faux"></span>
+                                    </label>
+                                </div>
+                                <div class="col slds-m-left_x-small">
+                                    <!-- allow small gap between check box and text -->
+                                    <span class="text-block-2">Your School agrees to pay the Ministry of Education
+                                        annual School Contribution as above and in accordance with applicable Ministry
+                                        of Education <a
+                                            href="https://www.education.govt.nz/school/digital-technology/your-schools-ict-network/te-mana-tuhono/">Terms
+                                            of Service</a>. Your School Contribution will be invoiced by the Ministry of
+                                        Education to your School.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </template> -->
+                        <!-- <template if:false={isShowSubmitButton}>
+                                <div class="slds-align_absolute-center">
+                                    <div class="slds-grid-vertical slds-text-align_center">
+                                        <lightning-icon icon-name={AcceptedOrDeclined1.iconname} variant="base" size="x-small"></lightning-icon>
+                                        <p>{AcceptedOrDeclined1.description}</p>
+                                    </div>      
+                                </div>
+                            </template> -->
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- N4L Additional Charges -->
+            <template if:true={isShowAdditionalCosts}>
+                <div class="section">
+                    <div class="section-heading">
+                        <h4 class="heading">One Time Additional Charge</h4>
+                    </div>
+                    <div class="section-content">
+                        <div class="school-execution">
+                            <div class="section-row">
+                                <div class="row-cell-left">
+                                    <div>Estimated initial one time charge for non MoE funded work</div>
+                                </div>
+                                <div class="row-cell-right">
+                                    <div><strong class="bold-text">${contractOrderTotalAmount} (ex GST)</strong></div>
+
+                                </div>
+                            </div>
+                            <div class="section-row">
+                                <div class="row-cell-left">
+                                </div>
+                                <div class="row-cell-right">
+                                    <div>N4L additional charges apply for non Ministry funded works required to complete
+                                        installation in accordance with the agreed Network Design.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <template if:true={isShowSubmitButton}> -->
+                        <div class="slds-checkbox">
+                            <div class="slds-grid">
+                                <div class="col slds-size_1-of-13">
+                                    <!-- for some strange reason 1-of-13 allows check box and text to stay close together. 1-of-12 will seperate them apart -->
+                                    <abbr class="slds-required" title="required">*</abbr>
+                                    <input type="checkbox" name="options" id="checkbox2" value="checkbox2"
+                                        disabled={checkboxes_disabled} checked={checkbox2_checked}
+                                        onchange={handleCheckboxChange2} />
+
+                                    <label class="slds-checkbox__label" for="checkbox2">
+                                        <span class="slds-checkbox_faux"></span>
+                                    </label>
+                                </div>
+                                <div class="col slds-m-left_x-small">
+                                    <!-- allow small gap between check box and text -->
+                                    <span class="text-block-2">Your School agrees to pay N4L the additional charges set
+                                        out above in accordance with our <a href={label.N4LSchoolGeneralTermsURL}>School
+                                            General Terms</a>. These additional charges will be invoiced by N4L to your
+                                        School directly.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </template> -->
+                        <!-- <template if:false={isShowSubmitButton}>
+                            <div class="slds-align_absolute-center">
+                                <div class="slds-grid-vertical slds-text-align_center">
+                                    <lightning-icon icon-name={AcceptedOrDeclined2.iconname} variant="base" size="x-small"></lightning-icon>
+                                    <p>{AcceptedOrDeclined2.description}</p>
+                                </div>      
+                            </div>
+                    </template> -->
+
+                    </div>
+                </div>
+            </template>
+
+
+
+            <!-- MOU Acceptance -->
+            <div class="section">
+                <div class="section-heading">
+                    <h4 class="heading">Agreement</h4>
+                </div>
+                <div class="section-content">
+                    <div class="school-execution">
+
+                        <div class="section-row">
+                            <div>N4L’s <a href={label.N4LSchoolGeneralTermsURL}>School General Terms</a> and the
+                                Ministry of Education <a
+                                    href="https://www.education.govt.nz/school/digital-technology/your-schools-ict-network/te-mana-tuhono/">Terms
+                                    of Service</a> are incorporated into and apply to this Order Form. N4L’s <a
+                                    href="https://www.n4l.co.nz/terms/">Terms & Policies</a> continue to apply to your
+                                use of N4L’s Services.</div>
+                        </div>
+                        <div class="section-row"><strong class="bold-text">Additional Terms</strong></div>
+                        <div class="section-row">1. This Order Form is entered into by N4L on behalf of N4L and the
+                            Ministry of Education and is intended to be for the benefit of and enforceable by N4L and
+                            the Ministry of Education, in accordance with Part 2, Subpart 1 (Contractual Privity) of the
+                            Contract and Commercial Law Act 2017.</div>
+                        <template if:true={isNHR}>
+                            <div class="section-row">
+                                <div>2. You acknowledge that N4L relies on information provided by your School and your
+                                    review and approval of the <a href={contractNetworkDesign} target="_blank">Network
+                                        Design</a> for your School. Your School is solely responsible for final approval
+                                    of all aspects of the <a href={contractNetworkDesign} target="_blank">Network
+                                        Design</a> and N4L’s services do not include recommendations or advice to your
+                                    School. You had the opportunity to choose to engage a third party (at your expense)
+                                    to review and advise on the <a href={contractNetworkDesign} target="_blank">Network
+                                        Design</a> on your behalf.</div>
+                            </div>
+                        </template>
+
+
+
+
+                        <!--                            <div class="row-cell-left">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="row-cell-right">-->
+                        <!--                                <div>N4L’s General Terms and the Ministry of Education Terms and Conditions are incorporated into and apply to this Order Form.  N4L’s Legal Terms & Policies continue to apply to your use of N4L’s Services.</div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="section-row">-->
+                        <!--                            <div class="row-cell-left">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="row-cell-right">-->
+                        <!--                                <div>1.This Order Form is entered into by N4L on behalf of N4L and the Ministry of Education and is intended to be for the benefit of and enforceable by N4L and the Ministry of Education, in accordance with Part 2, Subpart 1 (Contractual Privity) of the Contract and Commercial Law Act 2017.</div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="section-row">-->
+                        <!--                            <div class="row-cell-left">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="row-cell-right">-->
+                        <!--                                <div>2. You acknowledge that your School is responsible for all health and safety matters in connection with the use of the land and buildings at your School.  You agree to comply with the Health and Safety at Work Act 2015 by ensuring, so far as is reasonably practicable, that the School, and the means of entering and exiting the School, and anything arising from the School, are without risks to the health and safety of any person providing services on behalf of N4L or the Ministry of Education.  You agree (so far as is reasonably practicable) to consult, cooperate with, and coordinate activities with any such service provider in relation to any health and safety matters arising out of the provision of services at the School. </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <template if:true={isNHR}>-->
+                        <!--                            <div class="section-row">-->
+                        <!--                                <div class="row-cell-left">-->
+                        <!--                                </div>-->
+                        <!--                                <div class="row-cell-right">-->
+                        <!--                                    <div>3. You acknowledge that N4L relies on information provided by your School and your review and approval of the <a href="#">network design</a> for your School.  Your School is solely responsible for final approval of all aspects of the <a href="#">network design</a> and N4L’s services do not include recommendations or advice to your School.   You had the opportunity to choose to engage a third party (at your expense) to review and advise on the <a href="#">network design</a> on your behalf.</div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </template>-->
+                        <div class="section-row">
+
+
+
+
+                            <template if:true={isShowSystemDate}>
+                                <div>
+                                    Date: <strong class="bold-text">{todayDateString}</strong>
+                                </div>
+
+                            </template>
+                            <template if:false={isShowSystemDate}>
+                                Date: &nbsp; <strong class="bold-text">{contractSignedDateString}</strong>
+                                <span class="slds-m-left_small">(<lightning-relative-date-time
+                                        value={contractSignedDate}></lightning-relative-date-time>)</span>
+                            </template>
+
+
+                            <!--                            <div class="row-cell-left">-->
+                            <!--                                <div>Date:</div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row-cell-right">-->
+                            <!--                                <template if:true={isShowSystemDate}>-->
+                            <!--                                    <div>-->
+                            <!--                                        <strong class="bold-text">{todayDateString}</strong>-->
+                            <!--                                    </div>-->
+                            <!--                                    -->
+                            <!--                                </template>-->
+                            <!--                                <template if:false={isShowSystemDate}>-->
+                            <!--                                    <strong class="bold-text">{contractSignedDateString}</strong>-->
+                            <!--                                    <span class="slds-m-left_small">(<lightning-relative-date-time value={contractSignedDate}></lightning-relative-date-time>)</span>-->
+                            <!--                                </template>-->
+                            <!--                                -->
+                            <!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-content">
+
+                    <div class="slds-checkbox">
+                        <div class="slds-grid">
+                            <div class="col slds-size_1-of-13">
+                                <!-- for some strange reason 1-of-13 allows check box and text to stay close together. 1-of-12 will seperate them apart -->
+                                <abbr class="slds-required" title="required">*</abbr>
+                                <input type="checkbox" name="options" id="checkbox3" value="checkbox3"
+                                    disabled={checkboxes_disabled} checked={checkbox3_checked}
+                                    onchange={handleCheckboxChange3} />
+
+                                <label class="slds-checkbox__label" for="checkbox3">
+                                    <span class="slds-checkbox_faux"></span>
+                                </label>
+                            </div>
+                            <div class="col slds-m-left_x-small"> <!-- allow small gap between check box and text -->
+
+                                <template if:true={isNHR}>
+                                    <span class="text-block-2">I confirm that I am authorised to enter into this
+                                        agreement on behalf of {contract.Account.Name}.<br />
+                                        On behalf of the School I confirm that: <br />
+                                        (a) the School approves all aspects of the <a href={contractNetworkDesign}
+                                            target="_blank">Network Design</a> for the School, both Stage 1 and Stage 2;
+                                        <br />
+                                        (b) I have read, understood and agree to the terms and conditions set out in
+                                        this Order Form, including the <a href={label.N4LSchoolGeneralTermsURL}>School
+                                            General Terms</a> and Additional Terms set out above.
+                                    </span>
+                                </template>
+
+                                <template if:true={isNSE}>
+                                    <span class="text-block-2">I confirm that I am authorised to enter into this
+                                        agreement on behalf of {contract.Account.Name}.<br />
+                                        On behalf of the School I confirm that: <br />
+                                        (a) I have read, understood and agree to the terms and conditions set out in
+                                        this Order Form, including the <a href={label.N4LSchoolGeneralTermsURL}>School
+                                            General Terms</a> and Additional Terms set out above.
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <template if:true={isShowSubmitButton}>
+                    <div class="section-content">
+                        <div class="slds-align_absolute-center slds-p-vertical_medium">
+                            <!-- <button class="slds-button slds-button_outline-brand" onclick={handleDecline}>Decline</button> -->
+                            <button class="slds-button slds-button_brand" disabled={IsSubmitDisabled}
+                                onclick={handleSubmit}>I Accept</button>
+                        </div>
+                        <template if:true={isLoading}>
+                            <div class="slds-align_absolute-center slds-p-vertical_large">
+                                <div class="loading-spinner-container">
+                                    <div class="loading-spinner">
+                                        <lightning-spinner variant="brand"
+                                            alternative-text="Loading"></lightning-spinner>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <div class="section-content">
+                    <template if:true={ContractDeclined}>
+
+                        <div class="slds-align_absolute-center">
+                            <div class="slds-grid-vertical slds-text-align_center">
+                                <lightning-icon icon-name={ContractDeclined.iconname} variant="base" size="x-small"
+                                    class="red"></lightning-icon>
+                                <p class="slds-m-top_small">{ContractDeclined.description}</p>
+                            </div>
+                        </div>
+
+                    </template>
+                    <template if:true={ContractAccepted}>
+                        <div class="slds-align_absolute-center">
+                            <div class="slds-grid-vertical slds-text-align_center">
+                                <lightning-icon icon-name={ContractAccepted.iconname} variant="base" size="x-small"
+                                    class="green"></lightning-icon>
+                                <p class="slds-m-top_small">{ContractAccepted.description}</p>
+                            </div>
+                        </div>
+
+                    </template>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+    </template>
+
+    <template if:false={contract}>
+        <div class="slds-align_absolute-center" style="height: 75vh;">
+            <div class="slds-grid-vertical slds-text-align_center">
+                <div class="Title">{messageTitle}</div>
+                <div class="titleDescription">{messageDescription1}</div>
+                <div class="titleDescription">{messageDescription2}</div>
+            </div>
+        </div>
+    </template>
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

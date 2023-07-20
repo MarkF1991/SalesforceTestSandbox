@@ -1,0 +1,21 @@
+<template>
+    <div>
+        <div class="slds-grid ">
+           
+            <div class="slds-col slds-align-middle slds-grow-none  slds-avatar_medium">
+                <span class="slds-avatar slds-avatar_circle slds-avatar_medium">
+                        <abbr class="slds-avatar__initials" title="user initial">{initial}</abbr>
+                        
+                </span>
+            </div>
+
+            <div class="slds-col slds-align-middle slds-p-right_large slds-has-flexi-truncate ">
+                <div class="slds-grid slds-grid_vertical ">
+                    <template if:true={line1}><p class="slds-col slds-truncate slds-text-link">{line1}</p></template>
+                    <template if:true={line2}><p class="slds-col slds-truncate  slds-text-color_weak">{line2}</p></template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>

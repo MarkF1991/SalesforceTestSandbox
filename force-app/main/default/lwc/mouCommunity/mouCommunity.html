@@ -1,0 +1,33 @@
+<template>
+
+<!-- <p>MOU on Community Page</p>
+<div class="slds-box slds-m-around_small">
+    <p>userId: {userId}</p>
+    <p>json user: {userOutput}</p>
+</div>
+<div class="slds-box slds-m-around_small">
+    <p>contractId: {contractId}</p>
+    <p>json contract: {contractOutput}</p>
+</div>
+<div class="slds-box slds-m-around_small">
+<c-mou-test-child contract-id={contractId}></c-mou-test-child>
+</div> -->
+
+    <template if:true={authorisedToSubmit}>
+        <!-- <c-mou-contract contract-id={contractId} ></c-mou-contract> -->
+        <c-mou-contract data-id="mou-contract-child"></c-mou-contract>
+        <!-- <p>parent component output = {output}</p> -->
+    </template>
+    <template if:false={authorisedToSubmit}>
+        <div class="slds-align_absolute-center Title" style="height: 75vh;">
+            <div class="slds-box slds-m-bottom_large">
+                <div class="slds-align_absolute-center"><p><strong>{message1}</strong></p></div>    
+                <div class="slds-align_absolute-center"><p>{message2}</p></div>    
+            </div>
+        </div>
+    </template>
+
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

@@ -1,0 +1,71 @@
+<template>
+    <lightning-vertical-navigation selected-item={selectedItem}>
+        
+        <lightning-vertical-navigation-item-icon
+            id="dashboard"
+            label="Dashboard"
+            name="dashboard"
+            icon-name="utility:tile_card_list"
+            onclick={handleClick}>
+        </lightning-vertical-navigation-item-icon>
+
+        <lightning-vertical-navigation-item-icon
+            id="users-list-view"
+            label="Users"
+            name="users-list-view"
+            icon-name="utility:groups"
+            onclick={handleClick}>
+        </lightning-vertical-navigation-item-icon>
+
+        <lightning-vertical-navigation-item-icon
+            id="devices-list-view"
+            label="Devices"
+            name="devices-list-view"
+            icon-name="utility:lock"
+            onclick={handleClick}>
+        </lightning-vertical-navigation-item-icon>
+
+        <lightning-vertical-navigation-section label="Usage">
+            <lightning-vertical-navigation-item-icon
+                id="content-list-view"
+                label="Websites"
+                name="content-list-view"
+                icon-name="utility:world"
+                onclick={handleClick}>
+            </lightning-vertical-navigation-item-icon>
+
+            <lightning-vertical-navigation-item-icon
+                id="apps-list-view"
+                label="Apps"
+                name="apps-list-view"
+                icon-name="utility:apps"
+                onclick={handleClick}>
+            </lightning-vertical-navigation-item-icon>
+            <lightning-vertical-navigation-item-icon
+                id="categories-list-view"
+                label="Categories"
+                name="categories-list-view"
+                icon-name="utility:open_folder"
+                onclick={handleClick}>
+            </lightning-vertical-navigation-item-icon>
+        </lightning-vertical-navigation-section>
+
+        <lightning-vertical-navigation-section label="Security">
+                <lightning-vertical-navigation-item-icon
+                    id="infections-list-view"
+                    label="Infections"
+                    name="infections-list-view"
+                    icon-name="utility:clear"
+                    onclick={handleClick}>
+                </lightning-vertical-navigation-item-icon>
+    
+                <lightning-vertical-navigation-item-icon
+                    id="attacks-list-view"
+                    label="Attacks"
+                    name="attacks-list-view"
+                    icon-name="utility:shield"
+                    onclick={handleClick}>
+                </lightning-vertical-navigation-item-icon>
+            </lightning-vertical-navigation-section>
+    </lightning-vertical-navigation>
+</template>

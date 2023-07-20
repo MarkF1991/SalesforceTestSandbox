@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>user_reset_password</name>
+        <label>user reset password</label>
+        <locationX>567</locationX>
+        <locationY>109</locationY>
+        <actionName>N4LUserResetPassword</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>userList</name>
+            <value>
+                <elementReference>userRecord</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>N4LUserResetPassword</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>51.0</apiVersion>
+    <decisions>
+        <name>If_user_is_active_or_inactive</name>
+        <label>If user is active or inactive</label>
+        <locationX>347</locationX>
+        <locationY>184</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_inactive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>userRecord.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>if inactive</label>
+        </rules>
+        <rules>
+            <name>if_active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>userRecord.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>user_reset_password</targetReference>
+            </connector>
+            <label>if active</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>If_user_is_not_null</name>
+        <label>If user is not null</label>
+        <locationX>174</locationX>
+        <locationY>188</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>User_is_not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>userRecord</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>If_user_is_active_or_inactive</targetReference>
+            </connector>
+            <label>User is not null</label>
+        </rules>
+    </decisions>
+    <description>removed the Email Action to send the &quot;Deactivated user&quot; email due to ticket request https://n4lconz.atlassian.net/browse/SFB-150</description>
+    <interviewLabel>N4L User Activation Next Step {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>N4L User Activation Next Step</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>If_user_is_not_null</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>userRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

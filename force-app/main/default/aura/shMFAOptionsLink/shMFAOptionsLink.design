@@ -1,0 +1,4 @@
+<design:component label="SH MFA Options Link">
+    <design:attribute name="linkLabel" label="Link Label"/>
+    <design:attribute name="linkTarget" label="Link URL"/>
+</design:component>

@@ -1,0 +1,22 @@
+<template>
+        <a href="#" onclick={selectHandler}>
+    <div class="slds-p-vertical_small slds-border_bottom slds-grid slds-wrap slds-p-horizontal_small">
+        <div class="slds-col slds-size_2-of-12 slds-text-align_left slds-truncate">
+                <c-tile-chip-object object={object.chip}></c-tile-chip-object>
+                    <!-- <c-tile-chip initial={initial} line1={line1} line2={line2}></c-tile-chip> -->
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-text-align_centre slds-truncate">
+        <span>{object.count}</span>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+            <c-tile-bar object={object.bar1}></c-tile-bar>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+            <c-tile-bar object={object.bar2}></c-tile-bar>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-p-horizontal_medium">
+            <c-tile-bar object={object.bar3}></c-tile-bar>
+        </div>
+    </div>
+    </a>
+</template>

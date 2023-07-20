@@ -1,0 +1,9 @@
+a {
+    text-decoration:none;
+ }
+
+ .slds-text-title {
+    font-size: 10px;
+    line-height: 1.25;
+    color: #575757;
+}

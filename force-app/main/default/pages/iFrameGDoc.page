@@ -1,0 +1,6 @@
+<apex:page showHeader="false" showChat="false" sidebar="false">
+    <iframe width="100%" height="100%"
+        src="https://docs.google.com/document/d/{!$CurrentPage.parameters.DocID}/pub?embedded=true&:customViews=no"
+        frameborder="0" allowfullscreen="true">
+    </iframe>
+</apex:page>

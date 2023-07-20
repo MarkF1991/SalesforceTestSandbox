@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <masterLabel>N4L Support Hub Form Screen</masterLabel>
+    <isExposed>true</isExposed>
+
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target> 
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage, lightning__AppPage, lightning__HomePage,lightningCommunity__Default, lightning__FlowScreen">
+            <property name="recordId" type="String" label="Record Id" description="Record id related to the form"/>
+            <property name="accountId" type="String" label="Account Id" description="Account id related to the form"/>
+            <property name="objectName" type="String" label="Object Name" description="object name"/>
+            <property name="relatedObjectName" type="String" label="Related object name" description="related object name"/>
+            <property name="invokePopup" type="Boolean" label="Show as popup" description="show as popup"/>
+            <property name="headerTitle" type="String" label="Title" description="Title/Header of the form"/>
+            <property name="saveRelButton" type="String" label="Save button name" description="save button name"/>
+            <property name="formFunction" type="String" label="Form function (Add/Update/Replace)" description="function of the form"/>
+            <property name="accountName" type="String" label="Account name" description="Name of the account"/>
+            <property name="setUserLicense" type="Boolean" label="Process user license" description="turn on getting user license"/>
+            <property name="popupForm" type="Boolean" label="Show screen as popup"/>
+            <property name="isReplace" type="Boolean" label="Is Replace Screen?"/>
+            <property name="isAdvancedView" type="Boolean" label="Is Advanced View" default="true" description="boolean to show all options when adding a contact"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

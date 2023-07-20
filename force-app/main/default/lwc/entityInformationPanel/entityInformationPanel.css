@@ -1,0 +1,14 @@
+.title {
+    line-height: 3rem;
+    font-size: 11px;
+    color: rgb(100, 101, 104);
+}
+
+.detail {
+    font-weight: 600;
+}
+
+.entity-info {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}

@@ -1,0 +1,33 @@
+<template>
+    <div class="list-container">
+        <div class="section-title">
+            <c-tile-page-header if:true={filtersReady} use-avatar=true title={pageHeaderTitle} label={pageHeaderLabel} selectedfilter={selectedfilter} onheaderfilterchanged={applyFilter}></c-tile-page-header>
+        </div>
+        <div class="r-dash slds-grid slds-wrap"> <!-- do not add 'slds-gutters' in div class. This will cause the tileChip's slds-grid to add more space to it's col. -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                <div class="slds-m-top_medium">
+                    <c-tile-list2 id="safety-insights-widget" footer={safetyInsightsFooter} is-loading={safetyInsightsDataIsLoading} object={safetyInsightsResponseData} param={queryParams} header="Safety Insights" context="safety" is-narrow=true></c-tile-list2>
+                </div>
+                <div class="slds-m-top_medium">
+                    <c-website-insights-tile-list id="website-insights-widget" footer={websiteInsightsFooter} is-loading={websiteInsightsDataIsLoading} object={websiteInsightsResponseData} param={queryParams} header="Website Insights"></c-website-insights-tile-list>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                <div class="slds-m-top_medium slds-m-left_small">    
+                    <c-user-insights-tile-list id="user-insights-widget" config={schoolConfig} footer={userInsightsFooter} is-loading={userInsightsDataIsLoading} object={userInsightsResponseData} param={queryParams}></c-user-insights-tile-list>
+                </div>
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-category-insights-tile-list id="category-insights-widget" footer={categoryInsightsFooter} is-loading={categoryInsightsDataIsLoading} object={categoryInsightsResponseData} param={queryParams} header="Category Insights"></c-category-insights-tile-list>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-device-counts-tile-list id="device-insights-widget" config={schoolConfig} footer={deviceInsightsFooter} is-loading={deviceCountsDataIsLoading} object={deviceCountsResponseData}></c-device-counts-tile-list>
+                </div>
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-app-insights-tile-list id="app-insights-widget" footer={appInsightsFooter} is-loading={appInsightsDataIsLoading} object={appInsightsResponseData} param={queryParams} header="Category Insights"></c-app-insights-tile-list>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

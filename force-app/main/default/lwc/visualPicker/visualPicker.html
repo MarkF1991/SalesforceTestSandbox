@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-panel__header slds-grid slds-shrink-none slds-p-horizontal_medium">
+        <lightning-button label="Cancel" title="Cancel action" onclick={handleClickCancel}></lightning-button>
+        <lightning-button variant="brand" label="Save" title="Save action" onclick={handleClickSave} class="slds-col_bump-left"></lightning-button>
+    </div>
+    <template if:false={showCustomDateRangePicker}>
+        <div class="slds-panel__body slds-p-horizontal_large">
+            <div class="slds-filters ">
+                <fieldset class="slds-form-element">
+                    <legend class="slds-form-element__legend slds-form-element__label">Date Ranges</legend>
+                    <div class="slds-form-element__control">
+                        <template for:each={options} for:item="data">
+                            <c-visual-picker-item key={data.id} object={data} onselected={handleValuePickerSelected}></c-visual-picker-item>
+                        </template>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={showCustomDateRangePicker}>
+        <div class="slds-p-right_medium">
+            <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open" aria-hidden="false">
+                <c-custom-date-range-picker from-date={fromDate} to-date={toDate} oncustomdaterange={handleCustomDateRangeUpdated}></c-custom-date-range-picker>
+            </div>
+        </div>
+    </template>
+</template>

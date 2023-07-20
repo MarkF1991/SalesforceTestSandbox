@@ -1,0 +1,38 @@
+h2 {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-size: 16px;
+}
+
+p {
+    font-size: 11px;
+}
+
+a {
+    text-decoration:none;
+ }
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* .slds-theme--warning{
+    color:white;
+} */
+
+.slds-theme--success {
+    background-color: #7ec47e;
+}
+
+.slds-theme--error {
+    background-color: #f5675b;
+}
+
+.view-activity {
+    color: white;
+    line-height: 1.875rem;
+}
+
+.action {
+    cursor: pointer;
+}

@@ -1,0 +1,98 @@
+<apex:page showHeader="false" 
+    docType="html-5.0"
+    controller="SupportHubVerifyEmailController"
+    title="N4L Support Hub Verify Email"
+    applyBodyTag="false"
+    applyHtmlTag="false"
+    standardStylesheets="false"
+    id="verifyEmailPage">
+
+    <head>
+        <title>N4L Support Hub Signup</title>
+        <apex:slds />   
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/styles.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.SupportHubSignup, 'css/fonts.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/jquery-3.7.0.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.SupportHubSignup, 'js/typeahead.bundle.js')}" />
+        
+    </head>
+    <body>
+    <apex:form id="pageForm">
+        <div class="slds-scope">
+            <div class="slds-grid slds-wrap">
+                <apex:outputPanel id="pageMessages" layout="block" styleClass="slds-size_1-of-1">
+                    <!-- Custom page messages component -->
+                    <c:PageMessages />
+                </apex:outputPanel>
+
+
+                <div class="slds-size_1-of-1 slds-align_absolute-center slds-m-top_x-large">
+                    <apex:outputPanel layout="block" styleClass="slds-form slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-m-bottom_large" id="verifyEmailForm">
+                        
+                        <div class="slds-form_compound">
+
+                            <div class="slds-form_gradientHeader">
+                                <div class="gradientHeader_logo">
+<img class="headerLogo" alt="" src="{!URLFOR($Resource.SupportHubSignup, 'img/logo.png')}"/>
+                                </div>  
+                            </div>
+
+                            <fieldset class="slds-box slds-theme--default slds-container">
+                                
+                                <legend class="slds-form-element__label">Thanks! Before we can create your N4L account we need to verify your email address. </legend>
+                                <legend class="slds-form-element__label-heavy">Please keep this screen open as we’ve just sent you an email with your verification code.</legend>
+                                <legend class="slds-form-element__label">If you don’t see an email from us, please make sure to check your junk folder.</legend>
+
+                                <div class="slds-form-element slds-m-top_medium">
+                                    <div class="slds-m-vertical_medium">
+                                        
+                                    </div>
+                                    <div class="slds-form-element__group slds-m-top_medium">
+                                        <div class="slds-form-element__row">
+                                            <div class="slds-form-element slds-size_1-of-1 {!IF(errors.verificationCodeHasError, 'slds-has-error', '')}">
+                                                <label class="slds-form-element__label sentenceCase"><abbr class="slds-required" title="required">*</abbr>Enter verification code</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText value="{!verification.code}" styleClass="slds-input" html-placeholder=""/>
+                                                </div>
+                                                <apex:outputPanel styleClass="slds-form-element__help" layout="block" rendered="{!errors.verificationCodeErrors != null}" style="color: #c23934;">
+                                                    <apex:outputText value="{!errors.verificationCodeErrors}" escape="false" />
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="slds-clearfix">
+
+                                    <div class="slds-align_absolute slds-m-top_large">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <apex:commandButton action="{!submit}" rerender="verifyEmailForm, pageMessages" value="Verify" styleClass="slds-button slds-button_brand button nudgeRight" status="loading" disabled="{!noVerificationCode}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+
+                    </apex:outputPanel>
+                </div>
+
+
+            </div>
+        </div>
+
+    </apex:form>
+
+
+    <script>
+        function navigate() {
+            window.location = 'https://www.google.com';
+        }
+    </script>
+</body>
+
+</apex:page>

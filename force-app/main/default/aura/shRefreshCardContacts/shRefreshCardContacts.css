@@ -1,0 +1,670 @@
+.THIS body {
+    background: #f9f9f9 !important;
+}
+
+/* Styling for Page/General */
+
+.THIS input, .THIS button {
+    height: 40px;
+    outline: none;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.THIS input {
+    margin-bottom: 4px;
+    border: 1px solid #dededf;
+}
+
+.THIS input::placeholder {
+    color: #a8a9aa;
+}
+
+.THIS .slds-input-has-icon .slds-input__icon {
+    top: 45%;
+}
+
+.THIS button {
+    font-weight: 600;
+}
+
+.THIS .slds-button_brand:focus, .THIS .slds-button_brand:focus-visible, .THIS .slds-button_brand:focus-within {
+    box-shadow: none;
+}
+
+.THIS .sh-card {
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1440px;
+    min-height: 560px;
+    margin-inline: auto;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    background: white;
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.16);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.16);
+    box-shadow: 0px 0px 16px 0px rgb(0 0 0 / 16%);
+    font-size: 14px;
+}
+
+.THIS .sh-card.fullWidth {
+    max-width: 100%;
+}
+
+/* */
+
+/* Styling for Record Banner */
+
+.THIS .slds-form.slds-form_stacked.slds-grid.slds-page-header__detail-row, 
+.THIS .entityNameTitle.slds-line-height_reset, 
+.THIS .slds-col.slds-no-flex.slds-grid.slds-grid_vertical-align-center.actionsContainer {
+    display:none;
+}
+
+.THIS .slds-page-header_record-home.forceRecordLayout {
+    padding: 16px 24px !important;
+}
+
+.THIS .slds-page-header_record-home span.uiOutputText {
+    font-weight: 600;
+    line-height: 32px;
+}
+
+/* */
+
+/* Styling for Tabs */
+
+.THIS .uiTabBar .uiTabItem .tabHeader {
+    padding: 8px 24px;
+}
+
+.THIS .tabs__item.uiTabItem {
+    margin: 0;
+}
+
+.THIS li.js-tab.tabs__item.active.uiTabItem a {
+    border-color: #980d76;
+    color: #980d76;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.THIS li.js-tab.tabs__item.active.uiTabItem a:hover,
+.THIS li.js-tab.tabs__item.active.uiTabItem a:focus {
+    border-color: #980d76;
+    box-shadow: none;
+    color: #980d76;
+    font-weight: 400;
+}
+
+.THIS li.js-tab.tabs__item.uiTabItem a:hover,
+.THIS li.js-tab.tabs__item.uiTabItem a:focus {
+    border-color: #980d76;
+    box-shadow: none;
+    color: #980d76;
+    font-weight: 400;
+}
+
+.THIS .uiTabset--default .tabs__content {
+    padding-top: 24px;
+}
+
+/* */
+
+/* Styling for N4L Table Screen */
+
+.THIS [role=combobox] input[readonly], .THIS input[readonly][role=combobox]{
+    border-color: #dededf;
+}
+
+.THIS .slds-input:focus, .THIS .slds-input:focus-visible, .THIS .slds-input:active,
+.THIS [role=combobox] input[readonly]:focus, .THIS [role=combobox] input[readonly].slds-has-focus, .THIS input[readonly][role=combobox]:focus, .THIS input[readonly][role=combobox].slds-has-focus {
+    border-color: #980d76;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+}
+
+.THIS lightning-combobox.noLabels .slds-form-element__label:empty {
+    display: none;
+}
+
+.THIS lightning-combobox.noLabels {
+    max-width: 256px;
+}
+
+.THIS input[role=combobox] {
+    cursor: pointer;
+}
+
+.THIS .slds-listbox {
+    margin-top: -4px;
+    font-size: 14px;
+}
+
+.THIS .slds-listbox__option {
+    height: 40px;
+    align-items: center;
+}
+
+.THIS .slds-table_header-fixed_container.slds-scrollable_x {
+    padding-top: 3rem;
+}
+
+.THIS c-n4l-custom-datatable .slds-th__action {
+    padding: 1.5rem 24px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.THIS c-n4l-custom-datatable .slds-table th:focus, .THIS .slds-table th.slds-has-focus, 
+.THIS .slds-table [role=gridcell]:focus, 
+.THIS .slds-table [role=gridcell].slds-has-focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.THIS .slds-is-sortable__icon, 
+.THIS .slds-is-sortable .slds-th__action:hover .slds-is-sortable__icon,
+.THIS .slds-is-sortable .slds-th__action:focus .slds-is-sortable__icon, 
+.THIS .slds-is-sortable.slds-has-focus .slds-th__action .slds-is-sortable__icon, 
+.THIS .slds-is-sortable.slds-has-focus .slds-th__action:hover .slds-is-sortable__icon, 
+.THIS .slds-is-sortable.slds-has-focus .slds-th__action:focus .slds-is-sortable__icon {
+    fill: #646568;
+}
+
+.THIS lightning-primitive-header-actions lightning-button-menu {
+    display: none;
+}
+
+.THIS c-n4l-custom-datatable .slds-resizable__divider {
+    display: none;
+}
+
+.THIS c-n4l-custom-datatable .slds-resizable__handle,
+.THIS c-n4l-custom-datatable .slds-line-height_reset th[aria-label=Actions] {
+    pointer-events: none;
+}
+
+.THIS c-n4l-custom-datatable .slds-scrollable_y {
+    width: auto;
+}
+
+.THIS c-n4l-custom-datatable tr.slds-hint-parent {
+    height: 64px;
+}
+
+
+.THIS c-n4l-custom-datatable td button {
+    width: 40px;
+    margin-right: 24px;
+    color: #f7941e;
+    background-color: rgba(247,148,30,0.16);
+    border: none;
+    box-shadow: none !important;
+}
+
+.THIS c-n4l-custom-datatable td button:hover,
+.THIS c-n4l-custom-datatable td button:active,
+.THIS c-n4l-custom-datatable td button:focus,
+.THIS c-n4l-custom-datatable td button:focus-within,
+.THIS c-n4l-custom-datatable td button:focus-visible {
+    background-color: rgba(247,148,30,0.28);
+}
+
+.THIS a[role="menuitem"]:hover,
+.THIS a[role="menuitem"]:active,
+.THIS a[role="menuitem"]:focus,
+.THIS a[role="menuitem"]:focus-within {
+    color: #646568;
+}
+
+.THIS a[role="menuitem"]:active {
+    background-color: rgba(247,148,30,0.24);
+}
+
+.THIS c-n4l-custom-datatable th[data-label=Name] {
+    padding-left: 16px !important;
+    font-weight: 600;
+}
+
+.THIS c-n4l-custom-datatable td[data-label=Email], 
+.THIS c-n4l-custom-datatable td[data-label="Job title"], 
+.THIS c-n4l-custom-datatable td[data-label=Role]  {
+    padding-left: 16px !important;
+}
+
+.THIS c-n4l-custom-datatable div[role=menu] {
+    font-size: 14px;;
+}
+
+.THIS .custom-datatable_paginate-container{
+    float: right;
+    padding: 24px 0;
+    margin-right: 24px;
+}
+
+.THIS .slds-p-right_medium.custom-datatable_paginate-pages {
+    float: left;
+    line-height: 40px;
+}
+
+
+/* */
+
+/* Styling for Modals */
+
+.THIS .modal-container {
+    max-width: 526px;
+    margin-inline: auto;
+}
+
+.THIS .modal-container .slds-button_icon {
+    height: auto;
+}
+
+.THIS .modal-container header .slds-modal__close {
+    top: 16px;
+    right: 16px;
+}
+
+.THIS .modal-container header svg {
+    fill: #646568;
+}
+
+.THIS .modal-container header h2 {
+    margin-top: 0px;
+    text-align: left;
+}
+
+.THIS .modal-container .slds-accordion__summary {
+    padding-bottom: 16px;
+    font-weight: 600;
+}
+
+.THIS .modal-container abbr {
+    display: none;
+}
+
+.THIS .modal-container label.slds-form-element__label, .THIS .modal-container legend.slds-form-element__legend {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.THIS .modal-container label.slds-form-element__label.sh-list-item_label {
+    padding-left: 12px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.THIS .modal-container .slds-accordion__section.slds-is-open {
+    padding: 24px;
+}
+
+.THIS .modal-container .slds-has-error .slds-input {
+    box-shadow: 0 0 3px rgba(234,0,30,0.32);
+
+}
+
+.THIS .modal-container .slds-has-error .slds-input:active, 
+.THIS .modal-container .slds-has-error .slds-input:focus,
+.THIS .modal-container .slds-has-error .slds-input:focus-within,
+.THIS .modal-container .slds-has-error .slds-input:focus-visible {
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+    outline: none;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactSearch {
+    top: 50px;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactClear {
+    height: 32px;
+    top: 42px;
+    overflow: visible;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactClear lightning-icon {
+    margin-top: 8px;
+}
+
+.THIS .modal-container .slds-form-element__help, 
+.THIS .modal-container [data-id=resultBox] span.slds-required {
+    font-size:13px;
+}
+
+.THIS .slds-button-group+.slds-button-group, 
+.THIS .slds-button-group+.slds-button-group-list, 
+.THIS .slds-button-group+.slds-button, 
+.THIS .slds-button-group-list+.slds-button-group-list, 
+.THIS .slds-button-group-list+.slds-button-group, 
+.THIS .slds-button-group-list+.slds-button {
+    margin-left: var(--lwc-spacingSmall);
+}
+
+.THIS lightning-button.sh-button_text button {
+    border: none;
+    background-color: white;
+    color: #646568;
+}
+
+.THIS lightning-button.sh-button_text button:hover, 
+.THIS lightning-button.sh-button_text button:active, 
+.THIS lightning-button.sh-button_text button:focus, 
+.THIS lightning-button.sh-button_text button:focus-within, 
+.THIS lightning-button.sh-button_text button:focus-visible {
+    border: none;
+    background-color: #f3f3f3;
+    color: #646568;
+    outline: none;
+}
+
+.THIS lightning-button.sh-button_destructive button{
+    border: none;
+    background-color: #cc5252;
+    color: white;
+}
+
+.THIS lightning-button.sh-button_destructive button:hover, 
+.THIS lightning-button.sh-button_destructive button:active, 
+.THIS lightning-button.sh-button_destructive button:focus, 
+.THIS lightning-button.sh-button_destructive button:focus-within, 
+.THIS lightning-button.sh-button_destructive button:focus-visible {
+    border: none;
+    background-color: #AC4343;
+    color: white;
+    outline: none;
+}
+
+/* */
+
+/* Checkbox Styling START */
+
+.THIS .slds-checkbox {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    min-width: 35%;
+  }
+
+.THIS .slds-checkbox .slds-checkbox_faux {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    border-radius: var(--sds-c-checkbox-radius-border, 0.125rem);
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dededf !important;
+    background-color: var(--sds-c-checkbox-color-background, white);
+    -webkit-box-shadow: var(--sds-c-checkbox-shadow);
+    box-shadow: var(--sds-c-checkbox-shadow);
+    -webkit-transition: border 0.1s linear, background-color 0.1s linear;
+    transition: border 0.1s linear, background-color 0.1s linear;
+  }
+.THIS .slds-checkbox .slds-checkbox__label .slds-form-element__label {
+    display: inline;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+.THIS .slds-checkbox [type="checkbox"] {
+    width: 1px;
+    height: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    pointer-events: auto;
+  }
+  
+  .THIS .slds-checkbox [type="checkbox"] + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"] ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #8f9092;
+    background-color: white;
+  }
+  
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    background-color: #980d76;
+  }
+
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked[disabled] + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked[disabled] ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked[disabled] + .slds-checkbox__label .slds-checkbox_faux:after {
+    display: block;
+    content: "";
+    height: 0.25rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 50%;
+    /*! @noflip */
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    border-bottom: 2px solid white;
+    /*! @noflip */
+    border-left: 2px solid white;
+  }
+
+  .THIS .slds-checkbox [type="checkbox"]:focus + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    -webkit-box-shadow: 0 0 3px rgba(152,13,118,0.32);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+  }
+
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked > .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    background-color: #980d76;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox__label .slds-checkbox_faux:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    /*! @noflip */
+    left: 50%;
+    width: 0.5rem;
+    height: 2px;
+    border: 0;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+    background: white;
+  }
+
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"][disabled] ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #e4e5e5;
+    background-color: #e4e5e5;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] + .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] ~ .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #ea001e;
+    border-width: 2px;
+  }
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #ea001e;
+  }
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux:after,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux:after,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux:after {
+    border-color: #fe5c4c;
+  }
+  
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] + .slds-checkbox_faux,
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] ~ .slds-checkbox_faux,
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    margin-right: 0.5rem;
+  }
+  
+/* END */
+
+/* Styling for ICT Provider and School Info Tab Start */
+
+.THIS table.forceRecordLayout {
+    padding: 0;
+}
+
+.THIS [data-region-name="091c3"] h2.listTitle,
+.THIS [data-region-name="21e8d"] h2.listTitle,
+.THIS [data-region-name="7a0ce"] h2.listTitle,
+.THIS [data-region-name="e5fc2"] h2.listTitle {
+    font-weight: 600;
+    padding-left: 24px;
+    padding-bottom: 16px;
+}
+
+.THIS [data-region-name="091c3"] .forceBaseListView thead th, 
+.THIS [data-region-name="091c3"] .forceBaseListView tbody td, 
+.THIS [data-region-name="091c3"] .forceBaseListView tbody th,
+.THIS [data-region-name="091c3"] .forceBaseListView thead th:first-of-type, 
+.THIS [data-region-name="091c3"] .forceBaseListView tbody td:first-of-type, 
+.THIS [data-region-name="091c3"] .forceBaseListView tbody th:first-of-type,
+.THIS [data-region-name="21e8d"] .forceBaseListView thead th, 
+.THIS [data-region-name="21e8d"] .forceBaseListView tbody td, 
+.THIS [data-region-name="21e8d"] .forceBaseListView tbody th,
+.THIS [data-region-name="21e8d"] .forceBaseListView thead th:first-of-type, 
+.THIS [data-region-name="21e8d"] .forceBaseListView tbody td:first-of-type, 
+.THIS [data-region-name="21e8d"] .forceBaseListView tbody th:first-of-type,
+.THIS [data-region-name="7a0ce"] .forceBaseListView thead th, 
+.THIS [data-region-name="7a0ce"] .forceBaseListView tbody td, 
+.THIS [data-region-name="7a0ce"] .forceBaseListView tbody th,
+.THIS [data-region-name="7a0ce"] .forceBaseListView thead th:first-of-type, 
+.THIS [data-region-name="7a0ce"] .forceBaseListView tbody td:first-of-type, 
+.THIS [data-region-name="7a0ce"] .forceBaseListView tbody th:first-of-type,
+.THIS [data-region-name="e5fc2"] .forceBaseListView thead th, 
+.THIS [data-region-name="e5fc2"] .forceBaseListView tbody td, 
+.THIS [data-region-name="e5fc2"] .forceBaseListView tbody th,
+.THIS [data-region-name="e5fc2"] .forceBaseListView thead th:first-of-type, 
+.THIS [data-region-name="e5fc2"] .forceBaseListView tbody td:first-of-type, 
+.THIS [data-region-name="e5fc2"] .forceBaseListView tbody th:first-of-type {
+    padding: 16px 8px 16px 24px;
+}
+
+.THIS [data-region-name="091c3"] .forceBaseListView thead th, 
+.THIS [data-region-name="091c3"] .forceBaseListView thead th:first-of-type,
+.THIS [data-region-name="21e8d"] .forceBaseListView thead th, 
+.THIS [data-region-name="21e8d"] .forceBaseListView thead th:first-of-type,
+.THIS [data-region-name="7a0ce"] .forceBaseListView thead th, 
+.THIS [data-region-name="7a0ce"] .forceBaseListView thead th:first-of-type,
+.THIS [data-region-name="e5fc2"] .forceBaseListView thead th, 
+.THIS [data-region-name="e5fc2"] .forceBaseListView thead th:first-of-type {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.THIS [data-region-name="091c3"] table.forceRecordLayout tbody th,
+.THIS [data-region-name="21e8d"] table.forceRecordLayout tbody th,
+.THIS [data-region-name="7a0ce"] table.forceRecordLayout tbody th,
+.THIS [data-region-name="e5fc2"] table.forceRecordLayout tbody th {
+    font-weight: 600;
+}
+
+.THIS [data-region-name="091c3"] tbody tr,
+.THIS [data-region-name="21e8d"] tbody tr,
+.THIS [data-region-name="7a0ce"] tbody tr,
+.THIS [data-region-name="e5fc2"] tbody tr {
+    height: 64px;
+}
+
+.THIS [data-region-name="091c3"] div.slds-card__footer,
+.THIS [data-region-name="091c3"] .forceVirtualActionMarker.forceVirtualAction,
+.THIS [data-region-name="091c3"] .slds-grid.slds-page-header.forceRelatedListCardHeader,
+.THIS [data-region-name="21e8d"] div.slds-card__footer,
+.THIS [data-region-name="21e8d"] .forceVirtualActionMarker.forceVirtualAction,
+.THIS [data-region-name="21e8d"] .slds-grid.slds-page-header.forceRelatedListCardHeader,
+.THIS [data-region-name="7a0ce"] div.slds-card__footer,
+.THIS [data-region-name="7a0ce"] .forceVirtualActionMarker.forceVirtualAction,
+.THIS [data-region-name="7a0ce"] .slds-grid.slds-page-header.forceRelatedListCardHeader,
+.THIS [data-region-name="e5fc2"] div.slds-card__footer,
+.THIS [data-region-name="e5fc2"] .forceVirtualActionMarker.forceVirtualAction,
+.THIS [data-region-name="e5fc2"] .slds-grid.slds-page-header.forceRelatedListCardHeader {
+    display: none;
+}
+
+.THIS [data-region-name="091c3"] .slds-card.slds-card_boundary.headerBottomBorder.forceRelatedListCardDesktop,
+.THIS [data-region-name="21e8d"] .slds-card.slds-card_boundary.headerBottomBorder.forceRelatedListCardDesktop,
+.THIS [data-region-name="7a0ce"] .slds-card.slds-card_boundary.headerBottomBorder.forceRelatedListCardDesktop,
+.THIS [data-region-name="e5fc2"] .slds-card.slds-card_boundary.headerBottomBorder.forceRelatedListCardDesktop {
+    border: none;
+}
+
+.THIS [data-region-name="091c3"],
+.THIS [data-region-name="21e8d"],
+.THIS [data-region-name="7a0ce"],
+.THIS [data-region-name="e5fc2"] {
+    margin-top: -16px;
+}
+
+.THIS [data-region-name="091c3"] .container.forceRelatedListSingleContainer,
+.THIS [data-region-name="21e8d"] .container.forceRelatedListSingleContainer,
+.THIS [data-region-name="7a0ce"] .container.forceRelatedListSingleContainer,
+.THIS [data-region-name="e5fc2"] .container.forceRelatedListSingleContainer {
+    margin-top: 8px;
+}
+
+.THIS [data-region-name="091c3"] table a,
+.THIS [data-region-name="21e8d"] table a,
+.THIS [data-region-name="7a0ce"] table a,
+.THIS [data-region-name="e5fc2"] table a {
+    border-bottom: none;
+    color: #646568;
+    pointer-events: none;
+}
+
+.THIS [data-region-name="3"] button.slds-section__title-action {
+    height: 48px;
+    padding: 0 8px;
+    margin: 0 24px;
+    outline: none;
+    box-shadow: none;
+}
+
+.THIS [data-region-name="3"] .slds-section__content .slds-form_stacked {
+    padding: 16px 24px;
+}
+
+.THIS [data-region-name="3"] {
+    padding-bottom: 16px;
+}
+
+/* END */

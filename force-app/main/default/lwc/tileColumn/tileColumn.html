@@ -1,0 +1,49 @@
+<template>
+        <a href="#" onclick={selectHandler}>
+    <div class="slds-p-vertical_x-small slds-border_bottom slds-grid slds-wrap slds-p-horizontal_small slds-theme_shade slds-text-title">
+        <div class={cssChipColumn}>
+            <span>{object.label}</span>
+        </div>
+
+        <div class={cssCountColumn}>
+            <span>{object.count}</span>
+        </div>
+        <div class={cssBarColumn}>
+            <div class="slds-grid ">
+                <div class="slds-col slds-small-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                    <span>{object.bar1.label}</span>
+                </div>
+                <div class="slds-col slds-small-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-text-align_right slds-truncate">
+                    <span>{object.bar1.unit}</span>
+                </div>
+            </div>
+        </div>
+        <template if:true={showBar2}>
+                
+                <div class={cssBarColumn}>
+                        <div class="slds-grid ">
+                            <div class="slds-col slds-small-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                                <span>{object.bar2.label}</span>
+                            </div>
+                            <div class="slds-col slds-small-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-text-align_right slds-truncate">
+                                <span>{object.bar2.unit}</span>
+                            </div>
+                        </div>
+                    </div>
+        </template>
+        <template if:true={showBar3}>
+                <div class={cssBarColumn}>
+                        <div class="slds-grid ">
+                            <div class="slds-col slds-small-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                                <span>{object.bar3.label}</span>
+                            </div>
+                            <div class="slds-col slds-small-size_1-of-1 slds-medium-size_2-of-12 slds-large-size_2-of-12 slds-text-align_right slds-truncate">
+                                <span>{object.bar3.unit}</span>
+                            </div>
+                        </div>
+                    </div>
+        </template>
+        
+    </div>
+    </a>
+</template>

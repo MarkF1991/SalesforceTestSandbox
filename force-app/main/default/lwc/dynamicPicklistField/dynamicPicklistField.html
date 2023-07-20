@@ -1,0 +1,18 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-07-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={showPicklist}>
+    <lightning-combobox
+            name="ChoosingEmailTemplate"
+            label="Email Template"
+            value={defaultEmailName}
+            placeholder={defaultEmailName}
+            options={selectEmailTemplate}
+            onchange={handleChange} ></lightning-combobox>
+        </template>
+</template>

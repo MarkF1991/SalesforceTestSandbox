@@ -1,0 +1,6 @@
+<apex:page showHeader="false" showChat="false" sidebar="false">
+    <iframe width="{!$CurrentPage.parameters.Width}" height="{!$CurrentPage.parameters.Height}"
+        src="https://fast.wistia.com/embed/medias/{!$CurrentPage.parameters.VideoID}"
+        frameborder="0" allowfullscreen="true">
+    </iframe>
+</apex:page>

@@ -1,0 +1,18 @@
+<aura:component implements="lightning:isUrlAddressable,force:hasRecordId,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="pageSize" type="Integer" />
+    <aura:attribute name="addButtonLabel" type="String" />
+    <aura:attribute name="saveRelButton" type="String" />
+    <aura:attribute name="searchPlaceholder" type="String"/>
+    <aura:attribute name="manageContact" type="String"/>    
+    <aura:attribute name="hideReplaceAction" type="Boolean"/>
+
+    <c:n4lTableScreen recordId="{!v.recordId}" objectName="AccountContactRelation" relatedObjectApiName="account"
+        relationshipField="accountId" title="{!v.manageContact}" N4LDataTableFieldsSettingName="BusinessContacts"
+        showTableAction="true" pageSize="{!v.pageSize}" showMissingMessage="true" emptyMessageText="There are no contacts to display"
+        showAddButton="true" previousButtonName="Prev" nextButtonName="Next" addButtonText="{!v.addButtonLabel}"
+        showRelatedFieldName="true" headerTitle="" saveRelButton="{!v.saveRelButton}" searchPlaceHolderText="{!v.searchPlaceholder}"
+        sortQuery="ORDER BY isActive DESC,Contact.FirstName" hideReplaceAction="{!v.hideReplaceAction}"/>
+</aura:component>

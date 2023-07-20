@@ -1,0 +1,21 @@
+<template>
+    <div class={overrideCssClass} >
+        <template if:false={disableHeader}>
+            <div class="section-title">
+                <c-tile-page-header title={overridePageHeaderTitle} disable-filter={disableHeaderFilter} disable-selection-menu={disableSelectionMenu} label={pageHeaderLabel} selectedfilter={selectedfilter} menu-items={menuItems} selected-menu-item-value={view} onheaderfilterchanged={applyFilter} onmenuchanged={handleMenuChanged}></c-tile-page-header>
+            </div>            
+        </template>
+
+        <c-reporting-data-table
+            id="content-table"
+            key-field="id"
+            data={data}
+            columns={columns}
+            hide-checkbox-column></c-reporting-data-table>
+        <div class="loading-more-container">
+            <div class="loading-more">
+                <lightning-spinner variant="brand" if:true={tableLoadingState} alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </div>
+    </div>
+</template>

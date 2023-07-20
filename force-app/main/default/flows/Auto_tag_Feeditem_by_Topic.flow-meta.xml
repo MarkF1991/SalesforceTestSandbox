@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>Is_valid_topic</name>
+        <label>Is valid topic</label>
+        <locationX>240</locationX>
+        <locationY>145</locationY>
+        <defaultConnectorLabel>Not valid</defaultConnectorLabel>
+        <rules>
+            <name>yes_valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VarT_Topicid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Topic_Assignment</targetReference>
+            </connector>
+            <label>yes valid</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Auto tag Feeditem by Topic {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Auto tag Feeditem by Topic</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Topic_Assignment</name>
+        <label>Create Topic Assignment</label>
+        <locationX>426</locationX>
+        <locationY>148</locationY>
+        <inputAssignments>
+            <field>EntityId</field>
+            <value>
+                <elementReference>VarT_Feeditemid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TopicId</field>
+            <value>
+                <elementReference>VarT_Topicid</elementReference>
+            </value>
+        </inputAssignments>
+        <object>TopicAssignment</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Topic_id</name>
+        <label>Get Topic id</label>
+        <locationX>212</locationX>
+        <locationY>32</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_valid_topic</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>VarT_Topictext</elementReference>
+            </value>
+        </filters>
+        <object>Topic</object>
+        <outputAssignments>
+            <assignToReference>VarT_Topicid</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <status>InvalidDraft</status>
+    <variables>
+        <description>The feeditem id passed in from process builder.</description>
+        <name>VarT_Feeditemid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Hold the topic id that we want to assign to the feeditem</description>
+        <name>VarT_Topicid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Passed in from process builder as text of the Topic that is used to get the cooresponding topic id.</description>
+        <name>VarT_Topictext</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+</Flow>

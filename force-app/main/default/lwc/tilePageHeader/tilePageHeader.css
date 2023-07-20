@@ -1,0 +1,57 @@
+.slds-avatar__initials {
+    background-color: rgb(87, 87, 87);
+    font-weight: bolder;
+}
+
+.slds-page-header {
+    background-color: #fff;    /*.slds-theme_shade */
+}
+
+.page-title {
+    line-height: 32px;
+    font-size: 1.5em;
+}
+
+.slds-dropdown {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    z-index: 10000;
+}
+
+.slds-avatar:hover{
+    color: white;
+}
+
+.security {
+    background-color: #f5675b !important; /*$color-background-error*/
+}
+
+.content, .website {
+    background-color: #54698d !important; /* $brand-header-icon */
+}
+
+.categories, .category {
+    background-color: #8199AF !important; /* $brand-header-icon */
+}
+
+.user, .users {
+    background-color: #31bfce!important; /* custom */
+}
+
+.connection {
+    background-color: #a525e0 !important; /* $brand-header-icon */
+}
+
+.application, .apps {
+    background-color: #0079bc !important; /* $brand-header-icon */
+}
+
+.devices, .device {
+    background-color: #6489e4 !important; /* $brand-header-icon */
+}
+
+.success {
+    background-color: #11a791 !important;
+}

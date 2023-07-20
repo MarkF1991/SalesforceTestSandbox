@@ -1,0 +1,192 @@
+<template>
+        <lightning-card title="School" icon-name="standard:account">
+         
+            <a href={educountURL} slot="actions" target="_blank"><lightning-icon class="slds-m-left_xx-small" icon-name="standard:address" alternative-text="Educount" title="Educount"></lightning-icon></a>
+            
+            <div class="slds-m-around_medium">
+                <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+                    <div class="slds-grid">
+                        
+                        <div class="slds-col slds-size_1-of-1">
+                                <a href="#" onclick={handleAccountClick}><lightning-output-field field-name="Name"></lightning-output-field></a>
+                            
+                            <lightning-output-field field-name="Decile__c"></lightning-output-field>
+                            <lightning-output-field field-name="Education_Region__c"></lightning-output-field>
+                            <lightning-output-field field-name="Total_School_Roll__c"></lightning-output-field>
+                            <lightning-output-field field-name="rrpu__Alert_Message__c"></lightning-output-field>
+                            <lightning-output-field field-name="Account_Comment__c"></lightning-output-field>
+                            <br>
+
+                            <div hidden={selectButtonDisabled}>
+                            <label class="slds-form-element__label" for="form-element-02">ICT Providers</label>
+                            <lightning-helptext content="ICT Providers with Status = Current"></lightning-helptext>
+                            <template for:each={displayIctProviders} for:item="pvd">
+                                <p key={pvd.id}>
+                                     {pvd}
+                                </p>
+                           </template>
+                        </div>
+
+                            <br>
+                            <div hidden={selectButtonDisabled}>
+                            <label class="slds-form-element__label" for="form-element-02">Rating</label>
+                            <lightning-output-field field-name="Rating" variant='label-hidden'></lightning-output-field>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </lightning-record-view-form>
+            </div>
+        </lightning-card>
+ 
+        <div class="slds-m-top_medium">
+        <lightning-card title="ATP Information" icon-name="standard:account">
+            <div class="slds-m-around_medium" hidden={selectButtonDisabled}>
+                ER ATP Link: &nbsp; &nbsp; 
+                <a href={getFeedback_NHR_ATP_URL} target="_blank" slot="actions" class="slds-m-right_xx-small">
+                    <lightning-button-icon icon-name="utility:work_order_type" alternative-text="getFeedback NHR ATP"></lightning-button-icon>
+                </a> 
+                <br>
+                Signed date: &nbsp; <lightning-formatted-date-time value={nhrFeedbackResponseTime}></lightning-formatted-date-time>
+                <br>
+                <br>
+            </div>
+
+            <div class="slds-m-around_medium" hidden={selectButtonDisabled}>
+                ES ATP Link: &nbsp; &nbsp; 
+                <a href={getFeedback_NSE_ATP_URL} target="_blank" slot="actions" class="slds-m-right_xx-small">
+                    <lightning-button-icon icon-name="utility:work_order_type" alternative-text="getFeedback NSE ATP"></lightning-button-icon>
+                </a>
+                <br>
+                ATP signed date: &nbsp; <lightning-formatted-date-time value={nseFeedbackResponseTime}></lightning-formatted-date-time>
+                <br>
+                MOU signed date: &nbsp; <lightning-formatted-date-time value={MOUReceivedDate}></lightning-formatted-date-time>
+                <br>
+                <br>
+            </div>
+
+            <div class="slds-m-around_medium" hidden={selectButtonDisabled}>
+                Email Protection ATP Link: &nbsp; &nbsp; 
+                <a href={getFeedback_EmailProtection_ATP_URL} target="_blank" slot="actions" class="slds-m-right_xx-small">
+                    <lightning-button-icon icon-name="utility:work_order_type" alternative-text="getFeedback Email Protection ATP"></lightning-button-icon>
+                </a> 
+                <br>
+                Signed date: &nbsp; <lightning-formatted-date-time value={emailProtectionFeedbackResponseTime}></lightning-formatted-date-time>
+                <br>
+                <br>
+            </div>
+
+            <div class="slds-m-around_medium" hidden={selectButtonDisabled}>
+                IEM ATP Link: &nbsp; &nbsp; 
+                <a href={getFeedback_IEM_ATP_URL} target="_blank" slot="actions" class="slds-m-right_xx-small">
+                    <lightning-button-icon icon-name="utility:work_order_type" alternative-text="getFeedback IEM ATP URL"></lightning-button-icon>
+                </a> 
+                <br>
+                Signed date: &nbsp; <lightning-formatted-date-time value={iemATPlinkResponseTime}></lightning-formatted-date-time>
+                <br>
+                <br>
+            </div>
+
+        </lightning-card>
+    </div>
+
+        <div class="slds-m-top_medium">
+            <c-contact-list account-id={recordId} list-title="School Contacts" empty-list-message="No Role Based Contacts">
+            </c-contact-list>
+        </div>
+    
+        <div class="slds-m-top_medium">
+            <lightning-card title="School Internet" icon-name="standard:account">
+                <div class="slds-m-around_medium">
+                    <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-output-field field-name="Current_CLNE_Make_Model__c"></lightning-output-field>
+                                <lightning-output-field field-name="Current_Connection_Bandwidth__c"></lightning-output-field>
+                                <lightning-output-field field-name="LFC_Provider__c"></lightning-output-field>
+                                <lightning-output-field field-name="Billing_Initiative__c"></lightning-output-field>
+                                <lightning-output-field field-name="LFC_Provider_Access_Type__c"></lightning-output-field>
+                                <lightning-output-field field-name="FortiGate_Rollout_Completed_Date__c"></lightning-output-field>
+                            </div>
+                        </div>
+                    </lightning-record-view-form>
+                </div>
+    
+            </lightning-card>
+        </div>
+    
+        <div class="slds-m-top_medium">
+            <lightning-card title="School LAN" icon-name="standard:account">
+                <div class="slds-m-around_medium">
+                    <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-output-field field-name="NSE_SoW__c"></lightning-output-field>
+                                <lightning-output-field field-name="Hardware_Replacement_Service_Status__c"></lightning-output-field>
+                                <lightning-output-field field-name="Wireless_Controller_Service_Status__c"></lightning-output-field>
+                                <lightning-output-field field-name="CC_MOU_Received_Date__c"></lightning-output-field>
+                                <lightning-output-field field-name="CC_Wireless_AP_Make__c"></lightning-output-field>
+                                <lightning-output-field field-name="SNUP_stage_status__c"></lightning-output-field>
+                                <lightning-output-field field-name="SNUP_Installation_completed__c"></lightning-output-field>
+                                <lightning-output-field field-name="WSNUP_Stage__c"></lightning-output-field>
+                                <lightning-output-field field-name="WSNUP_Installation_Completed__c"></lightning-output-field>
+                            </div>
+                        </div>
+                    </lightning-record-view-form>
+                </div>
+            </lightning-card>
+        </div>
+    
+        <div class="slds-m-top_medium">
+            <lightning-card title="Security Profile" icon-name="standard:account">
+                <div class="slds-m-around_medium">
+                    <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-output-field field-name="N4L_Firewall__c"></lightning-output-field>
+                                <lightning-output-field field-name="Akamai_DNS_Filtering__c"></lightning-output-field>
+                                <lightning-output-field field-name="N4L_Web_Filtering__c"></lightning-output-field>
+                                <lightning-output-field field-name="Safe_Secure_Internet_Status__c"></lightning-output-field>
+                                <lightning-output-field field-name="Safe_Secure_Internet_Opt_Out__c"></lightning-output-field>
+                            </div>
+                        </div>
+                        <!-- <c-service-waiver></c-service-waiver> -->
+                    </lightning-record-view-form>
+                </div>
+            </lightning-card>
+        </div>
+    
+        <div class="slds-m-top_medium">
+            <lightning-card title="Non-N4L Device" icon-name="standard:account">
+                <div class="slds-m-around_medium">
+                    <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-output-field field-name="Alternative_Filtering_Firewall__c"></lightning-output-field>
+                                <lightning-output-field field-name="Alternative_Filtering_Firewall_Expiry__c"></lightning-output-field>
+                                <lightning-output-field field-name="Firewall_And_Router__c"></lightning-output-field>
+                            </div>
+                        </div>
+                    </lightning-record-view-form>
+                </div>
+            </lightning-card>
+        </div>
+
+        <div class="slds-m-top_medium">
+            <lightning-card title="Onboarding" icon-name="standard:account">
+                <div class="slds-m-around_medium">
+                    <lightning-record-view-form object-api-name={objectApiName} record-id={recordId}>
+    
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-output-field field-name="Remote_Access__c"></lightning-output-field>
+                                <lightning-output-field field-name="Onboarding_Filtering_Portal__c"></lightning-output-field>
+                                <lightning-output-field field-name="Onboarding_School_Reporting__c"></lightning-output-field>
+                                <lightning-output-field field-name="Onboarding_Identity_Awareness__c"></lightning-output-field>
+                            </div>
+                        </div>
+                    </lightning-record-view-form>
+                </div>
+            </lightning-card>
+        </div>
+    </template>

@@ -1,0 +1,28 @@
+.slds-card {
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.card  {
+    min-height: 50px;
+    padding: 10px;
+    background: padding-box rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(212, 212, 212);
+    border-image: initial;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+}
+
+.card:hover {
+    background-color: #f3f2f2;
+    cursor: pointer;
+}
+
+.slds-card__body {
+    margin-bottom: 0;
+}
+
+.slds-grid {
+    padding-bottom: 1rem;
+}

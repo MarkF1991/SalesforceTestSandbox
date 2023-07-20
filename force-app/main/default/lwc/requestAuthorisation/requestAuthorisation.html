@@ -1,0 +1,18 @@
+<template>
+    <div class="app slds-p-around_x-large">
+        <template if:true={showUnauthorised}>
+            <div class="slds-align_absolute-center Title">{response.statusCode} : {response.status}</div>    
+            <div class="slds-align_absolute-center titleDescription">{errorMessage}</div>
+        </template>
+        
+        <template if:true={showOnScreenMessage}>
+                <div class="slds-align_absolute-center Title">{messageTitle}</div>    
+                <div class="slds-align_absolute-center titleDescription">{messageDescription1}</div>
+                <div class="slds-align_absolute-center titleDescription">{messageDescription2} <div if:true={showLink}><a href="https://support.n4l.co.nz/s/">here</a></div></div>              
+        </template>
+    </div>
+
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

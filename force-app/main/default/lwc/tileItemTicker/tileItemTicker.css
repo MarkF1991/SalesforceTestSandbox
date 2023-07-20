@@ -1,0 +1,30 @@
+.valueText {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+    font-size: 21px;
+    /* font-weight: bold; */
+}
+
+.tickerText {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.labelText {
+    font-size: 11px;
+    width: 80%;
+}
+
+.material-icons.md-ticker {     
+    font-size: 18px;
+    vertical-align: middle;
+ }
+
+.material-icons.md-14 { font-size: 14px; }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }

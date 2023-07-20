@@ -1,0 +1,23 @@
+<aura:component implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,lightning:availableForFlowActions" access="global">    
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+	<aura:attribute name="UserId" type="String" default="" access="global" />
+    <aura:attribute name="flowOfStatus" type="String" default="Run" access="global" />
+    <aura:handler name="change" value="{!v.flowOfStatus}" action="{!c.handleStatusChangeMain}"/>
+    
+    <div class="slds-grid slds-wrap">
+        <div class="slds-size_1-of-1 slds-align_absolute-center slds-m-top_x-large">
+            <div layout="block" styleClass="slds-form slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 slds-m-bottom_large" id="verifyMFA">
+                <div class="slds-form_compound">
+                    <div class="slds-form_gradientHeader">
+                        <div class="gradientHeader_logo">
+                            <img class="headerLogo" alt="" src="{!$Resource.SupportHubSignup + '/img/logo.png'}"/>
+                        </div>  
+                    </div>
+                    <lightning:flow aura:id="Email_or_MFA_Flow" onstatuschange="{!c.handleStatusChange}"/>
+                </div>
+            </div>
+        </div>          
+    </div>
+
+</aura:component>

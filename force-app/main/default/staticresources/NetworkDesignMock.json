@@ -1,0 +1,150 @@
+{
+  "data": {
+    "installPlan": [
+      {
+        "_id": "218f8ae4-677d-409b-a325-f3dce345d7fe",
+        "bomItem": {
+          "_id": "3b5c02d6-d55c-4086-ab39-77815f398d92",
+          "quantity": 2,
+          "cost": 1140.42,
+          "moeFunded": 100,
+          "isBundleEquipment": false,
+          "lineDescription": "",
+          "priceBookId": "846834d7-c14f-46b7-bb8d-8b9f6f198cea",
+          "salesforcePriceBookId": "01s5m0000000G87AAE",
+          "priceBookEntryId": "b81ecbca-2220-421a-ac83-7a1d359e8832",
+          "salesforcePriceBookEntryId": "01u5m000000YYgRAAW",
+          "lineTotal": 1140.42,
+          "editCost": true,
+          "product": {
+            "_id": "dfee56b7-b49f-45ac-8fa9-6aba26974396",
+            "salesforceId": "01t5m000000EdcGAAS",
+            "description": "ICX 7150 Switch, 48x 10/100/1000 PoE+ ports, 2x 1G RJ45 uplink-ports, 2x 1G SFP and 2x 10G SFP+ uplink-ports upgradable to 4x 10G SFP+",
+            "deviceMake": "Ruckus",
+            "deviceMakeId": "deviceMakeId",
+            "deviceName": "ICX7150",
+            "deviceType": "LAN Switch",
+            "family": "Equipment",
+            "isActive": true,
+            "name": "48-Port POE+ Switch, 4x1G SFP+ Uplink Ports",
+            "productCode": "ICX7150-48P-4X1G",
+            "productType": "Switch",
+            "quantityUnitOfMeasure": "Each",
+            "recordTypeId": "01290000000StXSAA0",
+            "stockKeepingUnit": "ICX7150-48P-4X1G-N4L"
+          }
+        },
+        "bridgeGroup": "",
+        "cabinetIdent": "AB01",
+        "hostname": "2578-7-AB01-CS01",
+        "location": [
+          "Administration",
+          "Ground Floor",
+          "Staff bathroom (Male)"
+        ],
+        "operation": "replace",
+        "overheight": false,
+        "serialNumber": "",
+        "stackGroup": "1",
+        "switchRole": "core"
+      },
+      {
+        "_id": "9bc7f5eb-09e4-4ba8-9be4-2a16c28098bf",
+        "bomItem": {
+          "_id": "29572ca7-2e7e-4902-8334-e4fd08b0857f",
+          "quantity": 1,
+          "cost": 351.21,
+          "moeFunded": 100,
+          "isBundleEquipment": false,
+          "lineDescription": "",
+          "priceBookId": "846834d7-c14f-46b7-bb8d-8b9f6f198cea",
+          "salesforcePriceBookId": "01s5m0000000G87AAE",
+          "priceBookEntryId": "b81ecbca-2220-421a-ac83-7a1d359e8832",
+          "salesforcePriceBookEntryId": "01u5m000000YYgQAAW",
+          "lineTotal": 351.21,
+          "editCost": true,
+          "product": {
+            "_id": "dfee56b7-b49f-45ac-8fa9-6aba26974396",
+            "salesforceId": "01t5m000000EdckAAC",
+            "description": "R650 Dual Band 11ax Indoor AP, 2/4 Stream",
+            "deviceMake": "Ruckus",
+            "deviceMakeId": "deviceMakeId",
+            "deviceName": "R650 Dual Band 11ax Indoor AP, 2/4 Stream",
+            "deviceType": "Wireless AP",
+            "family": "Equipment",
+            "isActive": true,
+            "name": "R650 Dual Band 11ax Indoor AP, 2/4 Stream",
+            "productCode": "901-R650-WW00",
+            "productType": "Wireless AP",
+            "quantityUnitOfMeasure": "Each",
+            "recordTypeId": "01290000000StXSAA0",
+            "stockKeepingUnit": "901-R650-WW00-N4L"
+          }
+        },
+        "bridgeGroup": "",
+        "cabinetIdent": "AB01",
+        "hostname": "2578-7-AB01-CS01",
+        "location": [
+          "Administration",
+          "Ground Floor",
+          "Staff bathroom (Male)"
+        ],
+        "operation": "replace",
+        "overheight": false,
+        "serialNumber": "",
+        "stackGroup": "1",
+        "switchRole": "core"
+      },
+      {
+        "_id": "f565d167-8585-4f8d-8bd2-0d25261c8260",
+        "bomItem": {
+          "_id": "3b5c02d6-d55c-4086-ab39-77815f398d92",
+          "quantity": 2,
+          "cost": 1140.42,
+          "moeFunded": 100,
+          "isBundleEquipment": false,
+          "lineDescription": "",
+          "priceBookId": "846834d7-c14f-46b7-bb8d-8b9f6f198cea",
+          "salesforcePriceBookId": "01s5m0000000G87AAE",
+          "priceBookEntryId": "b81ecbca-2220-421a-ac83-7a1d359e8832",
+          "salesforcePriceBookEntryId": "01u5m000000YYgRAAW",
+          "lineTotal": 1140.42,
+          "editCost": true,
+          "product": {
+            "_id": "dfee56b7-b49f-45ac-8fa9-6aba26974396",
+            "salesforceId": "01t5m000000EdcGAAS",
+            "description": "ICX 7150 Switch, 48x 10/100/1000 PoE+ ports, 2x 1G RJ45 uplink-ports, 2x 1G SFP and 2x 10G SFP+ uplink-ports upgradable to 4x 10G SFP+",
+            "deviceMake": "Ruckus",
+            "deviceMakeId": "deviceMakeId",
+            "deviceName": "ICX7150",
+            "deviceType": "LAN Switch",
+            "family": "Equipment",
+            "isActive": true,
+            "name": "48-Port POE+ Switch, 4x1G SFP+ Uplink Ports",
+            "productCode": "ICX7150-48P-4X1G",
+            "productType": "Switch",
+            "quantityUnitOfMeasure": "Each",
+            "recordTypeId": "01290000000StXSAA0",
+            "stockKeepingUnit": "ICX7150-48P-4X1G-N4L"
+          }
+        },
+        "bridgeGroup": "",
+        "cabinetIdent": "AB01",
+        "hostname": "2578-7-AB01-CS01",
+        "location": [
+          "E Block",
+          "Ground Floor",
+          "Design Room"
+        ],
+        "operation": "replace",
+        "overheight": false,
+        "serialNumber": "",
+        "stackGroup": "1",
+        "switchRole": "core"
+      }
+    ],
+    "schoolId": "schoola",
+    "_id": "e4c06212-1bb9-4f50-9bfe-44afce9da2d2",
+    "caseNumber": "00162022"
+  }
+}

@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Email</name>
+        <label>Send Email</label>
+        <locationX>446</locationX>
+        <locationY>1094</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Get_Code</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>N4LCodeEmail2</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>UserObject.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>support@n4l.co.nz</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Your N4L account</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_to_SMSendEmailtoSMS</name>
+        <label>Send Email to SMS</label>
+        <locationX>974</locationX>
+        <locationY>1214</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Get_Code_0</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>This is your code to complete login: {!code_SMS}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>EmailtoSMSAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>support@n4l.co.nz</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>N4L Support Hub.</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apexPluginCalls>
+        <name>Generate_Random_Code</name>
+        <label>Generate Random Code</label>
+        <locationX>446</locationX>
+        <locationY>974</locationY>
+        <apexClass>CodeGenerator</apexClass>
+        <connector>
+            <targetReference>Send_Email</targetReference>
+        </connector>
+        <outputParameters>
+            <assignToReference>code</assignToReference>
+            <name>Code</name>
+        </outputParameters>
+    </apexPluginCalls>
+    <apexPluginCalls>
+        <name>Generate_Random_Code_0</name>
+        <label>Generate Random Code SMS</label>
+        <locationX>974</locationX>
+        <locationY>1094</locationY>
+        <apexClass>CodeGenerator</apexClass>
+        <connector>
+            <targetReference>Send_Email_to_SMSendEmailtoSMS</targetReference>
+        </connector>
+        <outputParameters>
+            <assignToReference>code_SMS</assignToReference>
+            <name>Code</name>
+        </outputParameters>
+    </apexPluginCalls>
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Assign_Email_Address</name>
+        <label>Assign Email Address</label>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>UserObject.Email</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Generate_Random_Code</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Email_Address_0</name>
+        <label>Assign Email Address</label>
+        <locationX>842</locationX>
+        <locationY>878</locationY>
+        <assignmentItems>
+            <assignToReference>UserObject.Email</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Generate_Random_Code_0</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>Authenticator_App</name>
+        <choiceText>Authenticator App</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Authenticator App</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ReceivecodebySMS</name>
+        <choiceText>Receive code in a text message</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Recieve_code_by_email</name>
+        <choiceText>Receive code by email</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Recieve code by email</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>SMS</name>
+        <choiceText>Receive code in a text message</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <constants>
+        <name>BlankValue</name>
+        <dataType>String</dataType>
+    </constants>
+    <constants>
+        <name>Part_Of_Password_Constant</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>assword</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Code_Validation</name>
+        <label>Code Validation</label>
+        <locationX>446</locationX>
+        <locationY>1334</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_Code</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid</defaultConnectorLabel>
+        <rules>
+            <name>Valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>code</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>CodeInput</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Code_Validation_0</name>
+        <label>Code Validation</label>
+        <locationX>974</locationX>
+        <locationY>1454</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_Code_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid</defaultConnectorLabel>
+        <rules>
+            <name>Valid_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>code_SMS</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>CodeInput_0</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the User Object contains an email address. 
+
+This is mainly useful when not running in a login context (e.g. within the designer) and the LoginFlow_UserId is not populated</description>
+        <name>Email_validation</name>
+        <label>Email validation</label>
+        <locationX>446</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>Generate_Random_Code</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Email exists</defaultConnectorLabel>
+        <rules>
+            <name>Email_is_missing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UserObject.Email</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Email_from_user</targetReference>
+            </connector>
+            <label>Email is missing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the User Object contains an email address. 
+
+This is mainly useful when not running in a login context (e.g. within the designer) and the LoginFlow_UserId is not populated</description>
+        <name>Email_validation_0</name>
+        <label>Email validation</label>
+        <locationX>974</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>Generate_Random_Code_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Email exists</defaultConnectorLabel>
+        <rules>
+            <name>Email_is_missing_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UserObject.Email</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Email_from_user_0</targetReference>
+            </connector>
+            <label>Email is missing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verification_Method</name>
+        <label>Verification Method</label>
+        <locationX>842</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Choose_verification_method</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>MFA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Authenticator_App</leftValueReference>
+                <operator>WasSelected</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Run_Authenticator_Process</targetReference>
+            </connector>
+            <label>MFA</label>
+        </rules>
+        <rules>
+            <name>Email_Only</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recieve_code_by_email</leftValueReference>
+                <operator>WasSelected</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_User_Info</targetReference>
+            </connector>
+            <label>Email Only</label>
+        </rules>
+        <rules>
+            <name>SMS_Only</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ReceivecodebySMS</leftValueReference>
+                <operator>WasSelected</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_User_Info_0</targetReference>
+            </connector>
+            <label>SMS Only</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verify_Mobile_Phone_Present</name>
+        <label>Verify Mobile Phone Present</label>
+        <locationX>1172</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>No_Phone</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Mobile_Phone_is_Registered</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UserObject.MobilePhone</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_validation_0</targetReference>
+            </connector>
+            <label>Mobile Phone is Registered</label>
+        </rules>
+    </decisions>
+    <description>Change URLs from Production to Test for Get_Code, Get_Code_0, and No_Phone screens</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>DetectPWReset</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(CONTAINS({!$Api.Partner_Server_URL_550}, {!Part_Of_Password_Constant}), true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>EmailtoSMSAddress</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Mobile_Cleaned__c}&amp;&quot;@n4l.sms-e.com&quot;</expression>
+    </formulas>
+    <interviewLabel>Email or MFA Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Email or MFA Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_User_Info</name>
+        <label>Get User Info</label>
+        <locationX>446</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Email_validation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>UserObject</outputReference>
+        <queriedFields>Email</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_User_Info_0</name>
+        <label>Get User Info</label>
+        <locationX>1172</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Verify_Mobile_Phone_Present</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>UserObject</outputReference>
+        <queriedFields>Email</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>MobilePhone</queriedFields>
+    </recordLookups>
+    <screens>
+        <name>Choose_verification_method</name>
+        <label>Choose verification method</label>
+        <locationX>842</locationX>
+        <locationY>158</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Verification_Method</targetReference>
+        </connector>
+        <fields>
+            <name>Header1</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;2-Step Verification&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Login_Security_Type</name>
+            <choiceReferences>Authenticator_App</choiceReferences>
+            <choiceReferences>Recieve_code_by_email</choiceReferences>
+            <choiceReferences>ReceivecodebySMS</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>To login to your N4L Account choose one of the verification options below:</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <helpText>&lt;p&gt;Choose how you would like to verify you identity.&lt;/p&gt;</helpText>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Get_Code</name>
+        <label>Get Code</label>
+        <locationX>446</locationX>
+        <locationY>1214</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Code_Validation</targetReference>
+        </connector>
+        <fields>
+            <name>GetCodeTitle</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 20px; color: rgb(100, 101, 104);&quot;&gt;Enter your verification code&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Instructions</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(100, 101, 104); font-size: 14px;&quot;&gt;﻿A verification code was sent via email to {!UserObject.Email}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(100, 101, 104); font-size: 14px;&quot;&gt;Didn&apos;t receive the email?&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(100, 101, 104); font-size: 14px;&quot;&gt;Sometimes automated messages get categorised as spam - please check your spam folder.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CodeInput</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>BlankValue</elementReference>
+            </defaultValue>
+            <fieldText>Verification Code</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>optionsEmail</name>
+            <extensionName>c:shMFAOptionsLink</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>linkTarget</name>
+                <value>
+                    <stringValue>https://n4l--test.sandbox.my.site.com/loginflow/lightningLoginFlow.apexp?retURL=%2Fs%2Flogin%2F%3FstartURL%3D%252Fs%252F%253Ft%253D1664498156903&amp;sparkID=N4L_PostLogin_MFA</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <nextOrFinishButtonLabel>Done</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Get_Code_0</name>
+        <label>Get Code</label>
+        <locationX>974</locationX>
+        <locationY>1334</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Code_Validation_0</targetReference>
+        </connector>
+        <fields>
+            <name>GetCodeTitle_0</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 20px; color: rgb(100, 101, 104);&quot;&gt;Enter your verification code&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Instructions_0</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(100, 101, 104); font-size: 14px;&quot;&gt;A verification code was sent via SMS to your registered mobile phone number. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CodeInput_0</name>
+            <dataType>String</dataType>
+            <fieldText>Verification Code</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>optionsSMS</name>
+            <extensionName>c:shMFAOptionsLink</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>linkTarget</name>
+                <value>
+                    <stringValue>https://n4l--test.sandbox.my.site.com/schoolictsupport/loginflow/lightningLoginFlow.apexp?retURL=%2Fschoolictsupport%2Fs%2F%3Ft%3D1662671825976&amp;sparkID=N4L_PostLogin_MFA</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <nextOrFinishButtonLabel>Done</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Get_Email_from_user</name>
+        <label>Get Email from user</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Email_Address</targetReference>
+        </connector>
+        <fields>
+            <name>Title</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(100, 101, 104);&quot;&gt;Please provide your email address below&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Email</name>
+            <dataType>String</dataType>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Get_Email_from_user_0</name>
+        <label>Get Email from user</label>
+        <locationX>842</locationX>
+        <locationY>758</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Email_Address_0</targetReference>
+        </connector>
+        <fields>
+            <name>Title_0</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(100, 101, 104);&quot;&gt;Please provide your email address below&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Email_0</name>
+            <dataType>String</dataType>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>No_Phone</name>
+        <label>No Phone</label>
+        <locationX>1370</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Choose_verification_method</targetReference>
+        </connector>
+        <fields>
+            <name>headerNoSMS</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;No registered mobile number&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>NoSMSDesc</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;You do not currently have a mobile number registered on your N4L Account so will need to try a different verification option.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>optionNoSMS</name>
+            <extensionName>c:shMFAOptionsLink</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>linkTarget</name>
+                <value>
+                    <stringValue>https://n4l--test.sandbox.my.site.com/schoolictsupport/loginflow/lightningLoginFlow.apexp?retURL=%2Fschoolictsupport%2Fs%2F%3Ft%3D1662671825976&amp;sparkID=N4L_PostLogin_MFA</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <nextOrFinishButtonLabel>OK</nextOrFinishButtonLabel>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>716</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Choose_verification_method</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>Run_Authenticator_Process</name>
+        <label>Run Authenticator Process</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <flowName>SF_TOTP</flowName>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <textTemplates>
+        <name>N4LCodeEmail</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;table bgcolor=&quot;#980d76&quot; border-collapse=&quot;collapse&quot; border-spacing=&quot;0px&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;
+
+    class=&quot;cardHeader&quot; height=&quot;80px&quot; style=&quot;
+
+                      width: 100%;
+
+                      height: 80px;
+
+                      overflow: hidden
+
+                      background-color: #980d76;&quot; width=&quot;100%&quot;&gt;
+
+    &lt;tbody&gt;
+
+      &lt;tr&gt;
+
+        &lt;td align=&quot;left&quot; height=&quot;80px&quot; style=&quot;padding-left: 40px;&quot;&gt;&lt;a href=&quot;https://www.n4l.co.nz/&quot;
+
+            style=&quot;display: inline-block;&quot;&gt;&lt;img alt=&quot;Network for Learning&quot; border=&quot;0&quot; height=&quot;32px&quot; src=&quot;https://www2.n4l.co.nz/l/226952/2019-09-13/5dc76/226952/82913/n4l_logo_white.png&quot; width=&quot;73px&quot;&gt;
+
+          &lt;/a&gt;&lt;/td&gt;
+
+        &lt;td align=&quot;right&quot; height=&quot;80px&quot;&gt;&lt;img src=&quot;https://www2.n4l.co.nz/l/226952/2019-09-13/5dc74/226952/82911/n4l_head_clear.png&quot; style=&quot;float: right;&quot;&gt;
+
+        &lt;/td&gt;
+
+      &lt;/tr&gt;
+
+    &lt;/tbody&gt;
+
+  &lt;/table&gt;
+
+&lt;p&gt;Hi {!UserObject.FirstName},&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Here is the code you need to complete login to the support hub:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;{!code}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Thanks, N4L team.&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>N4LCodeEmail2</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width; initial-scale=1; maximum-scale=1.0&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+
+&lt;!-- [ EMAIL BACKGROUND START ] --&gt;
+
+&lt;body bgcolor=&quot;#f2f2f2&quot; style=&quot;
+background-color:#f2f2f2;
+font-family: &apos;Open Sans&apos;, Arial, sans-serif; 
+font-size: 14px;
+color: #646568;  
+padding:24px&quot;&gt;
+
+&lt;!-- [ EMAIL BACKGROUND STOP ] --&gt;
+
+&lt;!-- [ EMAIL BODY START ] --&gt;
+
+&lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; bgcolor=&quot;#FFFFFF&quot; valign=&quot;top&quot; align=&quot;center&quot; style=&quot;
+        background-color: #FFFFFF; 
+        border-radius: 4px;		
+        width: 100%; 
+        max-width: 640px;
+        margin-right: auto;
+        margin-left: auto;	
+        padding: 24px 0px;
+        font-family: &apos;Open Sans&apos;, Arial, Sans-Serif; 
+        font-size: 14px; 
+        line-height: 23px; 
+        text-align: left;	
+        color: #646568; 
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        -moz-border-radius: 4px; 
+        -webkit-border-radius: 4px; 
+        &quot;&gt;      
+
+&lt;!-- [ SIMPLE HEADER START ] --&gt;
+
+    &lt;tr&gt;
+        &lt;td style=&quot;padding:0px 40px 24px 40px&quot;&gt;
+            &lt;a href=&quot;https://www.n4l.co.nz/&quot;&gt;
+            &lt;img src=&quot;https://support.n4l.co.nz/file-asset/plum?v=1&quot; alt=&quot;Network for Learning&quot; width=&quot;73px&quot; height=&quot;32px&quot; border=&quot;0&quot; style=&quot;
+                display: inline-block; 
+                float: left&quot; /&gt;
+            &lt;/a&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+
+&lt;!-- [ SIMPLE HEADER STOP ] --&gt;
+
+&lt;!-- [ SIMPLE TEXT CONTENT START ] --&gt;
+          
+    &lt;tr align=&quot;left&quot;&gt;
+        &lt;td align=&quot;left&quot; valign=&quot;top&quot; bgcolor=&quot;#ffffff&quot; style=&quot;padding:16px 40px 16px 40px&quot;&gt;
+            &lt;div style=&quot;font-family: &apos;Open Sans&apos;, Arial, Sans-Serif; 
+            font-size: 14px; 
+            line-height: 23px; 
+            text-align: left;	
+            color: #646568;&quot;&gt;
+            &lt;p&gt;Kia ora {!UserObject.FirstName},&lt;/p&gt;
+           
+           &lt;p&gt;Here&apos;s the code to log in to your N4L account: &lt;strong&gt;{!code}&lt;/strong&gt;&lt;/p&gt;
+           
+         
+           
+
+           
+           &lt;p&gt; Need to get in touch? Call us on 0800 LEARNING.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;br /&gt;
+            &lt;div style=&quot;font-family: &apos;Open Sans&apos;, Arial, Sans-Serif; 
+            font-size: 14px; 
+            line-height: 23px; 
+            text-align: left;	
+            color: #646568;&quot;&gt;
+            Ngā mihi,
+            &lt;br /&gt;
+            The team at Network for Learning
+            &lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+
+&lt;!-- [ SIMPLE TEXT CONTENT STOP ] --&gt;
+    
+&lt;/table&gt;
+
+&lt;!-- [ EMAIL CONTENT STOP ] --&gt;
+
+&lt;!-- [ SIMPLE FOOTER START ] --&gt;
+
+&lt;table max-width=&quot;640px&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; align=&quot;center&quot;&gt;
+    &lt;tr&gt;
+        &lt;td style=&quot;
+            padding:24px; 
+            text-align:center; 
+            font-size:13px; 
+            line-height:24px&quot;&gt;
+            © 2022, all rights reserved.&lt;br&gt;
+            &lt;a href=&quot;https://www.n4l.co.nz&quot; target=&quot;_blank&quot; style=&quot;color:#646568&quot;&gt;Network for Learning&lt;/a&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!--[ SIMPLE FOOTER END ] --&gt;
+
+&lt;/body&gt;
+
+&lt;!-- [ EMAIL BODY STOP ] --&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>code</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>code_SMS</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>LoginFlow_UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>URL_Link_variable</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UserObject</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

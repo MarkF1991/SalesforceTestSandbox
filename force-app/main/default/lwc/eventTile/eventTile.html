@@ -1,0 +1,72 @@
+<template>
+        <template if:true={sfevent}>
+            <div class="slds-p-around_medium lgc-bg slds-grid">
+                <div class="slds-col overflow-hidden">
+                <lightning-tile label={sfevent.Subject}  type="media" onclick={handleClick} href="#" > 
+                    <lightning-avatar slot="media" src="" fallback-icon-name="standard:event" alternative-text="event" size="x-small"></lightning-avatar>
+                    <!-- <p class="slds-truncate"><lightning-formatted-text value={sfevent.Status}></lightning-formatted-text></p>
+                    <p class="slds-truncate"><lightning-formatted-date-time value={sfevent.ActivityDate} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p>
+                    <p class="slds-truncate"><lightning-formatted-text value={sfevent.Owner.Name} ></lightning-formatted-text></p> -->
+                    <ul class="slds-list_horizontal slds-has-dividers_right">
+                            <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={eventContact}></lightning-formatted-text></p></li>
+                            <!-- <li class="slds-item"><p class="slds-truncate"><lightning-formatted-date-time value={sfevent.ActivityDateTime} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p></li> -->
+                            <li class="slds-item"><p class="slds-truncate"><lightning-formatted-date-time value={sfevent.ActivityDateTime} time-zone="Pacific/Auckland" year="numeric" day="2-digit" month="short" hour="2-digit" minute="2-digit"></lightning-formatted-date-time></p></li>
+                            <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={sfevent.Owner.Name} ></lightning-formatted-text></p></li>
+                        </ul>
+                </lightning-tile>
+                </div>
+                <div class="slds-col_bump-right">
+                    <lightning-button-icon icon-name="utility:threedots" variant="bare" alternative-text="toggle expand/collapse" onclick={handleShowMoreClick}></lightning-button-icon>
+                    <!-- <lightning-button variant="base" icon-name="utility:threedots" icon-position="right" class="slds-m-left_x-small"  onclick={handleShowMoreClick} title="toggle expand/collapse"></lightning-button> -->
+                </div>
+            </div>
+            <template if:true={showMore}>
+                <div class="slds-p-horizontal_medium lgc-bg slds-grid">
+                    <div class="slds-col overflow-hidden slds-m-right_x-small">
+                        <template if:false={editMode}>
+                        <div class="slds-box">
+                            <p class="slds-text-title slds-m-bottom_xx-small">Description</p>
+                            <p class="slds-m-left_medium slds-m-bottom_small">{description}</p>
+                            <p class="slds-text-title slds-m-bottom_xx-small">Driver</p>
+                            <p class="slds-m-left_medium slds-m-bottom_small">{driver}</p>
+                            <p class="slds-text-title slds-m-bottom_xx-small">Notes</p>
+                            <p class="slds-m-left_medium slds-m-bottom_small">{notes}</p>
+                        </div>
+                        </template>
+                        <template if:true={editMode}>
+                            <div class="slds-box">
+                                <!-- <lightning-input label="Id" disabled value={taskId}></lightning-input> -->
+                                <lightning-textarea label="Description" value={description} onchange={handleDescriptionChange} max-length="32000"></lightning-textarea>
+                                <!-- <lightning-input label="Driver" value={driver} onchange={handleDriverChange} max-length="255"></lightning-input> -->
+                                <lightning-radio-group  name="radioGroup"
+                                                        label="Driver"
+                                                        onchange={handleOptionChange} 
+                                                        options={driverOptions}
+                                                        value={selectedValue}
+                                                        type="radio"></lightning-radio-group>
+                                                        <template if:true={isOther}>
+                                                            <div class="slds-m-left_large">
+                                                            <lightning-input label="please specify" value={driver} onchange={handleDriverChange} max-length="255"></lightning-input>
+                                                            </div>
+                                                        </template>
+
+                                <lightning-textarea label="Notes" value={notes} onchange={handleNotesChange} max-length="32000"></lightning-textarea>
+                                
+                                <div class="slds-align_absolute-center slds-p-top_medium">
+                                    <lightning-button label="Cancel" variant="neutral" onclick={handleCancel} ></lightning-button>
+                                    <lightning-button label="Save" variant="brand" onclick={handleSave}  class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="slds-col_bump-right">
+                        <lightning-button-icon icon-name="utility:edit" variant="bare" alternative-text="edit" onclick={handleUpdateClick}></lightning-button-icon>
+                        <!-- <lightning-button variant="base" icon-name="utility:edit" icon-position="right" class="slds-m-left_x-small"  onclick={handleUpdateClick} title="edit"></lightning-button> -->
+                    </div>
+                </div>
+            </template>
+        </template>
+        <template if:false={sfevent}>
+            <p>No Event data available.</p>
+        </template>
+    </template>

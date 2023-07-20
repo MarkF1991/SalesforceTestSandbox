@@ -1,0 +1,46 @@
+.tableScreenCSS .slds-page-header {
+    background-color: #ffffff;
+}
+
+.tableScreenCSS .slds-table_header-fixed_container {
+    border: 1px solid #d8d9da;
+    font-size: 10px;
+}
+
+.tableScreenCSS .slds-scrollable_y{
+    width: unset !important;
+    overflow: unset !important;
+}
+
+.tableScreenCSS .slds-accordion__summary{
+    background: rgb(243, 242, 242);
+    margin-bottom : 1%;
+}
+
+.tableScreenCSS td button{
+    color: rgb(152, 13, 118);
+}
+
+.slds-accordion .slds-accordion__summary-heading {
+    pointer-events: none;
+}
+
+.slds-accordion .slds-accordion__summary-heading lightning-primitive-icon{
+    display: none;
+}
+
+.tableScreenCSS .slds-form-element__control .slds-radio, .slds-form-element__control .slds-checkbox{
+    display: inline-block;
+}
+
+.tableScreenCSS .slds-form-element .slds-radio [type=radio]+.slds-radio_faux, .slds-form-element .slds-radio [type=radio]+.slds-radio--faux, .slds-form-element .slds-radio [type=radio]~.slds-radio_faux, .slds-form-element .slds-radio [type=radio]~.slds-radio--faux, .slds-radio [type=radio]+.slds-radio__label .slds-radio_faux, .slds-radio [type=radio]+.slds-radio__label .slds-radio--faux{
+    border-color: rgb(152, 13, 118);
+}
+
+.tableScreenCSS .slds-radio [type=radio]:checked+.slds-radio_faux, .slds-radio [type=radio]:checked+.slds-radio--faux, .slds-radio [type=radio]:checked~.slds-radio_faux, .slds-radio [type=radio]:checked~.slds-radio--faux, .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux, .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio--faux{
+    border-color: rgb(152, 13, 118);
+}
+
+.tableScreenCSS .slds-checkbox_faux, .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox_faux, .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox--faux, .slds-form-element .slds-checkbox [type=checkbox]~.slds-checkbox_faux, .slds-form-element .slds-checkbox [type=checkbox]~.slds-checkbox--faux, .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux, .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox--faux{
+    border-color: rgb(152, 13, 118);
+}

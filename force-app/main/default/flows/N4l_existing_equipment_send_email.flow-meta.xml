@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Complex_MAC_Email_notification</name>
+        <label>Complex MAC Email notification</label>
+        <locationX>578</locationX>
+        <locationY>695</locationY>
+        <actionName>Case.Email_school_when_equipment_is_shipped_Complex_MAC</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>Get_case_record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.Email_school_when_equipment_is_shipped_Complex_MAC</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>EH_ES_non_CC_hosted_schools</name>
+        <label>EH/ES non-CC hosted schools</label>
+        <locationX>314</locationX>
+        <locationY>695</locationY>
+        <actionName>Case.EH_ES_non_CC_hosted_schools_2_Next_Steps_email_Order_Acceptance_Order_on_it_s_wa</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Order__r.Case__r.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.EH_ES_non_CC_hosted_schools_2_Next_Steps_email_Order_Acceptance_Order_on_it_s_wa</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>EH_ES_schools_CC_hosted</name>
+        <label>EH/ES schools CC hosted</label>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
+        <actionName>Case.EH_ES_schools_CC_hosted_requires_a_simple_MAC_to_config_CC_2_Next_Steps_email_Or</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Order__r.Case__r.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.EH_ES_schools_CC_hosted_requires_a_simple_MAC_to_config_CC_2_Next_Steps_email_Or</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <decisions>
+        <name>Send_Email</name>
+        <label>Send Email</label>
+        <locationX>446</locationX>
+        <locationY>575</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>EH_ES_schools_CC_hosted01</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_equipment_register_record.Account.Wireless_Controller_Service_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Service</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_equipment_register_record.Account.CC_Wireless_AP_Make__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ruckus</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Order__r.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Equipment - Equipment Only</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EH_ES_schools_CC_hosted</targetReference>
+            </connector>
+            <label>EH/ES schools CC hosted01</label>
+        </rules>
+        <rules>
+            <name>EH_ES_schools_CC_hosted02</name>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_equipment_register_record.Account.Wireless_Controller_Service_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>In Service</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_equipment_register_record.Account.CC_Wireless_AP_Make__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ruckus</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Order__r.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Equipment - Equipment Only</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EH_ES_non_CC_hosted_schools</targetReference>
+            </connector>
+            <label>EH/ES schools CC hosted02</label>
+        </rules>
+        <rules>
+            <name>Complex_MAC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_equipment_register_record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Complex MAC</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Complex_MAC_Email_notification</targetReference>
+            </connector>
+            <label>Complex MAC</label>
+        </rules>
+    </decisions>
+    <interviewLabel>N4l {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>N4l existing equipment -send email</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_case_record</name>
+        <label>Get case record</label>
+        <locationX>446</locationX>
+        <locationY>455</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Order__r.Case__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_equipment_register_record</name>
+        <label>Get equipment register record</label>
+        <locationX>446</locationX>
+        <locationY>335</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_case_record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Order__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Order</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_equipment_register_record</targetReference>
+        </connector>
+        <object>N4L_Asset_Register__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>EHorESschoolsCChosted</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;1&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

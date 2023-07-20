@@ -1,0 +1,10 @@
+<template>
+    <div class="entity-info slds-grid slds-wrap">
+        <template for:each={items} for:item="item">
+            <div key={item.id} class="slds-col slds-size_1-of-1">
+                <span class="title">{item.label}</span>
+                <p class="detail">{item.detail}</p>
+            </div>
+        </template>
+    </div>
+</template>

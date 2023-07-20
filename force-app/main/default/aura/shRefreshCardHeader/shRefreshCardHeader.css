@@ -1,0 +1,18 @@
+.THIS p {
+    line-height: 1.6em;
+}
+
+.THIS .sh-subheading {
+    margin: 8px 0px;
+}
+
+.THIS .sh-header.sh-border_bottom {
+    width: 100%;
+    height: 1px;
+    background-color: #F3F3F3;
+}
+
+.THIS .slds-button.slds-button_brand {
+    height: 40px;
+    font-weight: 600;
+}

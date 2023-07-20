@@ -1,0 +1,46 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container custom-icon" title={cardTitle}>
+                        <span><i class="material-icons md-18">{cardIconName}</i></span>
+                        <span class="slds-assistive-text">{cardTitle}</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>{cardTitle}</span>
+                    </h2>
+                </div>
+    
+            </header>
+        </div>
+        <div class="card slds-card__body">
+
+            <template if:true={isLoading}>
+                <div class="loading-spinner-container">
+                    <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                
+                <div class="slds-grid slds-grid_vertical">
+                    <c-tile-item-alert object={alert}></c-tile-item-alert>
+                    <div class="slds-p-vertical_medium">
+                        <div class="slds-grid">
+                            <div class="slds-col slds-text-align_left">
+                                <div class="slds-p-horizontal_medium listItem">
+                                    <p class="slds-col slds-truncate slds-text-color_weak labelText info-title">{infoTitle}</p>
+                                    <p class="slds-col slds-text-color_weak labelText">{infoDescription}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template> 
+
+        </div>
+        <footer class="slds-card__footer"></footer>
+    </article>
+</template>

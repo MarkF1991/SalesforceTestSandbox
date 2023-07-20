@@ -1,0 +1,21 @@
+<template>
+    <select class="slds-select" onchange={handleChange}>
+        <template for:each={optionsWithDefault} for:item="option">
+            <option 
+                key={option.value} 
+                value={option.value}
+                selected="selected"
+                if:true={option.isSelected}
+            >
+                {option.label}
+            </option>
+            <option 
+                key={option.value} 
+                value={option.value}
+                if:false={option.isSelected}
+            >
+                {option.label}
+            </option>
+        </template>
+    </select>
+</template>

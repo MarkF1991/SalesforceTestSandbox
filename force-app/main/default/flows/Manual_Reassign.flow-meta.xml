@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <formulas>
+        <name>URLCaseID</name>
+        <dataType>String</dataType>
+        <expression>LEFT(SUBSTITUTE({!Case_Id},&quot;https://n4l.lightning.force.com/one/one.app#/sObject/&quot;,&quot;&quot;),18)</expression>
+    </formulas>
+    <interviewLabel>Manual Reassign {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Manual Reassign</label>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Case</name>
+        <label>Case</label>
+        <locationX>153</locationX>
+        <locationY>17</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>HD_Case</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>URLCaseID</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>sObjCase</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>HD_Case</name>
+        <label>HD Case</label>
+        <locationX>281</locationX>
+        <locationY>16</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sObjCase.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G90000001a9bREAQ</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <screens>
+        <name>Input_Case_No</name>
+        <label>Input Case No</label>
+        <locationX>27</locationX>
+        <locationY>17</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Case</targetReference>
+        </connector>
+        <fields>
+            <name>Case_Id</name>
+            <dataType>String</dataType>
+            <fieldText>Case Id</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Input_Case_No</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <name>sObjCase</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

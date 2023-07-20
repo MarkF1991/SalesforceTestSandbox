@@ -1,0 +1,118 @@
+{
+  "data": {
+    "_id": "e4c06212-1bb9-4f50-9bfe-44afce9da2d2",
+    "schoolId": "24ac35ec-e14d-401f-a50c-50552ee80cd9",
+    "caseNumber": "00162022",
+    "buildings": [
+      {
+        "_id": "6b5fbd38-3c2b-4dd6-aa42-5045017d3e49",
+        "ministryId": "44",
+        "ministryNumber": "A",
+        "ministryName": "Administration",
+        "name": "",
+        "code": "",
+        "whenCreated": "2020-05-01T10:12:31.414Z",
+        "whenUpdated": "2020-05-25T09:31:59.246Z",
+        "__v": 0,
+        "floors": [
+          {
+            "_id": "9a46e8d9-e83d-4370-9727-f2cbfaa0a514",
+            "ministryId": "1681023",
+            "ministryName": "Ground Floor",
+            "name": "",
+            "code": "",
+            "whenCreated": "2020-05-01T10:12:31.415Z",
+            "whenUpdated": "2020-05-25T09:31:59.381Z",
+            "__v": 0,
+            "rooms": [
+              {
+                "_id": "b306d8c0-2398-4b95-a251-24523e80135d",
+                "ministryId": "7250608",
+                "ministryNumber": "588013",
+                "ministryName": "Staff bathroom (Male)",
+                "name": "",
+                "code": "",
+                "locationId": "",
+                "whenCreated": "2020-05-01T10:12:31.502Z",
+                "whenUpdated": "2020-05-25T09:31:55.874Z",
+                "__v": 0,
+                "ownership": {
+                  "moe": 100,
+                  "bot": 0,
+                  "community": 0
+                },
+                "networkElements": [
+                  {
+                    "_id": "218f8ae4-677d-409b-a325-f3dce345d7fe",
+                    "status": "Proposed",
+                    "hostname": "",
+                    "productCode": "ICX7150-48-4X1G",
+                    "moeFunded": 100
+                  },
+                  {
+                    "_id": "9bc7f5eb-09e4-4ba8-9be4-2a16c28098bf",
+                    "status": "Proposed",
+                    "hostname": "",
+                    "productCode": "901-R650-WW00",
+                    "moeFunded": 100
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "711ca8bb-630f-4897-b050-c3d191a7bd5e",
+        "ministryId": "48",
+        "ministryNumber": "E",
+        "ministryName": "E Block",
+        "name": "",
+        "code": "",
+        "whenCreated": "2020-05-01T10:12:31.440Z",
+        "whenUpdated": "2020-05-25T09:32:06.023Z",
+        "__v": 0,
+        "floors": [
+          {
+            "_id": "3023326a-1c12-4dff-a7b2-45cf7250664e",
+            "ministryId": "1692592",
+            "ministryName": "Ground Floor",
+            "name": "",
+            "code": "",
+            "whenCreated": "2020-05-01T10:12:31.441Z",
+            "whenUpdated": "2020-05-25T09:32:06.169Z",
+            "__v": 0,
+            "rooms": [
+              {
+                "_id": "aaefe273-a1c5-4cde-9376-f0ad2af98aba",
+                "ministryId": "7315146",
+                "ministryNumber": "136742",
+                "ministryName": "Design Room",
+                "name": "",
+                "code": "",
+                "locationId": "",
+                "whenCreated": "2020-05-01T10:12:32.335Z",
+                "whenUpdated": "2020-05-25T09:32:04.849Z",
+                "__v": 0,
+                "ownership": {
+                  "moe": 100,
+                  "bot": 0,
+                  "community": 0
+                },
+                "networkElements": [
+                  {
+                    "_id": "f565d167-8585-4f8d-8bd2-0d25261c8260",
+                    "status": "Proposed",
+                    "hostname": "",
+                    "productCode": "ICX7150-48P-4X1G",
+                    "moeFunded": 100
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

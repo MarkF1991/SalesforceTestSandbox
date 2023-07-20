@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+            <property name="title" type="String"/>
+            <property name="isWithinTab" type="Boolean"/>
+            <property name="moreInfoButton" type="String" label="Label for 'more info' button" default="more info"/>
+            <property name="moreInfoConfirmation" type="String" label="Confirmation question for 'more info' button" default="Are you sure you want to email more info?"/>
+            <property name="tofixButton" type="String" label="Label for 'to fix' button" default="to fix"/>
+            <property name="tofixConfirmation" type="String" label="Confirmation question for 'to fix' button" default="Are you sure you want to proceed to fix?"/>
+            <property name="optoutButton" type="String" label="Label for 'opt out' button" default="opt out"/>
+            <property name="optoutConfirmation" type="String" label="Confirmation question for 'opt out' button" default="Are you sure you want to Opt Out?"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

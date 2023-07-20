@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <interviewLabel>Support Hub User Update From Contact Test {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Support Hub User Update From Contact Test</label>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Lookup_The_User_Record_by_Contact_Id</name>
+        <label>Lookup The User Record by Contact Id</label>
+        <locationX>85</locationX>
+        <locationY>124</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varT_contactid</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>varO_UserRecord</outputReference>
+        <queriedFields>IsActive</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <screens>
+        <name>Input_Contact_ID</name>
+        <label>Input Contact ID</label>
+        <locationX>92</locationX>
+        <locationY>18</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Lookup_The_User_Record_by_Contact_Id</targetReference>
+        </connector>
+        <fields>
+            <name>Contact_ID</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>varT_contactid</elementReference>
+            </defaultValue>
+            <fieldText>Contact ID</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Input_Contact_ID</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <name>varO_UserRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>varT_contactid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+</Flow>

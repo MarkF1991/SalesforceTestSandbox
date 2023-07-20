@@ -1,0 +1,9 @@
+<template>
+    <div>
+        <canvas class="donut" lwc:dom="manual"></canvas>
+    </div>
+        
+        <template if:true={error}>
+            <c-error-panel errors={error}></c-error-panel>
+        </template>
+</template>

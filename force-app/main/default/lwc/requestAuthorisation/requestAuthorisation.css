@@ -1,0 +1,21 @@
+.feedback-box {
+    color: white;
+    background-color: #980d76;
+}
+
+.THIS{
+    background-color:rgb(233, 233, 233);
+}
+
+.Title {
+    color: rgb(100, 101, 104);
+    text-align: center;
+    font-weight: 600;
+    font-size: 28px;
+    margin: .5em 0;
+}
+
+.titleDescription{
+    font-size: 15px;
+    font-weight: 400;
+}

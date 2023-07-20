@@ -1,0 +1,22 @@
+<apex:page standardController="Account" Sidebar="false" showHeader="false">
+<apex:param name="AccId" value="{!Account.Id}"/>
+<html>
+    <table>
+    <tr>
+    <th>
+    <analytics:reportChart cacheResults="false" reportId="00O90000009GCqmEAG" size="tiny" showRefreshButton="true"
+    filter="[{column:'ACCOUNT_ID',operator:'equals',value:'{!Account.Id}'}]">
+    </analytics:reportChart>
+    </th>
+    <th>
+    <analytics:reportChart cacheResults="false" reportId="00O90000008wFtVEAU" size="tiny" showRefreshButton="true">
+    </analytics:reportChart>
+    </th>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+    </tr>
+    </table>
+    </html>
+</apex:page>

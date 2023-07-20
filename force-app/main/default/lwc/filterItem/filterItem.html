@@ -1,0 +1,13 @@
+<template>
+    <li class="slds-item slds-hint-parent slds-m-bottom_small">
+        <div class="slds-filters__item slds-grid slds-grid_vertical-align-center">
+        <button class="slds-button_reset slds-grow slds-has-blur-focus"  onclick={handleClickFilterItem}>
+            <span class="slds-assistive-text">Edit filter:</span>
+            <span class="slds-show slds-text-body_small">{object.label}</span>
+            <span class="slds-show">{object.description}</span>
+        </button>
+        <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-small" title={getTitle}>
+        </button>
+        </div>
+    </li>
+</template>

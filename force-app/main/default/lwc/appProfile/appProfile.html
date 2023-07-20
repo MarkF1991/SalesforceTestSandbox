@@ -1,0 +1,38 @@
+<template>
+    <div class="profile-container" >
+        <div class="section-title">
+            <c-tile-page-header title={title} label={pageHeaderLabel} selectedfilter={selectedfilter} onheaderfilterchanged={applyFilter}></c-tile-page-header>
+        </div>
+        <lightning-tabset active-tab-value={currentTab}>
+            <lightning-tab label="Overview" value="overview" onactive={handleActive}>
+                <div class="wrapper">
+                    <div class="info-panel">
+                        <c-entity-information-panel items={appInformationItems}></c-entity-information-panel>
+                    </div>
+                    <div class="main-panel">
+                        <c-app-detail></c-app-detail>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Users" value="users" onactive={handleActive}>
+                <template if:false={noUserData}>
+                    <c-users-list-view if:true={isLoaded} hide-averages=true override-css-class="no-border" disable-infite-scroll={usersTabInActive} disable-header-filter=true></c-users-list-view>
+                </template>
+                <template if:true={noUserData}>
+                    <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+                </template>
+            </lightning-tab>
+            <lightning-tab label="Devices" value="devices" onactive={handleActive}>
+                <template if:false={noDeviceData}>
+                    <c-devices-list-view if:true={isLoaded} hide-averages=true override-css-class="no-border" disable-infite-scroll={devicesTabInActive} disable-header-filter=true></c-devices-list-view>
+                </template>
+                <template if:true={noDeviceData}>
+                    <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+                </template>
+            </lightning-tab>
+            <lightning-tab label="Categories" value="categories" onactive={handleActive}>
+                <c-categories-list-view if:true={isLoaded} override-css-class="no-border" disable-infite-scroll={categoriesTabInActive} disable-header-filter=true></c-categories-list-view>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>

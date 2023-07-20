@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage,lightningCommunity__Default">
+            <property name="recordId" type="String" label="Record Id" description="Record id related to the contact item"/>
+            <property name="title" type="String"/>
+            <property name="checkboxLabel" type="String" label="Wording to re-enable button to create Support Hub user"/>
+            <property name="title2" type="String" label="Title for second lightning card" default="User Permission to N4L Product"/>
+            <!-- <property name="checkbox_toggle1_label" type="String"/>
+            <property name="checkbox_toggle2_label" type="String"/> --><property name="checkbox_toggle1_show" type="Boolean" label="Show checkbox toggle 1"/>
+            <property name="checkbox_toggle1_label" type="String" label="Label for checkbox toggle 1" default="Access to School Reporting"/>
+            <property name="checkbox_toggle1_message1" type="String" label="Message line 1 for checkbox toggle 1" default="Do you want to proceed with the changes?"/>
+            <property name="checkbox_toggle1_message2" type="String" label="Message line 2 for checkbox toggle 1" default=""/>
+            <property name="checkbox_toggle2_show" type="Boolean" label="Show checkbox toggle 2"/>
+            <property name="checkbox_toggle2_label" type="String" label="Label for checkbox toggle 2" default="Access to Filtering Portal"/>
+            <property name="checkbox_toggle2_message1" type="String" label="Message line 1 for checkbox toggle 2" default="Do you want to proceed with the changes?"/>
+            <property name="checkbox_toggle2_message2" type="String" label="Message line 2 for checkbox toggle 2" default=""/>
+            <property name="checkbox_toggle3_show" type="Boolean" label="Show checkbox toggle 3"/>
+            <property name="checkbox_toggle3_label" type="String" label="Label for checkbox toggle 3" default="Access to Network Management System"/>
+            <property name="checkbox_toggle3_message1" type="String" label="Message line 1 for checkbox toggle 3" default="Do you want to proceed with the changes?"/>
+            <property name="checkbox_toggle3_message2" type="String" label="Message line 2 for checkbox toggle 3" default=""/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,61 @@
+<template>
+
+    <template if:true={isLoading}>
+        <div class="loading-more-container">
+            <div class="loading-more">
+                <lightning-spinner variant="brand" alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={renderDashboard}>
+        <c-reporting-dashboard></c-reporting-dashboard>
+    </template>
+    <template if:true={renderUsersListView}>
+        <c-user-top-overview></c-user-top-overview>
+        <c-users-list-view check-no-data=true></c-users-list-view>
+    </template>
+    <template if:true={renderDevicesListView}>
+        <c-devices-top-overview></c-devices-top-overview>
+        <c-devices-list-view check-no-data=true></c-devices-list-view>
+    </template>
+    <template if:true={renderContentListView}>
+        <c-websites-top-overview></c-websites-top-overview>
+        <c-content-list-view></c-content-list-view>
+    </template>
+    <template if:true={renderAppsListView}>
+        <c-apps-top-overview></c-apps-top-overview>
+        <c-app-list-view></c-app-list-view>
+    </template>
+    <template if:true={renderCategoriesListView}>
+        <c-category-top-overview></c-category-top-overview>
+        <c-categories-list-view></c-categories-list-view>
+    </template>
+    <template if:true={renderInfectionsListView}>
+       <c-security-list-view></c-security-list-view>
+    </template>
+    <template if:true={renderAttacksListView}>
+        <c-security-list-view view="attacks-blocked"></c-security-list-view>
+    </template>
+    <template if:true={renderUserProfile}>
+        <c-user-profile></c-user-profile>
+    </template>
+    <template if:true={renderDeviceProfile}>
+        <c-device-profile></c-device-profile>
+    </template>
+    <template if:true={renderCategoryProfile}>
+        <c-category-profile></c-category-profile>
+    </template>
+    <template if:true={renderWebsiteProfile}>
+        <c-content-profile></c-content-profile>
+    </template>
+    <template if:true={renderAppProfile}>
+        <c-app-profile></c-app-profile>
+    </template>
+    <template if:true={renderInfectionProfile}>
+        <c-infection-profile></c-infection-profile>
+    </template>
+    <template if:true={renderNotFound}>
+        <c-not-found></c-not-found>
+    </template>
+</template>

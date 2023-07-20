@@ -1,0 +1,37 @@
+<aura:component implements="forceCommunity:themeLayout,forceCommunity:availableForAllPageTypes" extensible="true" access="global" description="Sample Custom Theme Layout">
+    <aura:attribute name="user" type="Aura.Component[]"/>
+    <aura:attribute name="reportingNavigation" type="Aura.Component[]"/>
+    <aura:attribute name="globalSearch" type="Aura.Component[]"/>
+    <div style="background: #f5f5f5;">
+        <div class="topheader slds-grid slds-wrap slds-grid--vertical-align-center slds-p-horizontal_small">
+            
+            <div class="slds-col slds-size_1-of-4">
+            	<div class="logoContainer"></div>                       
+            </div>
+            <div class="slds-col slds-size_2-of-4">
+                <div class="search-container">
+                    {!v.globalSearch}
+                </div>                       
+            </div>
+            <div class="slds-col slds-size_1-of-4">  
+                <div class="slds-float_right">  
+                    {!v.user}
+                </div>
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="side-nav">
+                <div class="content">
+                    {!v.reportingNavigation}
+                </div>
+            </div>
+            <div class="main">
+                {!v.body}
+            </div>
+        </div>
+
+        <div class="footer">
+            
+        </div>
+    </div>
+</aura:component>

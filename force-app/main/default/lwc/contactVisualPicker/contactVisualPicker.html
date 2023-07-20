@@ -1,0 +1,39 @@
+<template>
+        <div class="slds-p-around_x-small lgc-bg slds-grid">
+            <div class="slds-col overflow-hidden">
+                    <template if:true={currentContactElement}>
+                            <c-contact-tile contactstring={currentContactElement.contactstring} userstring={currentContactElement.userstring}></c-contact-tile>
+                    </template>
+                    <template if:false={currentContactElement}>
+                        <p>No contact selected</p>
+                    </template>
+            </div>
+            <div class="slds-col_bump-right">
+                    <lightning-button-icon icon-name="utility:change_owner" variant="bare" alternative-text="toggle options to select a contact" onclick={handleShowMoreClick}></lightning-button-icon>
+            </div>
+        </div>
+
+        <template if:true={showMore}>
+                <div class="slds-p-horizontal_x-small lgc-bg slds-grid">
+                    <div class="slds-col overflow-hidden">
+
+                            <fieldset class="slds-form-element">
+                                    <legend class="slds-form-element__legend slds-form-element__label">Select a contact</legend>
+                                    <div class="slds-form-element__control">
+                                        <template for:each={options} for:item="option">
+                                            <c-contact-visual-picker-item key={option.contactid} object={option} disable-picker-for-null-user={disablePickerForNullUser} onselected={handleValuePickerSelected} ></c-contact-visual-picker-item>
+                                        </template>
+                                    </div>
+                                </fieldset>
+                                
+                                <div class="slds-align_absolute-center slds-p-top_medium">
+                                    <lightning-button label="Cancel" variant="neutral" onclick={handleCancel} ></lightning-button>
+                                    <lightning-button label={submitButtonName} variant="brand" onclick={handleSubmit}  disabled={selectButtonDisabled} class="slds-m-left_x-small"></lightning-button>
+                                </div>    
+
+
+                    </div>
+                </div>
+        </template>
+    
+</template>

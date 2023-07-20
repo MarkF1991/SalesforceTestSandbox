@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send the email with the link to the SA survey to the Principal of the Organisation related to this task</description>
+        <name>Send_Survey_Email_to_Principal</name>
+        <label>Send Survey Email to Principal</label>
+        <locationX>154</locationX>
+        <locationY>924</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Log_sent_email_to_activity_timeline</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>emailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>Get_Principal_Contact.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>EmailSentFrom</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Get_Email_Template.Subject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>54.0</apiVersion>
+    <assignments>
+        <description>Assign the AccountContactRelationship record found in the loop to the PrincipalRelationship variable</description>
+        <name>Set_as_PrincipalRelationship</name>
+        <label>Set as PrincipalRelationship</label>
+        <locationX>858</locationX>
+        <locationY>924</locationY>
+        <assignmentItems>
+            <assignToReference>PrincipalRelationship</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_AccountContactRelationships</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_Principal_Contact</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the AccountContactRelationship record found in the Get query to the PrincipalRelationship variable</description>
+        <name>Set_as_PrincipalRelationship_1</name>
+        <label>Set as PrincipalRelationship 1</label>
+        <locationX>154</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>PrincipalRelationship</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_AccountContactRelationship</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Principal_Contact</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Checks if a record was found in the previous query. If there is no principal found, we will need to get all AccountContactRelationships and loop through them to find one that includes &quot;Principal&quot; in the Roles field.</description>
+        <name>Check_if_Principal_is_found</name>
+        <label>Check if Principal is found</label>
+        <locationX>462</locationX>
+        <locationY>492</locationY>
+        <defaultConnector>
+            <targetReference>Get_all_AccountContactRelationships</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Principal not found</defaultConnectorLabel>
+        <rules>
+            <name>Principal_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_AccountContactRelationship</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_as_PrincipalRelationship_1</targetReference>
+            </connector>
+            <label>Principal found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the Roles field for this record contains the &quot;Principal&quot; value. If the principal is found, the record will be assigned to the PrincipalRelationship element and the loop will break. If no principal is found after all items are looped through, the flow will end.</description>
+        <name>Do_the_roles_contain_Principal</name>
+        <label>Do the roles contain &quot;Principal&quot;?</label>
+        <locationX>990</locationX>
+        <locationY>816</locationY>
+        <defaultConnector>
+            <targetReference>Loop_through_AccountContactRelationships</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Does not contain Principal</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Contains_Principal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_through_AccountContactRelationships.Roles</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Principal</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_as_PrincipalRelationship</targetReference>
+            </connector>
+            <label>Yes - Contains Principal</label>
+        </rules>
+    </decisions>
+    <description>PROD version with scheduled path = 14 Days after but with production survey link 
+4/5/23 - Add Date / Time stamp for Case field SA Survey Sent Date / Time</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>The HTML email body</description>
+        <name>emailBody</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE({!Get_Email_Template.HtmlValue},
+&apos;[Contact.FirstName]&apos;, {!Get_Principal_Contact.FirstName}), 
+&apos;[Case.Account]&apos;, {!Get_Onboarding_Case.Account.Name}),
+&apos;[Survey.Link]&apos;, {!SA_SurveyURL}),
+&apos;[Case.Case_Thread_ID__c]&apos;, {!Get_Onboarding_Case.Case_Thread_ID__c})</expression>
+    </formulas>
+    <formulas>
+        <description>The URL of the GetFeedback survey, with merge field values as URL parameters</description>
+        <name>SA_SurveyURL</name>
+        <dataType>String</dataType>
+        <expression>&quot;https://www.getfeedback.com/r/&quot;+{!SA_GetFeedbackSurveyID}+
+&quot;?Case_ID=&quot;+{!Get_Onboarding_Case.Id}+
+&quot;&amp;gf_unique=&quot;+{!Get_Onboarding_Case.Id}+&quot;-2&quot;+
+&quot;&amp;gf_id=&quot;+{!Get_Onboarding_Case.Id}+&quot;-2&quot;+
+&quot;&amp;Case_Account_ID=&quot;+{!Get_Onboarding_Case.AccountId}</expression>
+    </formulas>
+    <interviewLabel>SA-43 Automate SA Survey after migration is completed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SA-43 Automate SA Survey after migration is completed</label>
+    <loops>
+        <description>Loop through all of the AccountContactRelationships to find the principal</description>
+        <name>Loop_through_AccountContactRelationships</name>
+        <label>Loop through AccountContactRelationships</label>
+        <locationX>770</locationX>
+        <locationY>708</locationY>
+        <collectionReference>Get_all_AccountContactRelationships</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Do_the_roles_contain_Principal</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Creates an Email Message record of the sent email to appear in the activity timeline.</description>
+        <name>Log_sent_email_to_activity_timeline</name>
+        <label>Log sent email to activity timeline</label>
+        <locationX>154</locationX>
+        <locationY>1032</locationY>
+        <connector>
+            <targetReference>Update_Case_field_Survey_Sent_Date_Time_field</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FromAddress</field>
+            <value>
+                <elementReference>EmailSentFrom</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HtmlBody</field>
+            <value>
+                <elementReference>emailBody</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>Get_Onboarding_Case.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>3</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>Get_Email_Template.Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ToAddress</field>
+            <value>
+                <elementReference>Get_Principal_Contact.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Get the AccountContactRelationship record that represents the Principal role for the Organisation related to the Onboarding Case. We cannot use Contains operator on the Roles field, so this query will only return records that have one role (Principal) active in the Roles multipicklist field</description>
+        <name>Get_AccountContactRelationship</name>
+        <label>Get AccountContactRelationship</label>
+        <locationX>462</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_Principal_is_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Onboarding_Case.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Roles</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Principal</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all of the AccountContactRelaionship records for this Account if they are active and have at least one role.</description>
+        <name>Get_all_AccountContactRelationships</name>
+        <label>Get all AccountContactRelationships</label>
+        <locationX>770</locationX>
+        <locationY>600</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_through_AccountContactRelationships</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Onboarding_Case.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Roles</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the email template</description>
+        <name>Get_Email_Template</name>
+        <label>Get Email Template</label>
+        <locationX>154</locationX>
+        <locationY>816</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Survey_Email_to_Principal</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SA_OB_4_Completion_survey</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Onboarding Case record related to this task</description>
+        <name>Get_Onboarding_Case</name>
+        <label>Get Onboarding Case</label>
+        <locationX>462</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_AccountContactRelationship</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Contact record for the Principal.</description>
+        <name>Get_Principal_Contact</name>
+        <label>Get Principal Contact</label>
+        <locationX>154</locationX>
+        <locationY>708</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Email_Template</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PrincipalRelationship.ContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the SA Survey Sent Date/Time field on the onboarding case</description>
+        <name>Update_Case_field_Survey_Sent_Date_Time_field</name>
+        <label>Update Case field - Survey Sent Date/Time field</label>
+        <locationX>154</locationX>
+        <locationY>1140</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>SA_Survey_Sent_Date_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Migration Sign Off</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Template_Classification__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Secure Access</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Programme__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Equipment Replacement and Secure Access</stringValue>
+            </value>
+        </filters>
+        <object>Task</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>Run_14_Days_after_Task_Completed</name>
+            <connector>
+                <targetReference>Get_Onboarding_Case</targetReference>
+            </connector>
+            <label>Run 14 Days after Task Completed</label>
+            <offsetNumber>14</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <description>The email address that the email is sent from. Note: this must be a verified Org-Wide Email Address</description>
+        <name>EmailSentFrom</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>provision@n4l.co.nz</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>This variable holds the AccountContactRelationship record for the school&apos;s principal. It is used to retrieve the related contact to which the survey email will be sent.</description>
+        <name>PrincipalRelationship</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AccountContactRelation</objectType>
+    </variables>
+    <variables>
+        <description>The ID of the GetFeedback survey. This is the value in the URL after /r/ and before the question mark.</description>
+        <name>SA_GetFeedbackSurveyID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>wKfjoXRV</stringValue>
+        </value>
+    </variables>
+</Flow>

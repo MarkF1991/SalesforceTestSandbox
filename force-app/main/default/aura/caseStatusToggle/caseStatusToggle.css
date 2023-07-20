@@ -1,0 +1,7 @@
+.THIS .scaledUp {
+    transform: scale(1.5);
+    transform-origin: top right;
+    overflow: visible;
+    height:70px;
+    padding-right: 10px;
+}

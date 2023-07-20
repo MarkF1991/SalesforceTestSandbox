@@ -1,0 +1,48 @@
+.descriptionText {
+    font-size: 11px;
+}
+.slds-avatar__initials {
+    background-color: #3ABFCE;
+    font-weight: bolder;
+}
+
+.slds-avatar:hover{
+    color: white;
+}
+
+.security {
+    background-color: #f5675b !important; /*$color-background-error*/
+}
+
+.device, .devices {
+    background-color: #6489e4 !important; /* $brand-header-icon */
+}
+
+.content {
+    background-color: #54698d !important; /* $brand-header-icon */
+}
+
+.categories, .category {
+    background-color: #8199AF !important; /* $brand-header-icon */
+}
+
+.user, .users {
+    background-color: #31bfce!important; /* custom */
+}
+
+.connection {
+    background-color: #a525e0 !important; /* $brand-header-icon */
+}
+
+.success {
+    background-color: #11a791 !important;
+}
+
+.application {
+    background-color: #0079bc !important; /* $brand-header-icon */
+}
+
+
+a {
+    text-decoration: none;
+}

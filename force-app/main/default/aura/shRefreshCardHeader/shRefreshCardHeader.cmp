@@ -1,0 +1,33 @@
+<aura:component description="cases modal" implements="forceCommunity:availableForAllPageTypes">
+    
+    <aura:attribute name="cardTitle" type="string" default="Heading Title"/>
+    <aura:attribute name="isSubheadingVisible" type="boolean" default="true"/>
+    <aura:attribute name="cardSubHeading" type="string" default="Sub-heading goes here and spans the full width of the card..." required="false"/>
+	<aura:attribute name="isButtonVisible" type="boolean" default="true"/>
+    <aura:attribute name="cardButtonLabel" type="string" default="Button label"/>
+    <aura:attribute name="cardButtonLink" type="string" default="./"/>
+    <aura:attribute name="isBorderVisible" type="boolean" default="false"/>
+   
+                <div class="slds-page-header_record-home forceHighlightsStencilDesktop forceRecordLayout">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_2-of-3 slds-text-align_left">
+                            <h1>{!v.cardTitle}</h1>
+                        </div>  
+                        <aura:if isTrue="{!v.isButtonVisible}">  
+                        <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                            <a href="{!v.cardButtonLink}" class ="slds-button slds-button_brand">{!v.cardButtonLabel}</a>
+                        </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isSubheadingVisible}"> 
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left sh-subheading">
+                            <p>{!v.cardSubHeading}</p>
+                        </div> 
+                        </aura:if>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.isBorderVisible}"> 
+                <div class="sh-header sh-border_bottom" style="height: 1px; background-color: #F3F3F3;">
+                </div>  
+                </aura:if>  
+
+    </aura:component>

@@ -1,0 +1,6 @@
+<apex:page standardController="Account" showheader="false" sidebar="false">
+  <!-- This will launch the flow, Support Tools -->
+<flow:interview name="Support_Tools_Case" finishLocation="/{!Account.Id}">
+<apex:param name="AccountId" value="{!Account.Id}"/>
+</flow:interview>
+</apex:page>

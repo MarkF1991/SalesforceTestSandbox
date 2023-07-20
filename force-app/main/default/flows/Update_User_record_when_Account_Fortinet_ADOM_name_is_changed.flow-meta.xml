@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <description>To loop and accumulate userList elements for bulk update.</description>
+        <name>Accumulate_updateUserList</name>
+        <label>Accumulate updateUserList</label>
+        <locationX>1037</locationX>
+        <locationY>299</locationY>
+        <assignmentItems>
+            <assignToReference>updateUserList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>userRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop_userList</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>copy the value from Account.Fortinet_Adom_Name__c to User.Fortinet_ADOM__c</description>
+        <name>Set_User_Fortinet_ADOM</name>
+        <label>Set User - Fortinet ADOM</label>
+        <locationX>1037</locationX>
+        <locationY>77</locationY>
+        <assignmentItems>
+            <assignToReference>userRecord.Fortinet_Adom_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>accountRecord.Fortinet_Adom_Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Accumulate_updateUserList</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>if ISBLANK(userId) then loop through the users of this account to update Fortinet ADOM.
+else, get a user record by the userId, and update Fortinet ADOM on this record only.</description>
+        <name>has_userId</name>
+        <label>has userId</label>
+        <locationX>236</locationX>
+        <locationY>186</locationY>
+        <defaultConnector>
+            <targetReference>Get_All_sers</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>userId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_A_Users</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Removed Fortinet_ADOM__c. Invoked in Process Builder: Account Update Process &gt; Criteria: Fortinet Adom Name Updated
+When Account.Fortinet_Adom_Name__c is updated, copy the value to Community Users under this account.</description>
+    <interviewLabel>Update User record when Account Fortinet ADOM name is changed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update User record when Account Fortinet ADOM name is changed</label>
+    <loops>
+        <description>loop each element in userList to update user.Fortinet_ADOM__c</description>
+        <name>loop_userList</name>
+        <label>loop userList</label>
+        <locationX>763</locationX>
+        <locationY>189</locationY>
+        <assignNextValueToReference>userRecord</assignNextValueToReference>
+        <collectionReference>userList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_User_Fortinet_ADOM</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_userList</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get a list of users under this account</description>
+        <name>Get_A_Users</name>
+        <label>Get A User</label>
+        <locationX>503</locationX>
+        <locationY>81</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>loop_userList</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>userId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>userList</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Fortinet_Adom_Name__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Fortinet_Adom_Name__c from Account</description>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>50</locationX>
+        <locationY>184</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>has_userId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>accountId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>accountRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Fortinet_Adom_Name__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get a list of users under this account</description>
+        <name>Get_All_sers</name>
+        <label>Get All Users</label>
+        <locationX>493</locationX>
+        <locationY>296</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>loop_userList</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>accountId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>userList</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Fortinet_Adom_Name__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update user records at once</description>
+        <name>Update_userList</name>
+        <label>Update userList</label>
+        <locationX>762</locationX>
+        <locationY>520</locationY>
+        <inputReference>updateUserList</inputReference>
+    </recordUpdates>
+    <startElementReference>Get_Account</startElementReference>
+    <status>Active</status>
+    <variables>
+        <description>input: accountId from Process Builder</description>
+        <name>accountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Extract account record by account id input variable.</description>
+        <name>accountRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <description>to accumlate user records for update</description>
+        <name>updateUserList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <description>if ISBLANK(userId) then loop through the users of this account to update Fortinet ADOM.
+else, get a user record by the userId, and update Fortinet ADOM on this record only.</description>
+        <name>userId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Collection of a list of users with the given accountId</description>
+        <name>userList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <description>used as looping element in userList</description>
+        <name>userRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>

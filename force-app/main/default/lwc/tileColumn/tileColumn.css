@@ -1,0 +1,14 @@
+a {
+    text-decoration:none;
+ }
+
+ .slds-text-title {
+    font-size: 10px;
+    line-height: 1.25;
+    color: rgb(105, 105, 105);
+}
+
+
+ .slds-theme_shade {
+    background-color: #f3f2f2;
+}

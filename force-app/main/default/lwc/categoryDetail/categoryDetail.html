@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-p-horizontal_xx-large slds-p-vertical_medium" >
+        <div class="slds-grid slds-wrap"> <!-- do not add 'slds-gutters' in div class. This will cause the tileChip's slds-grid to add more space to it's col. -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                <div class="slds-m-top_medium slds-m-left_small">    
+                    <c-tile-list2 no-data={noUserData} id="user-insights-widget" footer={userInsightsFooter} is-loading={userInsightsDataIsLoading} object={userInsightsResponseData} param={queryParams} header="User Insights" context="users"></c-tile-list2>
+                </div>
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-website-insights-tile-list id="website-insights-widget" footer={websiteInsightsFooter} is-loading={websiteInsightsDataIsLoading} object={websiteInsightsResponseData} param={queryParams} header="Website Insights"></c-website-insights-tile-list>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                <div class="slds-m-top_medium slds-m-left_small">
+                    <c-tile-list2 no-data={noDeviceData} id="device-insights-widget" footer={deviceInsightsFooter} is-loading={deviceInsightsDataIsLoading} object={deviceInsightsResponseData} param={queryParams} header="Device Insights" context="devices"></c-tile-list2>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,100 @@
+.listItem{
+    border-top: 1px solid lightgrey;
+}
+
+.slds-icon_container {
+    /* additional css to icon */
+    color: rgb(255, 255, 255);
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+    padding: 3px;  
+}
+
+.slds-theme_shade {
+    background-color: #f3f2f2;
+}
+
+.slds-card {
+    /* border: 1px solid #dddbda; */
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+    position: relative;
+    padding: 0;
+    background: rgb(255, 255, 255);
+    border: 1px solid #d4d4d4;
+    border-radius: .25rem;
+    background-clip: padding-box;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+.loading-spinner-container {
+    position: relative;
+}
+
+.loading-spinner {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+}
+
+.card  {
+    min-height: 100px;
+}
+
+.valueText {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+a {
+    text-decoration:none;
+}
+
+ .slds-avatar:hover{
+    color: white;
+}
+
+.security {
+    background-color: #f5675b !important; /*$color-background-error*/
+    /* changed from from slds: f5675b to prototype's custom f5675b */
+}
+
+.safety {
+    background-color: #7ec47e !important; /*$color-background-error*/
+}
+
+.content {
+    background-color: #54698d !important; /* $brand-header-icon from 777777 to custom 979593*/
+}
+
+.user, .users {
+    background-color: #31bfce!important; /* custom */
+}
+
+.connection {
+    background-color: #a525e0 !important; /* $brand-header-icon */
+}
+
+.device, .devices {
+    background-color: #6489e4 !important; /* $brand-header-icon */   
+}
+
+c-tile-item-object:hover, .highlight:hover {
+    background-color: #f3f2f2;
+    cursor: pointer;
+}
+
+.slds-card__body {
+    margin-bottom: 0;
+    border-top: 1px solid #d3d3d3;
+}
+
+.slds-card__footer {
+    text-align: center;
+    border-top: 1px solid #d3d3d3;
+    margin-top: 0;
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="n4lTableScreen">
+    <apiVersion>50.0</apiVersion>
+    <masterLabel>N4L Table Screen</masterLabel>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage, lightning__AppPage, lightning__HomePage,lightningCommunity__Default">
+            <property name="recordId" type="String"/>
+            <property name="objectName" label="Object Name" type="String"/>
+            <property name="relatedObjectApiName" label="Related Object Name" type="String"/>
+            <property name="relationshipField" type="String" label="Relationship Field" description="relationship field for the current view"/>
+            <property name="title" type="String" label="Title" description="Title/Header of the table"/>
+            <property name="subTitle" type="String" label="Subtitle" description="Subtitle/subheader of the table"/>
+            <property name="subTitle2" type="String" label="Subtitle for All contacts" description="Subtitle/subheader of the table for all contacts"/>
+            <property name="N4LDataTableFieldsSettingName" type="String" label="N4L DataTable Fields Setting Name" description="custom metadata settings name"/>
+            <property name="N4LDataTableFieldsSettingNameAllContacts" type="String" label="N4L DataTable Fields Setting Name for All Contacts" description="custom metadata settings name for all contacts"/>
+            <property name="pageSize" type="Integer" label="Number of rows per page" default="10"/>
+            <property name="previousButtonName" type="String" label="Button name for previous" default="Prev"/>
+            <property name="nextButtonName" type="String" label="Button name for next" default="Next"/>
+            <property name="emptyMessageText" label="Empty Message Text" type="String"/>
+            <property name="addButtonText" type="String" label="Add button text" description="Add button text" default="Add New Relationship"/>
+            <property name="headerTitle" type="String" label="Form Title" description="Title/Header of the form"/>
+            <property name="saveRelButton" type="String" label="button name for form screen" default="Save"/>
+            <property name="searchPlaceHolderText" type="String" label="Search placeholder text" default="Enter email, firstname, lastname to search for a contact"/>
+            <property name="sortQuery" type="String" label="Query for sorting the records" default=""/>
+            <property name="isAdvancedView" type="Boolean" label="Is Advanced View" default="true" description="boolean to show all options when adding a contact"/>
+            <!-- show/hide switches --><property name="showTableAction" type="Boolean" label="Show datatable actions" description="action buttons shown when value is true" default="false"/>
+            <property name="showMissingMessage" type="Boolean" label="Show missing message" description="boolean to show or hide error message" default="false"/>
+            <property name="showAddButton" type="Boolean" label="Show add button" description="shows add relationship button" default="false"/>
+            <property name="showRelatedFieldName" type="Boolean" label="Show Related Field Name" description="shows name of the related object" default="false"/>
+            <property name="showFilter" type="Boolean" label="Shows Filter" description="shows the filter for contact" default="false"/>
+            <property name="queryFilter" type="String" label="Query Filter for the list" description="filters the list based on the query given" default=""/>
+            <property name="filterByManagedContacts" type="Boolean" label="Filter List by Managed Contacts" description="shows the filter for manage contacts, if not, the default is all contacts" default="false"/>
+            <property name="showActiveContactsFilter" type="Boolean" label="Display filter for active contacts" description="shows the checkbox for filter contacts" default="false"/>
+            <!-- action buttons --><property name="hideEditAction" type="Boolean" label="Hides Edit Action" description="hides the edit action button on the list view" default="false"/>
+            <property name="hideReplaceAction" type="Boolean" label="Hides Replace Action" description="hides the replace button on the list view" default="false"/>
+            <property name="isSupportHub" type="Boolean" label="Is support hub?" description="is within support hub" default="false"/>
+            <property name="updateContactActionLabel" type="String" label="Update Contact Action Label" default="View/Edit Contact"/>
+            <property name="replaceContactActionLabel" type="String" label="Replace Contact Action Label" default="Replace Contact"/>
+            <property name="deactivateContactActionLabel" type="String" label="Deactivate Contact Action Label" default="Remove Contact"/>
+            <property name="reactivateContactActionLabel" type="String" label="Reactivate Contact Action Label" default="Reactivate Contact"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

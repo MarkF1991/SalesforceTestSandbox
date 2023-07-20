@@ -1,0 +1,24 @@
+<template>
+    <div>
+        <template if:false={isLoading}>
+            <div class="slds-p-horizontal_large slds-p-vertical_x-small lgc-bg slds-grid slds-grid_vertical-align-center">
+                <div class="slds-col overflow-hidden">
+                    <lightning-textarea label="MoE External Id" name="inputMoEExternalId" value={input} onchange={handleInputChange} ></lightning-textarea>
+                    <lightning-button onclick={handleSetAccountsModal} label="Get Accounts" class="slds-float_right"></lightning-button>
+                 </div>
+                    
+            </div>
+        </template>
+    </div>
+  
+    <template if:true={isLoading}>
+        <div class="slds-align_absolute-center slds-p-vertical_large">
+            <div class="loading-spinner-container">
+                <div class="loading-spinner">
+                    <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</template>

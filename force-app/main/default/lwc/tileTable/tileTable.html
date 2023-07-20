@@ -1,0 +1,18 @@
+<template>
+        <!-- <div class="section slds-p-bottom_xx-large">
+                <div class="section-title">
+                      <c-tile-page-header></c-tile-page-header>
+                </div>
+                <div>
+                    <c-content-data-table ></c-content-data-table>
+                </div>
+        </div> -->
+        <c-tile-column></c-tile-column>
+        <div class="slds-card__body">
+            <template iterator:it={listviewdata}>
+                <!-- <c-tile-row-three-bar key={it.value.Id} object={it.value}></c-tile-row-three-bar> -->
+                <c-tile-row key={it.value.Id} object={it.value}></c-tile-row>
+            </template>
+        </div>
+    
+</template>

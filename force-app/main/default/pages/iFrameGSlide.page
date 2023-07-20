@@ -1,0 +1,6 @@
+<apex:page showHeader="false" showChat="false" sidebar="false">
+    <iframe width="675" height="450"
+        src="https://docs.google.com/presentation/d/{!$CurrentPage.parameters.DocID}//embed?start=false&loop=false&delayms=3000"
+        frameborder="0" allowfullscreen="true">
+    </iframe>
+</apex:page>

@@ -1,0 +1,179 @@
+.THIS p {
+    font-size: 15px;
+}
+
+.THIS .forceCommunityRichText {
+    margin-bottom: 12px;
+}
+
+.THIS .slds-form_compound {
+    background: white;
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 0px 16px 0px rgb(0 0 0 / 24%);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 360px;
+    margin: auto;
+}
+
+
+.THIS .slds-form_gradientHeader {
+    height: 80px;
+    width: 100%;
+    background: rgb(152,13,118);
+    background: linear-gradient(90deg, rgba(152,13,118,1) 0%, rgba(247,148,30,1) 100%);
+}
+
+.THIS .gradientHeader_logo {
+    width: 94px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+.THIS .headerLogo {
+    height: 40px;
+}
+
+.THIS .onboardContent_container {
+    padding: 24px;
+}
+
+.THIS .onboardContent_container.bottom {
+    width: 100%;
+    max-width: 360px;
+    padding: 0 24px;
+    line-height: 2.3em;
+}
+
+.THIS .onboardContent_container.fullWidth {
+    padding: 24px 0px;
+}
+
+.THIS .onboardContent_container.m-bottom_small {
+    padding: 24px 24px 0px 24px;
+}
+
+.THIS .slds-button--brand {
+	float: right;
+    width: auto;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 15px;
+   
+}
+
+.THIS .slds-button--brand:focus {
+	box-shadow: none; 
+}
+
+.THIS .loginButton {
+    z-index: 200;
+    background-color: #f7941e !important;
+    border-color: #f7941e !important;
+}
+
+.THIS .loginButton .label {
+    color: #ffffff !important; 
+}
+
+.THIS .loginButton:hover {
+    background-color: #DF7E0A !important;
+    border-color: #DF7E0A !important;
+}
+
+.THIS .inputContainer {
+    margin-bottom: 0px;
+    padding: 0;
+    border: none;
+    border-radius: 0px;
+}
+
+.THIS .inputIcon {
+    display: none;
+}
+
+.THIS .inputBox {
+    height: 48px;
+    border-radius: 2px;
+    border: 1px solid #e4e5e5;
+    padding: 0 12px;
+    font-size: 15px;
+    margin-left: 0;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.THIS .inputBox:focus {
+    border-color: #980d76;
+    background-color: rgb(255, 255, 255);
+    color: #646568;
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+}
+
+.THIS .inputBox::placeholder {
+    color: #a8a9aa;
+}
+
+.THIS .error {
+    text-align: left;
+    color: #bf2727;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.THIS .cardWrapper {
+    width: 100%;
+    height: 100%;
+    padding: 32px 24px 24px 24px;
+}
+
+.THIS .salesforceIdentitySocialLogin2 {
+    position: relative;
+    width: 100%;
+    height: 48px;
+}
+
+.THIS .salesforceIdentitySocialLogin2 p.or{
+    position: absolute;
+    z-index: 100;
+    cursor: none;
+    pointer-events: none;
+    left: 56px;
+    top: 12px;
+    font-size: 15px;
+    margin: 0px;
+}
+
+.THIS .salesforceIdentitySocialLogin2 p.or:before, .THIS .salesforceIdentitySocialLogin2 p.or:after{
+    content: none;
+}
+
+.THIS .socialOptionsContainer {
+    text-align: left;
+    height: 100%;
+}
+
+.THIS .socialOptionsContainer .socialOption a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #e4e5e5;
+    text-align: left;
+}
+
+.THIS .socialOptionsContainer .socialOption a:hover {
+    background-color: #fff3e5;
+}
+
+.THIS .uiImage img {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+}

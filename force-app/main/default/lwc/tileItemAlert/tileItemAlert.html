@@ -1,0 +1,28 @@
+<template>
+    <div class={overallClass}>
+        <div class="slds-grid ">
+            <template if:true={isActionable}>
+                <div class="slds-col slds-align-top slds-grow-none">
+                    <span><i class="material-icons md-24">{object.image.name}</i></span>
+                </div>
+            </template>
+            <template if:false={isActionable}>
+                <div class="slds-col slds-align-middle slds-grow-none">
+                    <span><i class="material-icons md-24">{object.image.name}</i></span>
+                </div>
+            </template>
+            <div class="slds-col slds-align-middle slds-p-right_large slds-has-flexi-truncate slds-m-left_medium">
+                <div class="slds-grid slds-grid_vertical ">
+                    <template if:false={isActionable}>
+                        <template if:true={object.label}><h2 class="slds-col">{object.label}</h2></template>
+                        <template if:true={object.description}><p class="slds-col">{object.description}</p></template>
+                    </template>
+                    <template if:true={isActionable}>
+                        <template if:true={object.label}><h2 class="slds-col">{object.label}</h2></template>
+                        <span class="view-activity">VIEW ACTIVITY NOW</span>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

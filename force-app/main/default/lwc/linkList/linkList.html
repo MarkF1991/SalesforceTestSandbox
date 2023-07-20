@@ -1,0 +1,20 @@
+<template>
+    <fieldset class="slds-form-element">
+        <legend class="slds-form-element__legend slds-form-element__label">{legend}</legend>
+        <div class="slds-form-element__control">
+            <!-- <div class="slds-visual-picker slds-visual-picker_medium"> -->
+                <template for:each={links} for:item="link">
+                    <div class="slds-col slds-m-bottom_x-small" key={link.id}>
+                        <c-link-tile data-id={link.id} link={link} read-only={isReadOnly}></c-link-tile>
+                        <!-- <c-link-tile class={link.id} link={link} read-only={isReadOnly}></c-link-tile> -->
+                    </div>
+                </template>
+            <!-- </div> -->
+        </div>
+    </fieldset>
+    
+    
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

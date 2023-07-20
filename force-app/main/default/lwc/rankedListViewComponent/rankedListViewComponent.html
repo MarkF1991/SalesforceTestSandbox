@@ -1,0 +1,14 @@
+<template>
+    <div class="slds-p-vertical_medium">
+        <div class="slds-grid">
+            <div class="slds-col slds-text-align_left">
+                <div class="slds-p-horizontal_medium listItem">
+                    <p class="slds-col slds-truncate slds-text-color_weak labelText">{title}</p>
+                    <template for:each={items} for:item="data">
+                        <c-ranked-list-item class="slds-p-horizontal_medium listItem" key={data.id} object={data}></c-ranked-list-item>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

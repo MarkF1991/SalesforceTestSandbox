@@ -1,0 +1,62 @@
+<template>
+    <template if:true={isRequired}>
+        <span class="slds-form-element__label" for="combobox-unique-id-3">
+            <label class="slds-form-element__label"><abbr title="required" class="slds-required">*</abbr>{fieldLabel}</label>
+            <template if:true={fieldHelpText}>
+                <lightning-helptext content={fieldHelpText}></lightning-helptext>
+            </template>
+        </span>
+    </template>
+    <template if:false={isRequired}>
+        <span class="slds-form-element__label" for="combobox-unique-id-3">
+            <label class="slds-form-element__label">{fieldLabel}</label>
+            <template if:true={fieldHelpText}>
+                <lightning-helptext content={fieldHelpText}></lightning-helptext>
+            </template>
+        </span>
+    </template>
+    <div class="slds-form-element__control">
+        <div class="slds-combobox_container">
+            <div class={dropdown} onmouseleave={closeDropDown} data-id="resultBox" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+               
+               <!--code for input and dropdown icon-->
+                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                    <template if:false={isRelationshipEditable}>
+                        <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value"
+                        placeholder={placeHolder} onclick={openDropdown} value={selectedListOfValues}/>
+                    </template>
+                    <template if:true={isRelationshipEditable}>
+                        <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value"
+                        placeholder={placeHolder} onclick={openDropdown} value={selectedListOfValues} disabled/>
+                    </template>
+                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right" title="Down icon">
+                        <lightning-icon icon-name="utility:down" size="xx-small" class="slds-icon-text-default" ></lightning-icon>
+                        <span class="slds-assistive-text">Down icon</span>
+                    </span>            
+                </div>
+                <div if:true={errorComplete}>
+                    <span class="slds-required">{label.Screen_RequiredField}</span>
+                </div>
+                <div id="listbox-unique-id" role="listbox">
+                    <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                        <div class="slds-scrollable">
+                            <!-- code to show list of countrys -->
+                            <template for:each={options} for:item="item">  
+                                <li key = {item.label} role="presentation" class="slds-listbox__item">
+                                     <div  data-id={item.isChecked} data-name={item.value} onclick={selectOption} class={item.class} role="option">
+                                        <span class="slds-media__figure">
+                                                <lightning-icon icon-name="utility:check" size="xx-small" class="slds-listbox__icon-selected"></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                                <span class="slds-truncate" style="color:black;" title={item.label}> {item.label}</span>
+                                        </span>
+                                    </div> 
+                                </li>
+                            </template>
+                        </div>
+                    </ul>
+                </div>
+            </div>   
+        </div>
+    </div>
+</template>

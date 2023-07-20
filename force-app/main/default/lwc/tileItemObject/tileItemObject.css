@@ -1,0 +1,14 @@
+.valueText {
+  color: rgb(62, 62, 60);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.labelText {
+  font-size: 11px;
+}
+
+a {
+  text-decoration: none;
+  color: #696969;
+}

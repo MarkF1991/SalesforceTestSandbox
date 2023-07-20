@@ -1,0 +1,37 @@
+.custom-icon {
+    /* $brand-accessible-active    Active / Hover state of BRAND_A11Y */
+    background-color: #6489e4;
+    color: white;
+    padding: 3px;
+}
+
+.slds-theme_shade {
+    background-color: #f3f2f2;
+}
+
+.slds-card {
+    /* border: 1px solid #dddbda; */
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+.loading-spinner-container {
+    position: relative;
+}
+
+.card  {
+    min-height: 50px;
+}
+
+.highlight:hover {
+    background-color: #f3f2f2;
+    cursor: pointer;
+}
+
+.slds-card__body {
+    margin-bottom: 0px;
+}

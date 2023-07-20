@@ -1,0 +1,10 @@
+<design:component label="Community Footer">
+	<design:attribute name="footer" label="Company Name" description="Company name you want to appear in the footer" />
+	<design:attribute name="footerYear" label="Footer Year" description="Year you want to appear in the footer" />
+    <design:attribute name="footerTerms" label="Terms and Conditions" description="Add Terms and Conditions URL" />
+    <design:attribute name="footerPrivacy" label="Privacy Policy" description="Add Privacy Policy URL" />
+    <design:attribute name="footerPhone" label="Company Phone" description="Company main phone" />
+    <design:attribute name="footerEmail" label="Company Email" description="Company general email" />
+    <design:attribute name="footerHeight" label="Height (em)" />
+    
+</design:component>

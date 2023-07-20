@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Post to chatter to notify the RM</description>
+        <name>Notify_RM_Via_chatter</name>
+        <label>Notify RM Via chatter</label>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>notificationMessage</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>visibility</name>
+            <value>
+                <stringValue>internalUsers</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>When a record is created with negative Overall Experience or Current Issues with N4L Service, change the Follow up status to Requires Follow Up and notify RM via chatter
+API v57.0</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Calculates the due date of the task based on survey response date + 4 weeks</description>
+        <name>dueDate</name>
+        <dataType>Date</dataType>
+        <expression>{!$Record.CreatedDate} + 28</expression>
+    </formulas>
+    <formulas>
+        <description>The message in the chatter post</description>
+        <name>notificationMessage</name>
+        <dataType>String</dataType>
+        <expression>&quot;@[&quot; &amp; {!$Record.Account__r.OwnerId} &amp; &quot;] &quot; &amp; {!taskSubject} &amp;&quot;.&quot;</expression>
+    </formulas>
+    <formulas>
+        <description>The wording of the task subject, this is also the chatter post content</description>
+        <name>taskSubject</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Account__r.Name} &amp; &quot; - Touchpoint survey result with &quot; &amp; 
+IF( OR (ISPICKVAL({!$Record.Overall_Experience__c} , &quot;Dissatisfied&quot;), ISPICKVAL({!$Record.Overall_Experience__c} , &quot;Very Dissatisfied&quot;)),
+&quot;negative customer satisfaction&quot; &amp;  IF (ISPICKVAL({!$Record.Issues_with_Product_Service__c}, &quot;Yes&quot;), &quot; and &quot; , &quot;&quot;),
+&quot;&quot;) &amp; 
+IF (ISPICKVAL({!$Record.Issues_with_Product_Service__c}, &quot;Yes&quot;), &quot;issues with product/service&quot;, &quot;&quot;)
+&amp; &quot; that requires a follow-up&quot;</expression>
+    </formulas>
+    <interviewLabel>Customer Survey Response - Set follow up status on create {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Customer Survey Response - Set follow up status on create</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Create a task to prompt the School RM to follow up on the survey</description>
+        <name>Create_task_for_RM</name>
+        <label>Create follow up task for RM</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Notify_RM_Via_chatter</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>dueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Account__r.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>taskSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TaskSubtype</field>
+            <value>
+                <stringValue>Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Responded_Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Set_Follow_Up</name>
+        <label>Set Follow Up</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Create_task_for_RM</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Follow_Up_Status__c</field>
+            <value>
+                <stringValue>Requires Follow Up</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Follow_Up</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5)</filterLogic>
+        <filters>
+            <field>Follow_Up_Status__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Overall_Experience__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Very Dissatisfied</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Current_Issues_With_N4L_Service__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Overall_Experience__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Dissatisfied</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Issues_with_Product_Service__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </filters>
+        <object>Customer_Survey_Response__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

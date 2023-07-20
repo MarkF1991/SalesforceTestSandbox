@@ -1,0 +1,20 @@
+<template>
+    <template if:true={task}>
+        <div class="slds-p-around_small lgc-bg">
+            <lightning-tile label={task.Subject}  type="media" onclick={handleClick} href="#" > 
+                <lightning-avatar slot="media" src="" fallback-icon-name="standard:task" alternative-text="Task" size="x-small"></lightning-avatar>
+                <!-- <p class="slds-truncate"><lightning-formatted-text value={task.Status}></lightning-formatted-text></p>
+                <p class="slds-truncate"><lightning-formatted-date-time value={task.ActivityDate} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p>
+                <p class="slds-truncate"><lightning-formatted-text value={task.Owner.Name} ></lightning-formatted-text></p> -->
+                <ul class="slds-list_horizontal slds-has-dividers_right">
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={task.Status}></lightning-formatted-text></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-date-time value={task.ActivityDate} time-zone="Pacific/Auckland"></lightning-formatted-date-time></p></li>
+                        <li class="slds-item"><p class="slds-truncate"><lightning-formatted-text value={task.Owner.Name} ></lightning-formatted-text></p></li>
+                    </ul>
+            </lightning-tile>
+        </div>
+    </template>
+    <template if:false={task}>
+        <p>No task data available.</p>
+    </template>
+</template>

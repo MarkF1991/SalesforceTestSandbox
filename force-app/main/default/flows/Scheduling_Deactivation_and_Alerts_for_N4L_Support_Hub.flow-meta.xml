@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Email_Alert_30_Days</name>
+        <label>Email Alert 30 Days</label>
+        <locationX>50</locationX>
+        <locationY>516</locationY>
+        <actionName>User.Support_Hub_User_30_Day_Deactivation_Advice</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>User.Support_Hub_User_30_Day_Deactivation_Advice</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Email_Alert_7_Days</name>
+        <label>Email Alert 7 Days</label>
+        <locationX>314</locationX>
+        <locationY>516</locationY>
+        <actionName>User.Support_Hub_User_7_Day_Deactivation_Advice</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>User.Support_Hub_User_7_Day_Deactivation_Advice</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Email_Alert_Deactivated</name>
+        <label>Email Alert Deactivated</label>
+        <locationX>578</locationX>
+        <locationY>516</locationY>
+        <actionName>User.Support_Hub_User_Deactivated</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>Make_user_inactive</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>User.Support_Hub_User_Deactivated</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <decisions>
+        <name>Check_Last_Login_Date_to_direct_to_the_proper_action</name>
+        <label>Check number of days since Launch or Last Login</label>
+        <locationX>446</locationX>
+        <locationY>396</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>X30_Days_Left_to_Deactivation_Alert</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LaunchLastLogin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>335.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_Alert_30_Days</targetReference>
+            </connector>
+            <label>30 Days Left to Deactivation Alert</label>
+        </rules>
+        <rules>
+            <name>X7_Days_Left_to_Deactivation_Alert</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LaunchLastLogin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>358.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_Alert_7_Days</targetReference>
+            </connector>
+            <label>7 Days Left to Deactivation Alert</label>
+        </rules>
+        <rules>
+            <name>Deactivate_user</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LaunchLastLogin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>365.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Email_Alert_Deactivated</targetReference>
+            </connector>
+            <label>Deactivate user</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check profile is support hub type</description>
+        <name>Check_user_license</name>
+        <label>Check user profile</label>
+        <locationX>776</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_the_correct_license_to_proceed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub Community Member User - Login Licence MFA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub Community Member User - Named Licence</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub ICT Provider User - Named Licence</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub Community Member User - Login Licence MFA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub Community Member User - Named Licence MFA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Support Hub ICT Provider User - Named Licence MFA</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Last_Login_Date_to_direct_to_the_proper_action</targetReference>
+            </connector>
+            <label>Is profile eligible?</label>
+        </rules>
+    </decisions>
+    <description>This flow checks the last login date to use for sending alerts for users and eventually deactivating dormant users.
+This version deactivates after 365 days since last login OR 365 days since the 15/10/2022 in the event that last login was prior to 15/10/2022
+This version applies to 3 profile types (plus MFA versions of the profile types)</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>LastLoginDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.LastLoginDate})</expression>
+    </formulas>
+    <formulas>
+        <description>Determines the smallest number of days when comparing Today minus lastlogin date Vs Today - 15th October 2022.
+Used later in the flow to determine effective start date for counting days until deactivation.</description>
+        <name>LaunchLastLogin</name>
+        <dataType>Number</dataType>
+        <expression>MIN((TODAY()-{!LastLoginDate}),TODAY()-DATE(2022,10,15))</expression>
+        <scale>0</scale>
+    </formulas>
+    <interviewLabel>Scheduling Deactivation and Alerts for {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Scheduling Deactivation and Alerts for N4L Support Hub</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Make_user_inactive</name>
+        <label>Make user inactive</label>
+        <locationX>578</locationX>
+        <locationY>636</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IsActive</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>User</object>
+    </recordUpdates>
+    <start>
+        <locationX>650</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_user_license</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2022-10-15</startDate>
+            <startTime>07:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

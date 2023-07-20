@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Send the escalation email</description>
+        <name>Send_email_to_escalate</name>
+        <label>Send email to escalate</label>
+        <locationX>402</locationX>
+        <locationY>2414</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>emailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddressesArray</name>
+            <value>
+                <elementReference>recipients</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>support@n4l.co.nz</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>emailSubject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Add_RM_email_to_recipient_list</name>
+        <label>Add RM email to recipient list</label>
+        <locationX>402</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>recipients</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_School_RM.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Size_of_Recipient_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the project email address to the collection of email addresses</description>
+        <name>Add_to_recipient_list</name>
+        <label>Add to recipient list</label>
+        <locationX>622</locationX>
+        <locationY>1598</locationY>
+        <assignmentItems>
+            <assignToReference>recipients</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_through_email_addresses.Email__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_email_addresses</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_project_emails_as_escalation_emails</name>
+        <label>Assign project emails as escalation emails</label>
+        <locationX>534</locationX>
+        <locationY>1382</locationY>
+        <assignmentItems>
+            <assignToReference>emailsForEscalation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_notification_email_addresses</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_email_addresses</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the School Relationship Manager to the caseOwnerId variable</description>
+        <name>Assign_RM_as_Case_Owner</name>
+        <label>Assign RM as Case Owner</label>
+        <locationX>50</locationX>
+        <locationY>890</locationY>
+        <assignmentItems>
+            <assignToReference>caseOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_School_RM.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Case_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign User Id specified in the Case User field to the caseOwnerId variable</description>
+        <name>Assign_User_as_Case_Owner</name>
+        <label>Assign User as Case Owner</label>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
+        <assignmentItems>
+            <assignToReference>caseOwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Survey_Configuration.Case_User_ID__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Case_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Find the size of the recipient list to avoid sending email if 0 recipients</description>
+        <name>Get_Size_of_Recipient_List</name>
+        <label>Get Size of Recipient List</label>
+        <locationX>534</locationX>
+        <locationY>2090</locationY>
+        <assignmentItems>
+            <assignToReference>numberOfRecipients</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>recipients</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Are_there_recipients</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check if there are any recipients in the list to avoid 0 recipients error</description>
+        <name>Are_there_recipients</name>
+        <label>Are there recipients?</label>
+        <locationX>534</locationX>
+        <locationY>2198</locationY>
+        <defaultConnectorLabel>No recipients</defaultConnectorLabel>
+        <rules>
+            <name>X1_or_more_recipients</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recipients</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>numberOfRecipients</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Email_Template</targetReference>
+            </connector>
+            <label>1 or more recipients</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check the configuration to determine case owner</description>
+        <name>Case_Owner</name>
+        <label>Case Owner</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <defaultConnector>
+            <targetReference>Create_Case_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown</defaultConnectorLabel>
+        <rules>
+            <name>School_RM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Survey_Configuration.Case_Owner__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>School Relationship Manager</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_RM_as_Case_Owner</targetReference>
+            </connector>
+            <label>School RM</label>
+        </rules>
+        <rules>
+            <name>Specific_User</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Survey_Configuration.Case_Owner__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Specific User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_User_as_Case_Owner</targetReference>
+            </connector>
+            <label>Specific User</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Create_Case</name>
+        <label>Create Case?</label>
+        <locationX>534</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>Get_notification_email_addresses</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>FALSE</defaultConnectorLabel>
+        <rules>
+            <name>TRUE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Survey_Configuration.Create_Case__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Survey_Escalation_Record_Type</targetReference>
+            </connector>
+            <label>TRUE</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is there an active escalation configuration for this escalation type?</description>
+        <name>Escalation_configuration</name>
+        <label>Escalation configuration</label>
+        <locationX>732</locationX>
+        <locationY>242</locationY>
+        <defaultConnectorLabel>Inactive</defaultConnectorLabel>
+        <rules>
+            <name>Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Survey_Configuration</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_School_Account_record</targetReference>
+            </connector>
+            <label>Active</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the Notify RM checkbox checked in the configuration?</description>
+        <name>Notify_RM</name>
+        <label>Notify RM?</label>
+        <locationX>534</locationX>
+        <locationY>1790</locationY>
+        <defaultConnector>
+            <targetReference>Get_Size_of_Recipient_List</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Notify_RM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Survey_Configuration.Notify_School_RM__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_RM_email_to_recipient_list</targetReference>
+            </connector>
+            <label>Yes - Notify RM</label>
+        </rules>
+    </decisions>
+    <description>Subflow that escalates the survey based on the escalation configuration in Custom Metadata</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>email body</description>
+        <name>emailBody</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE({!Get_Email_Template.HtmlValue},
+&apos;[Survey.Type]&apos;, TEXT({!CaseSurvey.Survey_Type__c})),
+&apos;[School.Name]&apos;, {!Get_School_Account_record.Name}),
+&apos;[Survey.Link]&apos;, LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260}))
+ &amp; {!CaseSurvey.Id}),
+&apos;[Case.Link]&apos;, IF({!Get_Case_Survey_Configuration.Create_Case__c} = true, LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260}))
+ &amp; {!Create_Case_Record}, &apos;&apos;)),
+&apos;View escalation case&apos;, IF({!Get_Case_Survey_Configuration.Create_Case__c} = true, &apos;View escalation case&apos;, &apos;&apos;))</expression>
+    </formulas>
+    <formulas>
+        <description>The subject of the email to be sent</description>
+        <name>emailSubject</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!Get_Email_Template.Subject}, &apos;[Survey.Type]&apos;, TEXT({!CaseSurvey.Survey_Type__c}))</expression>
+    </formulas>
+    <interviewLabel>Send Case Survey Escalation email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Escalate case survey</label>
+    <loops>
+        <description>Loop through all the email addresses</description>
+        <name>Loop_through_email_addresses</name>
+        <label>Loop through email addresses</label>
+        <locationX>534</locationX>
+        <locationY>1490</locationY>
+        <collectionReference>Get_notification_email_addresses</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_to_recipient_list</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Notify_RM</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Create the case record</description>
+        <name>Create_Case_Record</name>
+        <label>Create Case Record</label>
+        <locationX>314</locationX>
+        <locationY>1082</locationY>
+        <connector>
+            <targetReference>Get_notification_email_addresses</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Case_Survey__c</field>
+            <value>
+                <elementReference>CaseSurvey.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <stringValue>Project post-implementation survey result with negative customer satisfaction that requires a follow-up.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Origin</field>
+            <value>
+                <stringValue>Automation</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>caseOwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>CaseSurvey.Case__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Programme__c</field>
+            <value>
+                <elementReference>CaseSurvey.Case__r.Programme__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Survey_Escalation_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Related_School__c</field>
+            <value>
+                <elementReference>CaseSurvey.Account__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>{!Get_School_Account_record.Name} - Action required: {!CaseSurvey.Survey_Type__c} Case Survey Escalation</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Survey Escalation</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Get config for this case survey escalation</description>
+        <name>Get_Case_Survey_Configuration</name>
+        <label>Get Case Survey Configuration</label>
+        <locationX>732</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Escalation_configuration</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>isActive__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Escalation_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>EscalationType</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case_Survey_Escalation_Configuration__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the email template to send the email</description>
+        <name>Get_Email_Template</name>
+        <label>Get Email Template</label>
+        <locationX>402</locationX>
+        <locationY>2306</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_email_to_escalate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case_Survey_Configuration.Email_Template_Developer_Name__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Case Survey Escalation Emails email addresses to add to recipient list. These are stored in a custom metadata type</description>
+        <name>Get_notification_email_addresses</name>
+        <label>Get notification email addresses</label>
+        <locationX>534</locationX>
+        <locationY>1274</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_project_emails_as_escalation_emails</targetReference>
+        </connector>
+        <filterLogic>(1 OR 2) AND 3</filterLogic>
+        <filters>
+            <field>Survey_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseSurvey.Survey_Type__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Survey_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Case_Survey_Escalation_Configuration__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case_Survey_Configuration.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Case_Survey_Escalation__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the account to find the RM for the school</description>
+        <name>Get_School_Account_record</name>
+        <label>Get School Account record</label>
+        <locationX>534</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_School_RM</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseSurvey.Account__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Find the RM of the school that&apos;s related to this case survey. This will be a recipient of the email,</description>
+        <name>Get_School_RM</name>
+        <label>Get School RM</label>
+        <locationX>534</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Case</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_School_Account_record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Record Type to create the case</description>
+        <name>Get_Survey_Escalation_Record_Type</name>
+        <label>Get Survey Escalation Record Type</label>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Case_Owner</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Survey_Escalation</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>606</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Case_Survey_Configuration</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Id of the Case Owner</description>
+        <name>caseOwnerId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The Case Survey Record</description>
+        <name>CaseSurvey</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MNU_Case_Survey__c</objectType>
+    </variables>
+    <variables>
+        <description>emails retrieved from custom metadata type</description>
+        <name>emailsForEscalation</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case_Survey_Escalation__mdt</objectType>
+    </variables>
+    <variables>
+        <description>Type of escalation. Options: &apos;OVERALL&apos;, &apos;PANEL&apos;</description>
+        <name>EscalationType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>The number of emails in the recipients collection</description>
+        <name>numberOfRecipients</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <description>Collection of email addresses to send the escalation email to.</description>
+        <name>recipients</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

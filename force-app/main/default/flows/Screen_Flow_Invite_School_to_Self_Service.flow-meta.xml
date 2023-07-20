@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Add the principal to a collection of contacts so that it will display in the data table on the screen</description>
+        <name>Add_principal_to_recipient_list</name>
+        <label>Add principal to recipient list</label>
+        <locationX>358</locationX>
+        <locationY>1286</locationY>
+        <assignmentItems>
+            <assignToReference>PrincipalTableList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Principal</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Invite_to_Self_Service</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Principal_contact_ID</name>
+        <label>Assign Principal contact ID</label>
+        <locationX>754</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>principalContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_all_ACR_records_to_find_principal.ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_all_ACR_records_to_find_principal</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the principal ID variable based on the principal ACR for the school.</description>
+        <name>Assign_principal_ID_variable</name>
+        <label>Assign principal ID variable</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>principalContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Principal_ACR.ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Principal</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>The principal must select this choice to continue</description>
+        <name>yes_confirm</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Yes</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>The user must select this choice to continue</description>
+        <name>yes_confirmed</name>
+        <choiceText>Yes</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Check the output variable &apos;status&apos; from the subflow to see if ERROR or SUCCESS</description>
+        <name>Check_flow_response_status</name>
+        <label>Check flow response status</label>
+        <locationX>358</locationX>
+        <locationY>1646</locationY>
+        <defaultConnector>
+            <targetReference>displayErrorMessage</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>ERROR</defaultConnectorLabel>
+        <rules>
+            <name>SUCCESS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Send_Invite_and_Create_Opportunity.status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SUCCESS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_new_opportunity</targetReference>
+            </connector>
+            <label>SUCCESS</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks if one of the assigned roles for this ACR is &apos;Principal&apos;</description>
+        <name>Does_the_Roles_field_contain_Principal</name>
+        <label>Does the Roles field contain Principal?</label>
+        <locationX>886</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>Loop_all_ACR_records_to_find_principal</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Principal</defaultConnectorLabel>
+        <rules>
+            <name>Principal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_all_ACR_records_to_find_principal.Roles</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Principal</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Principal_contact_ID</targetReference>
+            </connector>
+            <label>Principal</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is there a principal ACR?</description>
+        <name>Principal_ACR_found</name>
+        <label>Principal ACR found?</label>
+        <locationX>358</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Get_all_ACRS_for_school</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Principal ACR</defaultConnectorLabel>
+        <rules>
+            <name>Principal_exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Principal_ACR</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_principal_ID_variable</targetReference>
+            </connector>
+            <label>Principal exists</label>
+        </rules>
+    </decisions>
+    <description>https://n4lconz.atlassian.net/browse/SS-1183
+Screen flow launched from quick action on account (school) record page. Launches subflow to send email invite and create opportunity.
+
+v2 - adding condition to check the AccountContactRelation has IsActive= True</description>
+    <environments>Default</environments>
+    <interviewLabel>Self-Service {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Screen Flow: Invite School to Self Service</label>
+    <loops>
+        <description>Cannot use CONTAINS in a get element for multi-picklist (Roles), so loop through all Account Contact Relations for this school to find the principal</description>
+        <name>Loop_all_ACR_records_to_find_principal</name>
+        <label>Loop all ACR records to find principal</label>
+        <locationX>666</locationX>
+        <locationY>518</locationY>
+        <collectionReference>Get_all_ACRS_for_school</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Does_the_Roles_field_contain_Principal</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Principal</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>If there is no ACR record with Role = Principal. Get the Account Contact Relationship for all school contacts to loop through to find any that CONTAIN principal</description>
+        <name>Get_all_ACRS_for_school</name>
+        <label>Get all ACRS for school</label>
+        <locationX>666</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_all_ACR_records_to_find_principal</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Roles</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the new Opportunity record to display on the success screen</description>
+        <name>Get_new_opportunity</name>
+        <label>Get new opportunity</label>
+        <locationX>226</locationX>
+        <locationY>1766</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Invite_Sent_Successfully</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Send_Invite_and_Create_Opportunity.opportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the principal of the school to display on screen, will be used as recipient of the email</description>
+        <name>Get_Principal</name>
+        <label>Get Principal</label>
+        <locationX>358</locationX>
+        <locationY>1166</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_principal_to_recipient_list</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>principalContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the AccountContactRelation for the Principal of the school where Role = Principal</description>
+        <name>Get_Principal_ACR</name>
+        <label>Get Principal ACR</label>
+        <locationX>358</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Principal_ACR_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Roles</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Principal</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <description>Display the error message returned from subflow</description>
+        <name>displayErrorMessage</name>
+        <label>displayErrorMessage</label>
+        <locationX>490</locationX>
+        <locationY>1766</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>errorMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(173, 5, 5);&quot;&gt;Unable to send invite.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Error: &lt;/strong&gt;{!Send_Invite_and_Create_Opportunity.errorMessage}﻿&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Screen to display success message to user</description>
+        <name>Invite_Sent_Successfully</name>
+        <label>Invite Sent Successfully</label>
+        <locationX>226</locationX>
+        <locationY>1886</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>successMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(2, 144, 0);&quot;&gt;Invite sent successfully.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Onboarding Opportunity: &lt;/strong&gt;&lt;a href=&quot;/{!Get_new_opportunity.Id}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!Get_new_opportunity.Name}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Warning screen before sending invite to principal</description>
+        <name>Invite_to_Self_Service</name>
+        <label>Invite to Self Service</label>
+        <locationX>358</locationX>
+        <locationY>1406</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Send_Invite_and_Create_Opportunity</targetReference>
+        </connector>
+        <fields>
+            <name>PrincipalDetailsTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Contact</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Invite will send to</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>PrincipalTableList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-f586&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Full Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Title&quot;,&quot;guid&quot;:&quot;column-22ba&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Job Title&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Email&quot;,&quot;guid&quot;:&quot;column-c8dc&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Email&quot;,&quot;type&quot;:&quot;email&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Have_you_checked_whether_this_school_already_has_access</name>
+            <choiceReferences>yes_confirm</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Have you checked whether this school already has access?</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Send Invite</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>232</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Principal_ACR</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Launch a subflow to send the invite email and create an onboarding Opportunity for Self Service product</description>
+        <name>Send_Invite_and_Create_Opportunity</name>
+        <label>Send Invite and Create Opportunity</label>
+        <locationX>358</locationX>
+        <locationY>1526</locationY>
+        <connector>
+            <targetReference>Check_flow_response_status</targetReference>
+        </connector>
+        <flowName>Subflow_Self_service_send_invite</flowName>
+        <inputAssignments>
+            <name>accountId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>principalId</name>
+            <value>
+                <elementReference>Get_Principal.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <variables>
+        <description>The Contact ID of the principal of the school, based on ACR record</description>
+        <name>principalContactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This is a collection of contact records that will only ever contain the principal of the school. It needs to be in a collection so that it can be input into the data table component on the screen.</description>
+        <name>PrincipalTableList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <description>The Account record ID passed from record page</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

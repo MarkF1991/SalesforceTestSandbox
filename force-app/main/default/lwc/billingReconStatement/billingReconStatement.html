@@ -1,0 +1,66 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="spinnerContainer">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <c-error-message errors={errors}></c-error-message>
+        <c-scoped-notification message="No statement lines to display." if:true={renderNoRecordsMessage}></c-scoped-notification>
+        <template if:true={renderTable}>
+            <div class="slds-grid slds-gutters slds-m-bottom_large">
+                <!-- SEARCH INPUT -->
+                <div class="slds-col">
+                    <lightning-input 
+                        type="search" 
+                        label="Search"
+                        placeholder="Search by school name, Moe Id or Site Id"
+                        onchange={handleSearchChange}
+                    >
+                    </lightning-input>
+                </div>
+                <!-- SHOW/HIDE AUTO COLUMN -->
+                <div class="slds-col">
+                    <lightning-radio-group 
+                        label="Auto-Reconciled Lines"
+                        name="showHideAutoLines"
+                        options={showHideOptions}
+                        value={showHideAutoLines}
+                        onchange={handleAutoReconChange}
+                        type="button"
+                    >
+                    </lightning-radio-group>
+                </div>
+
+                <div class="slds-col">
+                    <lightning-radio-group 
+                        label="Inves. Closed Lines"
+                        name="showHideClosedLines"
+                        options={showHideOptions}
+                        value={showHideClosedLines}
+                        onchange={handleInvesClosedChange}
+                        type="button"
+                    >
+                    </lightning-radio-group>
+                </div>
+
+                <div class="slds-col">
+                    <div class="slds-clearfix">
+                        <div class="slds-float_right">
+                            <lightning-button-icon icon-name="utility:refresh"  alternative-text="Refresh" onclick={refreshRecords}></lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATA TABLE-->
+            <c-datatable-paginated
+                records={records}
+                columns={columns}
+                if:true={renderTable}
+                onsave={handleSave}
+            >
+            </c-datatable-paginated>
+        </template>
+    </template> 
+</template>

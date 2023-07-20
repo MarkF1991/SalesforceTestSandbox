@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="dataTopic" label="Topic of content" />
+    <design:attribute name="dataType" label="Type of content" />
+</design:component>

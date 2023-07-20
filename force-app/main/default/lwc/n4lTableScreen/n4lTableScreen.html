@@ -1,0 +1,196 @@
+<template>
+    <article class="">
+        <div class="slds-m-left_large slds-m-right_large slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-3">
+                            <template if:true={showFilter}>
+                                <div class="">
+                                    <lightning-combobox name="contactfilter" label="" value={filterValue} placeholder=""
+                                        options={filterOptions} onchange={handleFilterChange} class="noLabels"></lightning-combobox>
+                                </div>
+                            </template>
+
+                            <!--
+                            <template if:true={showActiveContactsFilter}>
+                                <lightning-input type="checkbox" label={label.Screen_ShowActiveContacts}
+                                    data-id="activeContactsCheckbox" onclick={handleActiveContacts} checked>
+                                </lightning-input>
+                            </template>
+                            -->
+                        
+                        </div>
+                        <template if:true={showAddButton}>
+                            <div
+                                class="slds-col slds-size_2-of-3 slds-text-align_right">
+                                <div class="">
+                                    <lightning-button label={addButtonText} onclick={handleAddRelationshipButton}
+                                        variant="brand"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div
+            class="slds-page-header slds-page-header--object-home slds-page-header_joined slds-page-header_bleed slds-shrink-none test-headerRegion slds-is-relative">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate firstHeaderRow">
+                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <div class="slds-media__body slds-align-middle">
+                                <template if:false={showFilter}>
+                                    <h2
+                                        class="slds-card__header-title slds-truncate slds-m-right--xx-small slds-card__header-link">
+                                        {title}</h2>
+                                    <p>{subTitle}</p>
+                                </template>
+                                <template if:true={showFilter}>
+                                    <h2
+                                        class="slds-card__header-title slds-truncate slds-m-right--xx-small slds-card__header-link">
+                                        {filterLabel}</h2>
+                                    <template if:true={isBusinessContact}>
+                                        <p>{subTitle}</p>
+                                    </template>
+                                    <template if:false={isBusinessContact}>
+                                        <p>{subTitle2}</p>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-col slds-no-flex">
+                    <lightning-button-icon slot="actions" icon-name="utility:refresh" alternative-text="Refresh"
+                        title="Refresh"
+                        class="slds-m-right_xx-small slds-button slds-button_icon slds-button_icon-border-filled"
+                        onclick={refreshTable}></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <div if:true={isLoaded}>
+            <lightning-spinner variant="brand" size="medium" alternative-text="loading"></lightning-spinner>
+        </div>
+        <div if:false={isLoaded}>
+            <div class="slds-m-bottom_large">
+                <template if:true={hasRecords}>
+                    <c-n4l-custom-datatable key-field="Id" data={accountContactRecords} hide-checkbox-column="false"
+                        columns={columns} sorted-by={sortBy} onsort={doSorting} sorted-direction={sortDirection}
+                        onrowaction={handleRowAction}>
+                    </c-n4l-custom-datatable>
+                </template>
+                <template if:false={hasRecords}>
+                    <p class="slds-text-align_center slds-text-heading_small slds-p-top_small slds-p-bottom_small">
+                        {emptyMessageText}</p>
+                </template>
+                <div class="custom-datatable_paginate-container">
+                    <div class="slds-p-right_medium custom-datatable_paginate-pages">Page {page} of {lastPage}
+                    </div>
+                    <lightning-button-group slot="actions">
+                        <template if:true={hasPrev}>
+                            <lightning-button label={previousButtonName} title="Previous"
+                                icon-name="utility:chevronleft" onclick={onPrev}></lightning-button>
+                        </template>
+                        <template if:false={hasPrev}>
+                            <lightning-button label={previousButtonName} icon-name="utility:chevronleft" disabled>
+                            </lightning-button>
+                        </template>
+                        <template if:true={hasNext}>
+                            <lightning-button label={nextButtonName} title="Next" icon-name="utility:chevronright"
+                                onclick={onNext}></lightning-button>
+                        </template>
+                        <template if:false={hasNext}>
+                            <lightning-button label={nextButtonName} icon-name="utility:chevronright" disabled>
+                            </lightning-button>
+                        </template>
+                    </lightning-button-group>
+                </div>
+            </div>
+            <div class="slds-clearfix">
+                <template if:true={showMissingMessage}>
+                    <template if:true={missingMessage}>
+                        <p class="slds-float_left slds-text-color_destructive slds-p-left_medium">{missingMessage}</p>
+                    </template>
+                    <template if:true={missingOutageNotif}>
+                        <br />
+                        <p class="slds-float_left slds-text-color_destructive slds-p-left_medium">{missingOutageNotif}
+                        </p>
+                    </template>
+                </template>
+            </div>
+        </div>
+        <template if:true={invokePopup}>
+            <template if:false={isSupportHub}>
+                <c-n4l-form-screen oncloseform={handleCloseForm} header-title={headerTitle} record-id={recordRelationId}
+                    account-id={recordId} save-rel-button={saveRelButton}
+                    search-place-holder-text={searchPlaceHolderText} is-replace={isReplace} form-function={formFunction}
+                    account-name={accountName} userlicense={userlicense} set-user-license=false popup-form=true>
+                </c-n4l-form-screen>
+            </template>
+            <template if:true={isSupportHub}>
+                <c-n4l-support-hub-form-screen oncloseform={handleCloseForm} header-title={headerTitle}
+                    record-id={recordRelationId} account-id={recordId} save-rel-button={saveRelButton}
+                    search-place-holder-text={searchPlaceHolderText} is-replace={isReplace} form-function={formFunction}
+                    account-name={accountName} userlicense={userlicense} set-user-license=false popup-form=true>
+                </c-n4l-support-hub-form-screen>
+            </template>
+            <!-- heath version
+            <template if:true={isSupportHub}>
+                <c-manage-contact-form-support-hub
+                oncloseform={handleCloseForm}
+                header-title={headerTitle} 
+                record-id={recordRelationId}
+                account-id={recordId}
+                save-rel-button={saveRelButton}
+                search-place-holder-text={searchPlaceHolderText}
+                is-replace={isReplace}
+                form-function={formFunction}
+                account-name={accountName}
+                userlicense={userlicense}
+                set-user-license=false
+                popup-form=true>
+            </c-manage-contact-form-support-hub>
+            </template>
+            -->
+        </template>
+
+        <template if:true={showActivationWarning}>
+            <div class="DESKTOP uiModal--medium uiModal--recordActionWrapper uiModal forceModal open active">
+                <div class="modal-glass slds-backdrop fadein slds-backdrop--open" tabindex="-1" style="opacity: 1.8;">
+                </div>
+                <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="panel slds-modal slds-fade-in-open">
+                    <div class="modal-container slds-modal__container">
+                        <header class="modal-header slds-modal__header slds-p-left_large slds-p-right_large">
+                            <h2 class="slds-form-warning slds-text-heading_medium slds-hyphenate">Remove contact from your school</h2>
+                        </header>
+                        <div class="modal-body scrollable slds-modal__content">
+                            <div class="slds-m-top_large slds-m-bottom_large slds-p-left_large slds-p-right_large">
+                                <p>You are about to remove this contact from your school.
+                                <br><br>
+                                <strong>Are you sure you would like to remove this contact?</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <footer class="modal-footer slds-modal__footer">
+                            <lightning-button-group slot="actions">
+                                <lightning-button class="sh-button_text" label="No" variant="neutral" onclick={cancelWarningMessage}>
+                                </lightning-button>
+                            </lightning-button-group>
+                            <lightning-button-group slot="actions">
+                                <lightning-button class="sh-button_destructive" label="Yes, remove this contact" variant="brand" onclick={updateRelationship}></lightning-button>
+                            </lightning-button-group>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </article>
+</template>

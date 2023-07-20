@@ -1,0 +1,27 @@
+<template>
+<!--     
+<p>MOU on Lightning Record Page</p>
+<div class="slds-box slds-m-around_small">
+    <p>userId: {userId}</p>
+    <p>json user: {userOutput}</p>
+</div>
+<div class="slds-box slds-m-around_small">
+    <p>contractId: {contractId}</p>
+    <p>json contract: {contractOutput}</p>
+</div>
+<div class="slds-box slds-m-around_small">
+        <p>recordId: {recordId}</p>
+        <p>contractId: {contractId}</p>
+        <p>json contract: {wiredcontractOutput}</p>
+    </div>
+
+<div class="slds-box slds-m-around_small">
+<c-mou-test-child contract-id={recordId}></c-mou-test-child>
+</div> -->
+
+<c-mou-contract contract-id={recordId} is-lightning-page=true></c-mou-contract>
+
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

@@ -1,0 +1,414 @@
+/* Styling for Page/General */
+
+.THIS .sh-card {
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1280px;
+    min-height: 320px;
+    margin-inline: auto;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    background: white;
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.16);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.16);
+    box-shadow: 0px 0px 16px 0px rgb(0 0 0 / 16%);
+    font-size: 14px;
+}
+
+.THIS h1 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.THIS button.sh-button_text {
+    border: none;
+    background-color: white;
+    color: #646568;
+}
+
+.THIS button.sh-button_text:hover, 
+.THIS button.sh-button_text:active, 
+.THIS button.sh-button_text:focus, 
+.THIS button.sh-button_text:focus-within, 
+.THIS button.sh-button_text:focus-visible {
+    border: none;
+    background-color: #f3f3f3;
+    color: #646568;
+    outline: none;
+}
+
+.THIS input, .THIS button, .THIS .slds-button {
+    height: 40px;
+    outline: none;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.THIS input {
+    margin-bottom: 4px;
+    border: 1px solid #dededf;
+}
+
+.THIS input::placeholder {
+    color: #a8a9aa;
+}
+
+.THIS .slds-input-has-icon .slds-input__icon {
+    top: 45%;
+}
+
+.THIS button, .THIS .slds-button {
+    font-weight: 600;
+}
+
+.THIS .slds-button_brand:focus, .THIS .slds-button_brand:focus-visible, .THIS .slds-button_brand:focus-within, .THIS .slds-button:focus-visible, .THIS .slds-button:focus, .THIS .slds-button:focus-within {
+    box-shadow: none;
+}
+
+.THIS .slds-input:focus, .THIS .slds-input:focus-visible, .THIS .slds-input:active,
+.THIS [role=combobox] input[readonly]:focus, .THIS [role=combobox] input[readonly].slds-has-focus, .THIS input[readonly][role=combobox]:focus, .THIS input[readonly][role=combobox].slds-has-focus {
+    border-color: #980d76;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+}
+
+.THIS .slds-page-header_record-home.forceRecordLayout {
+    padding: 16px 24px !important;
+}
+
+
+/* Styling for Tabs */
+
+.THIS .uiTabBar .uiTabItem .tabHeader, 
+.THIS .uiTabBar .uiTabItem .tabHeader:hover,
+.THIS .uiTabBar .uiTabItem .tabHeader:focus,
+.THIS .uiTabBar .uiTabItem.active .tabHeader {
+    padding: 8px 24px;
+    color: #980d76 !important;
+    text-decoration: none;
+}
+
+.THIS .tabs__item.uiTabItem {
+    margin: 0;
+}
+
+.THIS li.js-tab.tabs__item.active.uiTabItem a {
+    border-color: #980d76;
+    color: #980d76;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.THIS li.js-tab.tabs__item.active.uiTabItem a:hover,
+.THIS li.js-tab.tabs__item.active.uiTabItem a:focus {
+    border-color: #980d76;
+    box-shadow: none;
+    color: #980d76;
+    font-weight: 400;
+}
+
+.THIS li.js-tab.tabs__item.uiTabItem a:hover,
+.THIS li.js-tab.tabs__item.uiTabItem a:focus {
+    border-color: #980d76;
+    box-shadow: none;
+    color: #980d76;
+    font-weight: 400;
+}
+
+.THIS .uiTabset--default .tabs__content {
+    padding-top: 24px;
+}
+
+/* */
+
+/* Styling for Record List */
+
+.THIS table.forceRecordLayout {
+    padding: 0;
+}
+
+.THIS h2.listTitle {
+    font-weight: 600;
+    padding-left: 24px;
+    padding-bottom: 16px;
+}
+
+.THIS .forceBaseListView thead th, 
+.THIS .forceBaseListView tbody td, 
+.THIS .forceBaseListView tbody th,
+.THIS .forceBaseListView thead th:first-of-type, 
+.THIS .forceBaseListView tbody td:first-of-type, 
+.THIS .forceBaseListView tbody th:first-of-type,
+.THIS .forceCommunityRecordListStandard .forceBaseListView thead th:first-of-type, 
+.THIS .forceCommunityRecordListStandard .forceBaseListView tbody td:first-of-type {
+    padding: 16px 8px 16px 24px;
+}
+
+.THIS .forceBaseListView thead th, 
+.THIS .forceBaseListView thead th:first-of-type {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.THIS tbody tr {
+    height: 64px;
+}
+
+.THIS div.viewAllLink {
+    display: none;
+}
+
+/* Styling for Modals */
+
+.THIS .modal-container,
+.THIS .slds-modal__container {
+    max-width: 526px;
+    margin-inline: auto;
+}
+
+.THIS .modal-container .slds-button_icon {
+    height: auto;
+}
+
+.THIS .modal-container header .slds-modal__close {
+    top: 16px;
+    right: 16px;
+}
+
+.THIS .modal-container header svg {
+    fill: #646568;
+}
+
+.THIS .modal-container header h2 {
+    margin-top: 0px;
+    text-align: left;
+}
+
+.THIS .modal-container .slds-accordion__summary {
+    padding-bottom: 16px;
+    font-weight: 600;
+}
+
+.THIS .modal-container abbr {
+    display: none;
+}
+
+.THIS .modal-container label.slds-form-element__label{
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.THIS .modal-container .slds-accordion__section.slds-is-open {
+    padding: 24px;
+}
+
+.THIS .modal-container .slds-has-error .slds-input {
+    box-shadow: 0 0 3px rgba(234,0,30,0.32);
+
+}
+
+.THIS .modal-container .slds-has-error .slds-input:active, 
+.THIS .modal-container .slds-has-error .slds-input:focus,
+.THIS .modal-container .slds-has-error .slds-input:focus-within,
+.THIS .modal-container .slds-has-error .slds-input:focus-visible {
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+    outline: none;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactSearch {
+    top: 50px;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactClear {
+    height: 32px;
+    top: 42px;
+    overflow: visible;
+}
+
+.THIS .modal-container c-n4l-support-hub-search-screen .contactClear lightning-icon {
+    margin-top: 8px;
+}
+
+.THIS .modal-container .slds-form-element__help, 
+.THIS .modal-container [data-id=resultBox] span.slds-required {
+    font-size:13px;
+}
+
+.THIS .slds-button-group+.slds-button-group, 
+.THIS .slds-button-group+.slds-button-group-list, 
+.THIS .slds-button-group+.slds-button, 
+.THIS .slds-button-group-list+.slds-button-group-list, 
+.THIS .slds-button-group-list+.slds-button-group, 
+.THIS .slds-button-group-list+.slds-button {
+    margin-left: var(--lwc-spacingSmall);
+}
+
+.THIS lightning-button.sh-button_text button {
+    border: none;
+    background-color: white;
+    color: #646568;
+}
+
+.THIS lightning-button.sh-button_text button:hover, 
+.THIS lightning-button.sh-button_text button:active, 
+.THIS lightning-button.sh-button_text button:focus, 
+.THIS lightning-button.sh-button_text button:focus-within, 
+.THIS lightning-button.sh-button_text button:focus-visible {
+    border: none;
+    background-color: #f3f3f3;
+    color: #646568;
+    outline: none;
+}
+
+.THIS lightning-button.sh-button_destructive button{
+    border: none;
+    background-color: #cc5252;
+    color: white;
+}
+
+.THIS lightning-button.sh-button_destructive button:hover, 
+.THIS lightning-button.sh-button_destructive button:active, 
+.THIS lightning-button.sh-button_destructive button:focus, 
+.THIS lightning-button.sh-button_destructive button:focus-within, 
+.THIS lightning-button.sh-button_destructive button:focus-visible {
+    border: none;
+    background-color: #AC4343;
+    color: white;
+    outline: none;
+}
+
+/* */
+
+/* Checkbox Styling START */
+
+.THIS .slds-checkbox {
+    display: inline-block;
+    position: relative;
+  }
+.THIS .slds-checkbox .slds-checkbox_faux {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    border-radius: var(--sds-c-checkbox-radius-border, 0.125rem);
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dededf;
+    background-color: var(--sds-c-checkbox-color-background, white);
+    -webkit-box-shadow: var(--sds-c-checkbox-shadow);
+    box-shadow: var(--sds-c-checkbox-shadow);
+    -webkit-transition: border 0.1s linear, background-color 0.1s linear;
+    transition: border 0.1s linear, background-color 0.1s linear;
+  }
+.THIS .slds-checkbox .slds-checkbox__label .slds-form-element__label {
+    display: inline;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+.THIS .slds-checkbox [type="checkbox"] {
+    width: 1px;
+    height: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    pointer-events: auto;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    background-color: #980d76;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux:after {
+    display: block;
+    content: "";
+    height: 0.25rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 50%;
+    /*! @noflip */
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    border-bottom: 2px solid white;
+    /*! @noflip */
+    border-left: 2px solid white;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:focus + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    -webkit-box-shadow: 0 0 3px rgba(152,13,118,0.32);
+    box-shadow: 0 0 3px rgba(152,13,118,0.32);
+  }
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked > .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:focus:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #980d76;
+    background-color: #980d76;
+  }
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"]:indeterminate + .slds-checkbox__label .slds-checkbox_faux:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    /*! @noflip */
+    left: 50%;
+    width: 0.5rem;
+    height: 2px;
+    border: 0;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+    background: white;
+  }
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"][disabled] ~ .slds-checkbox_faux,
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #e4e5e5;
+    background-color: #e4e5e5;
+  }
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"][disabled] ~ .slds-checkbox_faux:after,
+  .THIS .slds-checkbox [type="checkbox"][disabled] + .slds-checkbox__label .slds-checkbox_faux:after {
+    border-color: #e4e5e5;
+  }
+  
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] + .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] ~ .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #ea001e;
+    border-width: 2px;
+  }
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux {
+    border-color: #ea001e;
+  }
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox_faux:after,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked ~ .slds-checkbox_faux:after,
+  .THIS .slds-has-error .slds-checkbox [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux:after {
+    border-color: #fe5c4c;
+  }
+  
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] + .slds-checkbox_faux,
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] ~ .slds-checkbox_faux,
+  .THIS .slds-form-element .slds-checkbox [type="checkbox"] + .slds-checkbox__label .slds-checkbox_faux {
+    margin-right: 0.5rem;
+  }
+  
+/* END */

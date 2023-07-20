@@ -1,0 +1,57 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="spinnerContainer">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <div class="slds-p-around_small">
+            <lightning-card icon-name="action:add_file" title="Import Billing Reconciliation CSV">
+                <c-error-message errors={error}></c-error-message>
+                <template if:false={isStarted}>
+                    <lightning-file-upload 
+                        accept={acceptedFormats} 
+                        label="Attach CSV" 
+                        onuploadfinished={handleUploadFinished} 
+                        record-id={recordId}
+                    >
+                    </lightning-file-upload>
+                    <template if:true={canRetry}>
+                        <div>
+                            <hr />
+                            <lightning-button 
+                                variant="brand" 
+                                label="Retry Errors" 
+                                title="Retry Errors" 
+                                icon-name="utility:refresh" 
+                                class="slds-m-top_large"
+                                onclick={handleUploadFinished}
+                            >
+                            </lightning-button>
+                            <p class="slds-m-top_x-small">
+                                <em>Retrying will re-use the existing file and process all errors in the Errors list.</em>
+                            </p>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={isRunning}>
+                    <p><strong>Current Status:</strong> {currentStatus}</p>
+                    <template if:true={processedCount}>
+                        <p><strong>Processed:</strong> {processedCount} of {totalBatchSize} batches.</p>
+                    </template>
+                    <lightning-progress-bar value={progress}></lightning-progress-bar>
+                </template>
+                <template if:true={isFinished}>
+                    <div class="slds-scoped-notification slds-media slds-media_center slds-theme_success" role="status">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="utility:success" alternative-text="success"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <p>Successfully processed CSV. Page will refresh shortly...</p>
+                        </div>
+                    </div>
+                </template>
+            </lightning-card>
+        </div>
+    </template>
+</template>

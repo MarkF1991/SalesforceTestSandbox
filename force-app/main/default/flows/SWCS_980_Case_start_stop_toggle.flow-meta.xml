@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <decisions>
+        <description>Checks whether the Prior Passive Status field is populated or null. If there is no Status stored, we will need to revert the status to default passive status (paused)</description>
+        <name>Is_there_a_Prior_Passive_Status</name>
+        <label>Is there a Prior Passive Status?</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Change_Status_to_Paused</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Prior_Passive_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Revert_Case_Status_to_Prior_Passive_Status</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision element checks whether the Status field has been changed from a passive to an active state (or vice versa).</description>
+        <name>New_Case_Status_Value</name>
+        <label>New Case Status Value</label>
+        <locationX>1106</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>No State change</defaultConnectorLabel>
+        <rules>
+            <name>Passive_State</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Under Action</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Under Action</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsClosed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_IsActive_to_FALSE</targetReference>
+            </connector>
+            <label>Passive State</label>
+        </rules>
+        <rules>
+            <name>Active_State</name>
+            <conditionLogic>(1 AND 2) OR (2 AND 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Under Action</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Under Action</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsActive__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_IsActive_to_TRUE_0</targetReference>
+            </connector>
+            <label>Active State</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision element will determine is the toggle button has been changed, and what is the new value</description>
+        <name>New_Toggle_Button_Value</name>
+        <label>New Toggle Button Value</label>
+        <locationX>578</locationX>
+        <locationY>311</locationY>
+        <defaultConnector>
+            <targetReference>New_Case_Status_Value</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Change</defaultConnectorLabel>
+        <rules>
+            <name>Active_START</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.IsActive__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsActive__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Status</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Case_Status_to_Under_Action</targetReference>
+            </connector>
+            <label>Active (START)</label>
+        </rules>
+        <rules>
+            <name>Passive_STOP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.IsActive__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsActive__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Status</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_there_a_Prior_Passive_Status</targetReference>
+            </connector>
+            <label>Passive (STOP)</label>
+        </rules>
+    </decisions>
+    <description>This flow is responsible for the logic behind the start/stop toggle on the case page. 
+Key fields: 
+Is Active = A checkbox which should be in sync with the toggle button
+Prior Passive Status =  a text field that stores the previous status of the Case when it is changed to under action, this supports the ability to toggle back to the previous state easily.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Will be TRUE if the record that triggered this flow is newly created.</description>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>SWCS-980 Case start/stop toggle {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SWCS-980 Case start/stop toggle</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>There is no Prior Passive Status, so the Case Status is updated to Paused.</description>
+        <name>Change_Status_to_Paused</name>
+        <label>Change Status to Paused</label>
+        <locationX>578</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Paused</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Clear the &apos;Prior Passive Status&apos; field.</description>
+        <name>Remove_Prior_Passive_Status_field_value</name>
+        <label>Remove Prior Passive Status field value</label>
+        <locationX>314</locationX>
+        <locationY>671</locationY>
+        <inputAssignments>
+            <field>Prior_Passive_Status__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the value of the Case Status field to the text stored in the Prior Passive Status field.</description>
+        <name>Revert_Case_Status_to_Prior_Passive_Status</name>
+        <label>Revert Case Status to Prior Passive Status</label>
+        <locationX>314</locationX>
+        <locationY>551</locationY>
+        <connector>
+            <targetReference>Remove_Prior_Passive_Status_field_value</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Prior_Passive_Status__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>$Record__Prior.Prior_Passive_Status__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Change the IsActive checkbox value to FALSE</description>
+        <name>Set_IsActive_to_FALSE</name>
+        <label>Set IsActive to FALSE</label>
+        <locationX>842</locationX>
+        <locationY>551</locationY>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Remove_Prior_Passive_Status_field_value</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>IsActive__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Change the IsActive checkbox value to TRUE</description>
+        <name>Set_IsActive_to_TRUE_0</name>
+        <label>Set IsActive to TRUE</label>
+        <locationX>1106</locationX>
+        <locationY>551</locationY>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Prior_Passive_Status_field_value</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>IsActive__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Status field on the Case to Under Action value</description>
+        <name>Update_Case_Status_to_Under_Action</name>
+        <label>Update Case Status to Under Action</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Update_Prior_Passive_Status_field_value</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Under Action</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Stamp the prior value of the Case Status field into the &apos;Prior Passive Status&apos; field.</description>
+        <name>Update_Prior_Passive_Status_field_value</name>
+        <label>Input Prior Passive Status field value</label>
+        <locationX>50</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Prior_Passive_Status__c</field>
+            <value>
+                <elementReference>$Record__Prior.Status</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>New_Toggle_Button_Value</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>IsActive__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Under Action</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

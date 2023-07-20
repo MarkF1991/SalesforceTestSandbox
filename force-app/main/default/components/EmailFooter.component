@@ -1,0 +1,22 @@
+<apex:component access="global">
+    <html>
+    <table id="page-wrap" width="100%" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff">
+        <tr>
+            <td><a style="text-decoration:none;" href="https://support.n4l.co.nz/s/contact-us">
+                <table id="footer" width="588" cellspacing="0" cellpadding="0" align="center">
+                    <tr>
+                        <td width="588" style="padding: 20px; background-color: #EBE8DF; color: #777777;" align="left">
+                            <div style="font-family: 'Arial'; font-size: 9px; line-height: 150%;">
+                                <strong>THE NETWORK FOR LEARNING LIMITED</strong>
+                                <div>Auckland: Suite 306, Geyser Building, 100 Parnell Road, Parnell, Auckland 1052</div>
+                                <div>Wellington: Level 9, Bayleys Building, 36 Brandon Street, Wellington, 6011</div>
+                                <div>0800 LEARNING | <a style="color: #777777;" href="http://n4l.co.nz" target="_blank">n4l.co.nz</a></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table></a>
+            </td>
+        </tr>
+    </table>
+    </html>
+</apex:component>

@@ -1,0 +1,18 @@
+.valueText {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.rank1 {
+    background-color: rgb(212, 80, 76) !important; /* custom */
+}
+
+.rank2 {
+    background-color: #777 !important; /* custom */
+}
+
+a {
+    text-decoration: none;
+}

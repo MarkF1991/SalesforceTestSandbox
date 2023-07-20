@@ -1,0 +1,22 @@
+<aura:component
+	controller="KnowledgeBaseAccordion"
+	implements="lightning:availableForFlowScreens,force:hasRecordId,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+	access="global"
+>
+	<aura:attribute name="data" type="KnowledgeBase__c[]" />
+	<aura:attribute name="dataTopic" type="String" access="global" />
+	<aura:attribute name="dataType" type="String" access="global" />
+	<aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+	<div class="slds-box slds-theme_default">
+		<lightning:accordion allowMultipleSectionsOpen="true">
+			<aura:iteration items="{!v.data}" var="item">
+				<lightning:accordionSection name="{!item.Id}" label="{!item.Category__c}">
+					<p>
+						<lightning:formattedRichText value="{!item.Description__c}" />
+					</p>
+				</lightning:accordionSection>
+			</aura:iteration>
+		</lightning:accordion>
+	</div>
+</aura:component>

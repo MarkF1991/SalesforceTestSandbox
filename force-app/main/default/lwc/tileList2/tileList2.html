@@ -1,0 +1,79 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class={iconClass} title={cardTitle}>
+                        <span><i class="material-icons md-18">{cardIconName}</i></span>
+                        <span class="slds-assistive-text">{cardTitle}</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>{cardTitle}</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class={cardClass}>
+            <template if:true={isLoading}>
+                <div class="loading-spinner-container">
+                    <div class="loading-spinner">
+                        <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+                    </div>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <template if:false={noData}>
+                    <template if:true={showAlert}>
+                        <c-tile-item-alert object={getAlert}></c-tile-item-alert>
+                    </template>
+                    
+                    <template if:true={showSubject}>
+                        <p class="slds-m-top_large slds-p-horizontal_medium slds-truncate slds-text-color_weak">{getSubject}</p>
+                    </template>
+                    
+                    <template if:true={isNarrow}>
+                        <div class="slds-m-top_small"></div>
+                    </template>
+                
+                    <template if:true={showInformation}>
+                        <p class="slds-m-top_large slds-p-horizontal_medium slds-truncate slds-text-color_weak">{getInformation}</p>
+                    </template>
+                    <template if:true={disableItemLinks}>
+                        <a href={cardLink}>
+                            <template iterator:it={getItems}>
+                                <div if:true={it.first} class={tileItemClassFirst} key={it.value.id} >
+                                    <c-tile-item-object disable-link=true object={it.value}></c-tile-item-object>    
+                                </div>
+                                <div if:false={it.first} class={tileItemClass} key={it.value.id} >
+                                    <c-tile-item-object disable-link=true object={it.value}></c-tile-item-object>    
+                                </div>
+                            </template>
+                        </a>
+                    </template>
+                    <template if:false={disableItemLinks}>
+                        <template iterator:it={getItems}>
+                            <div if:true={it.first} class={tileItemClassFirst} key={it.value.id} >
+                                <c-tile-item-object id={it.value.id} object={it.value} onclick={notifyClick}></c-tile-item-object>    
+                            </div>
+                            <div if:false={it.first} class={tileItemClass} key={it.value.id} >
+                                <c-tile-item-object id={it.value.id} object={it.value} onclick={notifyClick}></c-tile-item-object>    
+                            </div>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={noData}>
+                    <c-no-user-or-device-data-warn></c-no-user-or-device-data-warn>
+                </template>
+            </template>
+        </div>
+        <template if:true={footer}>
+            <footer class="slds-card__footer">
+                <a class="slds-card__footer-action" onclick={handleViewAllClick} href="javascript:void(0);">
+                    {footer.title}
+                </a>
+            </footer>
+        </template>
+    </article>
+</template>

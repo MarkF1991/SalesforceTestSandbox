@@ -1,0 +1,43 @@
+<template>
+        <a href={path}>
+            <div class="slds-p-vertical_medium">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_2-of-3 slds-text-align_left">
+                        <template if:true={title}>
+                            <p class="slds-col slds-truncate slds-text-color_weak">{title}</p>
+                        </template>
+                        <div class="slds-m-top_medium">
+                            <c-tile-chip initial={initial} materialicon={materialicon} iconclass={iconclass} line1={line1} line2={line2}></c-tile-chip>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                        <template if:true={uom}>
+                            <p class="slds-truncate  slds-text-color_weak">{uom}</p>
+                        </template>
+                        <p class="valueText slds-m-top_medium slds-truncate">{value}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!-- <a href={object.path}>
+                <div class="slds-p-vertical_medium">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_2-of-3 slds-text-align_left">
+                            <template if:true={object.title}>
+                                <p class="slds-col slds-truncate slds-text-color_weak">{object.title}</p>
+                            </template>
+                            <div class="slds-m-top_medium">
+                                <c-tile-chip object={object.chip}></c-tile-chip>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                            <template if:true={object.unit}>
+                                <p class="slds-truncate  slds-text-color_weak">{object.unit}</p>
+                            </template>
+                            <p class="valueText slds-m-top_medium slds-truncate">{object.value}</p>
+                        </div>
+                    </div>
+                </div>
+            </a> -->
+</template>

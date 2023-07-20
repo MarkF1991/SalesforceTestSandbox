@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <interviewLabel>Email_Checker {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Email_Checker</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CreateCase</name>
+        <label>CreateCase</label>
+        <locationX>25</locationX>
+        <locationY>19</locationY>
+        <assignRecordIdToReference>NewCaseId</assignRecordIdToReference>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <stringValue>0019000001H7iXIAAZ</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <stringValue>0039000001vYzVCAA0</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>Support_Email_Test_Description</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00590000001CnFNAA0</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <stringValue>01290000000TNWUAA4</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Under Action</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>Support_Email_Test</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordCreates>
+    <status>InvalidDraft</status>
+    <textTemplates>
+        <name>Support_Email_Test</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Support_Email_Test</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Support_Email_Test_Description</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Please Ignore, this is used to test serviceability of email being received from support@n4l.co.nz
+
+Regards,
+
+SalesForce Admin</text>
+    </textTemplates>
+    <variables>
+        <name>NewCaseId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>sObjCase</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

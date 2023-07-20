@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Chatter_post</name>
+        <label>Chatter post</label>
+        <locationX>314</locationX>
+        <locationY>1295</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>#[Auto Email] Onboarding Task - Switch Onboarding Completed email has been sent to Case Contact: {!Get_Case.Contact.Email}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>Get_Case.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>Post to chatter that the email was sent</description>
+        <name>Email_Sent_Chatter_Post</name>
+        <label>Email Sent Chatter Post</label>
+        <locationX>50</locationX>
+        <locationY>1295</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>#[Auto Email] Onboarding Task - Switch Onboarding Completed email has been sent to Case Contact: {!Get_Case.Contact.Email}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>Get_Case.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Aerohive_Completed_Email_to_Case_Contact</name>
+        <label>Send Aerohive Completed Email to Case Contact</label>
+        <locationX>50</locationX>
+        <locationY>1175</locationY>
+        <actionName>Contact.Onboarding_Task_Switch_Onboarding_Completed</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>Email_Sent_Chatter_Post</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>Get_Case.Contact.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Contact.Onboarding_Task_Switch_Onboarding_Completed</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Non_Aerohive_Email_to_Case_Contact</name>
+        <label>Send Non Aerohive Email to Case Contact</label>
+        <locationX>314</locationX>
+        <locationY>1175</locationY>
+        <actionName>Contact.SNU_ES_Onboarding_5b_Switch_Done_Ruckus_Migration_Done</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>Chatter_post</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>Get_Case.Contact.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Contact.SNU_ES_Onboarding_5b_Switch_Done_Ruckus_Migration_Done</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <decisions>
+        <description>Send the Aerohive complete email if the field &quot;CC - Wireless AP Make&quot; = &quot;Aerohive&quot; on the Organisation.</description>
+        <name>Check_Wireless_AP_Make</name>
+        <label>Check Wireless AP Make</label>
+        <locationX>314</locationX>
+        <locationY>1055</locationY>
+        <defaultConnectorLabel>Non Aerohive</defaultConnectorLabel>
+        <rules>
+            <name>Aerohive</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Organisation.CC_Wireless_AP_Make__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Aerohive</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Aerohive_Completed_Email_to_Case_Contact</targetReference>
+            </connector>
+            <label>Aerohive</label>
+        </rules>
+        <rules>
+            <name>Non_Aerohive</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Organisation.CC_Wireless_AP_Make__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Ruckus</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Organisation.CC_Wireless_AP_Make__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Aerohive</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Non_Aerohive_Email_to_Case_Contact</targetReference>
+            </connector>
+            <label>Non Aerohive</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check the Status of Task &quot;Switch Onboarding&quot;. Comms are sent when Licenses and Switch Onboarding are both complete</description>
+        <name>Task_Switch_Onboarding_Status</name>
+        <label>Task Switch Onboarding Status</label>
+        <locationX>578</locationX>
+        <locationY>935</locationY>
+        <defaultConnectorLabel>Not Completed</defaultConnectorLabel>
+        <rules>
+            <name>Switch_Onboarding_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Task_Switch_Onboarding.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Wireless_AP_Make</targetReference>
+            </connector>
+            <label>Switch Onboarding Completed</label>
+        </rules>
+    </decisions>
+    <description>Update fields and send comms when Task &quot;Licenses&quot; is updated to Completed.
+
+When  Task “Licenses” = Completed
+&amp; Task  “Switch onboarding” = Completed 
+&amp; CC - Wireless AP Make= Aerohive,
+send out Aerohive completed email to Authorised Signatory
+
+Both tasks are required to be completed to trigger the comms, so the Task “Switch onboarding” has a similar trigger and action.
+
+When Task Licenses = Completed for not Ruckus:
+Update Wireless Controller In Service Status to ‘In Service’
+Update Wireless In Service Date to current date</description>
+    <environments>Default</environments>
+    <interviewLabel>Onboarding Task - Licenses Completed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Onboarding Task - Licenses Completed</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Find the Case record the task relates to</description>
+        <name>Get_Case</name>
+        <label>Get Case</label>
+        <locationX>578</locationX>
+        <locationY>335</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Opportunity</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Opportunity the Case relates to.</description>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
+        <locationX>578</locationX>
+        <locationY>455</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Task_Switch_Onboarding</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case.Opportunity__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Organisation (Account) so that the wireless AP make can be referred to in decisions</description>
+        <name>Get_Organisation</name>
+        <label>Get Organisation</label>
+        <locationX>578</locationX>
+        <locationY>695</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Wireless_Controller_Service_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case.Account.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Task &quot;Switch Onboarding&quot;  from the same Case as the triggering Task (“Licenses”).</description>
+        <name>Get_Task_Switch_Onboarding</name>
+        <label>Get Task Switch Onboarding</label>
+        <locationX>578</locationX>
+        <locationY>575</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Organisation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Switch Onboarding</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update Wireless Controller In Service Status to ‘In Service’ for Non-Ruckus
+Update Wireless In Service Date to current date</description>
+        <name>Update_Wireless_Controller_Service_Status</name>
+        <label>Update Wireless Controller Service Status Non Ruckus</label>
+        <locationX>578</locationX>
+        <locationY>815</locationY>
+        <connector>
+            <targetReference>Task_Switch_Onboarding_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Organisation.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CC_Wireless_AP_Make__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Ruckus</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CC_Wireless_Support_In_Service_Date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Wireless_Controller_Service_Status__c</field>
+            <value>
+                <stringValue>In Service</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Case</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Licenses</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <object>Task</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
